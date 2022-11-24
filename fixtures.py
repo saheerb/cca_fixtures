@@ -44,7 +44,7 @@ def get_team_with_max_constraints(rows, processed_teams):
   for row in rows:
     row["constraints"] = 0
     for i in row:
-      if not re.match(r"[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]", i) is not None:
+      if not re.match(r"[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]", i) is not None:
         continue
 
       if row[i] in ["No Play",  "No Home", "Home"]:
@@ -74,7 +74,7 @@ def init_ground_availability(rows):
   for row in rows:
     grounds[row["Ground"]] = {}
     for i in row:
-      if not re.match(r"[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]", i) is not None:
+      if not re.match(r"[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]", i) is not None:
         continue
       grounds[row["Ground"]][i] = ""
   return grounds
@@ -114,7 +114,8 @@ def ground_is_available(grounds, ground, the_date, rows):
   # TODO: check only for team playing on that ground
   for row in _find_rows_for_ground(rows, ground):
     if row[the_date] != "":
-      return False
+      if row[the_date] != "Home":
+        return False
   return True
 
 def ground_available_for_away(ground, the_date, rows):
@@ -182,20 +183,96 @@ def teams_available(the_match, rows, the_date):
       return False
   return True
 
-def best_possible_match(team, the_date, matches, match_type="Away"):
+def fix_a_best_possible_away_match(team, rows, matches):
   # find possible matches
   possible_matches = []
   for match in matches:
-    if team == match[match_type] and match["Date"] == "":
+    if team == match["Away"] and match["Date"] == "":
+      possible_matches.append(match)
+
+  # check if any of the opposition in has any condition
+  a_match = None
+
+  for match in possible_matches:
+    # I am looking for an away match
+    # Find an opposition who can do an away match on any dates
+    opposition = match["Home"]
+    away_team_row = get_row_for_team(opposition, rows)
+    ground =  away_team_row["Ground"]
+
+    for the_date in _get_possible_dates(rows):
+      # print (the_date)
+      # print (opposition)
+
+      # Give preference to away team which has "No Play"
+      # Continue the loop, so that they will be picked up
+      if away_team_row[the_date] == "No Play":
+        continue
+
+      if not teams_available(match, rows, the_date):
+        continue
+      if not ground_is_available(grounds, ground, the_date, rows):
+        continue
+      if not team_available_for_away(match["Away"], the_date, rows, matches):
+        continue
+
+      # find opposition with constraints
+      # if there is a constraint return this opposition
+      if away_team_row[the_date] == "Home":
+        match["Date"] = the_date
+        match["Ground"] = ground
+        add_constraint("No Home", rows, match["Home"], the_date)
+        return
+      else:
+        # If there is none this is also a possible option
+        a_match = match
+        a_ground = ground
+        a_date = the_date
+
+  a_match["Ground"] = a_ground
+  a_match["Date"] = a_date
+
+
+def fix_a_best_possible_schedule(match, rows, matches, ground):
+  home_team_row = get_row_for_team(match["Home"], rows)
+  away_team_row = get_row_for_team(match["Away"], rows)
+  ground =  home_team_row["Ground"]
+  opposition = match["Away"]
+  for the_date in _get_possible_dates(rows):
+    # if there is a constraint return this opposition
+    if away_team_row[the_date] == "No Home" and home_team_row[the_date] == "Home":
+      if not teams_available(match, rows, the_date):
+        continue
+      if not ground_is_available(grounds, ground, the_date, rows):
+        continue
+      if not team_available_for_away(opposition, the_date, rows, matches):
+        continue
+
+    #   return match
+
+    # if home_team_row[the_date] == "Home":
+    #   return match
+    
+    # if away_team_row[the_date] == "No Home":
+    #   return match
+    
+  
+    
+def best_possible_home_match(team, the_date, matches):
+  # find possible matches
+  possible_matches = []
+  for match in matches:
+    if team == match["Home"] and match["Date"] == "":
       possible_matches.append(match)
 
   # check if any of the opposition in has any condition
   print (the_date)
+  a_match = None
   for match in possible_matches:
-    opposition = match["Home"]
-    team_row = get_row_for_team(opposition, rows)
-    ground =  team_row["Ground"]
-    match["Ground"] = ground
+    opposition = match["Away"]
+    home_team_row = get_row_for_team(team, rows)
+    away_team_row = get_row_for_team(opposition, rows)
+    ground =  home_team_row["Ground"]
     if not teams_available(match, rows, the_date):
       continue
     if not ground_is_available(grounds, ground, the_date, rows):
@@ -203,30 +280,69 @@ def best_possible_match(team, the_date, matches, match_type="Away"):
     if not team_available_for_away(opposition, the_date, rows, matches):
       continue
     # if there is a constraint return this opposition
-    if team_row[the_date] == "No Home":
+    if away_team_row[the_date] == "No Home":
       return match
+    else:
+      a_match = match
 
   # No opposition has any constrains, return last one  
-  return match
+  return a_match
 
+def build_fixtures(rows, matches, grounds):
+  for match in matches:
+    fix_a_best_possible_away_match(rows, matches, grounds)
 
+    
 def _build_fixture_for_a_team(team, matches, grounds, rows):
   row = get_row_for_team(team, rows)
   for the_date in row:
-    if not re.match(r"[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]", the_date) is not None:
+    if not re.match(r"[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]", the_date) is not None:
       continue
+    print (the_date)
     if row[the_date] in ["No Play"]:
       pass
     elif row[the_date] in ["No Home"]:
       # Give an away match on this date
-      # propose a best match in terms of opposition, and ground on this date
-      proposed_match = best_possible_match(team, the_date, matches, match_type="Away")
-      for match in matches:
-        if match["Home"] == proposed_match["Home"] and proposed_match["Away"] == match["Away"]:
-          match["Date"] = the_date
-          match["Ground"] = proposed_match["Ground"]
-          add_constraint("No Home", rows, match["Home"], the_date)
-          break
+      fix_a_best_possible_away_match(team, rows, matches)
+      # # propose a best match in terms of opposition, and ground on this date
+      # proposed_match = best_possible_away_match(team, the_date, matches)
+      # # may be there cannot be an Away match on this date continue
+      # if proposed_match == None:
+      #   continue
+      # for match in matches:
+      #   if match["Home"] == proposed_match["Home"] and proposed_match["Away"] == match["Away"]:
+      #     home_team_row = get_row_for_team(match["Home"], rows)
+      #     match["Date"] = the_date
+      #     match["Ground"] = home_team_row["Ground"]
+      #     add_constraint("No Home", rows, match["Home"], the_date)
+      #     break
+    # elif row[the_date] in ["Home"]:
+    #   proposed_match = best_possible_home_match(team, the_date, matches)
+    #   # may be there cannot be a Home match on this date continue
+    #   if proposed_match == None:
+    #     continue
+    #   for match in matches:
+    #     if match["Home"] == proposed_match["Home"] and proposed_match["Away"] == match["Away"]:
+    #       home_team_row = get_row_for_team(match["Home"], rows)
+    #       match["Date"] = the_date
+    #       match["Ground"] = home_team_row["Ground"]
+    #       add_constraint("No Home", rows, match["Home"], the_date)
+    #       break
+      # Give a Home match on this date
+      # for match in matches:
+      #   if (team in match["Home"] and match["Date"] == ""):
+      #     home_ground = get_ground_of_team(match["Home"], rows)
+      #     if ground_is_available(grounds, home_ground, the_date, rows) and \
+      #       teams_available(match, rows, the_date):
+      #       match["Date"] = the_date
+      #       match["Ground"] = home_ground
+      #       # make sure ground is marked as allocated
+      #       # allot_ground_for_date(grounds, away_ground, the_date)
+      #       # now that ground is allocated add a constrain "No Home"
+      #       add_constraint("No Home", rows, match["Home"], the_date)
+      #       # save_result_to_file(rows, matches, "int.xlsx")
+      #       # sys.exit()
+      #       break
 
       # # opponent = best_opponent(team, the_date, matches, "Away")
       # # for match in matches:
@@ -313,7 +429,7 @@ def _get_possible_dates(rows):
   dates = []
   for row in rows:
     for the_date in row:
-      if re.match(r"[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]", the_date) is not None:
+      if re.match(r"[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]", the_date) is not None:
         dates.append(the_date)
     # do only for one row
     break
@@ -409,15 +525,21 @@ def print_teams(rows, processed_teams):
 def build_fixtures(matches, grounds, rows):
   # save_result_to_file(rows, matches)
   # sys.exit()
-  processed_teams = []
+  constrained_teams = []
+  allotted_teams = []
   retry_count = 0
   loop_team = ""
   while True:
-    if len(rows) == len(processed_teams):
+    if len(rows) == len(allotted_teams):
       break
-    row = get_team_with_max_constraints(rows, processed_teams)
+
+    if len(rows) == len(constrained_teams):
+      # good with constraints
+      break
+    row = get_team_with_max_constraints(rows, constrained_teams)
     # print_teams(rows, processed_teams)
     team = _team_name(row)
+    # print (row)
     if loop_team == team:
       retry_count += 1
     else:
@@ -430,12 +552,17 @@ def build_fixtures(matches, grounds, rows):
     # if constrained matches are allocated
     # add to done. Rest can be done late
     if all_constrained_matches_allotted(team, matches, rows):
-      if team not in processed_teams:
-        processed_teams.append(team)
+      if team not in constrained_teams:
+        constrained_teams.append(team)
+    
+    # if all_matches_allotted(team, matches):
+    #   if team not in allotted_teams:
+    #     allotted_teams.append(team)
 
     if retry_count == 10:
       save_result_to_file(rows, matches)
       sys.exit(0)
+      
   save_result_to_file(rows, matches)
   # processed_teams = []
   # while True:
