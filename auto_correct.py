@@ -1,3 +1,4 @@
+import cProfile
 import pylightxl as xl
 import json
 from datetime import datetime, timedelta
@@ -7,6 +8,7 @@ import sys
 import random
 import copy
 from itertools import combinations
+from functools import reduce
 
 # find teams with max contraints
 # resolve the constraints
@@ -18,7 +20,7 @@ def read_data(book):
   # get column
   row_nbr = 1
   col_nbr = 1
-  header = OrderedDict()
+  header = {}
   rows = []
   while True:
     value = ws.index(row_nbr, col_nbr)
@@ -29,7 +31,7 @@ def read_data(book):
 
   # For each row
   while True:
-    row = OrderedDict()
+    row = {}
     row_nbr += 1
     if ws.index(row_nbr, header["Division"]) == "":
       break
@@ -39,7 +41,7 @@ def read_data(book):
   return rows
 
 
-def save_result_to_file(matches, file_name="temp_out.xlsx"):
+def save_result_to_file(divisions, file_name="temp_single.xlsx"):
   db = xl.Database()
   db.add_ws(ws="Grounds")
   row_nbr = 1
@@ -60,20 +62,25 @@ def save_result_to_file(matches, file_name="temp_out.xlsx"):
   
   db.add_ws(ws="Matches")
   row_nbr = 1
-  # Header row in rows:
-  for match in matches:
-    col_nbr = 1
-    for key in match:      
-      db.ws(ws="Matches").update_index(row=row_nbr, col=col_nbr, val=key)
-      col_nbr += 1
+  for matches in divisions.values():
+    # Header row in rows:
+    for match in matches:
+      col_nbr = 1
+      db.ws(ws="Matches").update_index(row=row_nbr, col=col_nbr, val="Division")
+      for key in match:
+        col_nbr += 1      
+        db.ws(ws="Matches").update_index(row=row_nbr, col=col_nbr, val=key)
+      break
     break
-  # Header row in rows
-  for match in matches:
-    col_nbr = 1
-    row_nbr += 1
-    for value in match.values():      
-      db.ws(ws="Matches").update_index(row=row_nbr, col=col_nbr, val=value)
-      col_nbr += 1
+  for division, matches in divisions.items():
+    # Header row in rows
+    for match in matches:
+      col_nbr = 1
+      row_nbr += 1
+      db.ws(ws="Matches").update_index(row=row_nbr, col=col_nbr, val=division)
+      for value in match.values():
+        col_nbr += 1      
+        db.ws(ws="Matches").update_index(row=row_nbr, col=col_nbr, val=value)
   xl.writexl(db=db, fn=file_name)
 
 def _team_name(row):
@@ -90,20 +97,53 @@ def init_ground_availability():
       grounds[row["Ground"]][i] = ""
   return grounds
 
-def init_matches():
+def init_divisions():
   divisions = {}
   for row in rows:
     if row['Division'] not in divisions:
       divisions[row['Division']]=[]
     team_name = _team_name(row)
     divisions[row['Division']].append(team_name)
-  matches = []
+
+
+  divisions_cont = {}
 
   for division in divisions:
+    divisions_cont[division] = []
     for match in combinations(divisions[division], 2):
-      matches.append({"Division":division, "Home": match[0], "Away": match[1], "Date": "", "Ground": ""})
-      matches.append({"Division":division, "Home": match[1], "Away": match[0], "Date": "", "Ground": ""})
-  return matches
+      divisions_cont[division].append({"Home": match[0], "Away": match[1], "Date": "", "Ground": ""})
+      divisions_cont[division].append({"Home": match[1], "Away": match[0], "Date": "", "Ground": ""})
+  
+  # initialize numbers to use somewhere else
+  for row in rows:
+    row['nbr_of_matches'] = 0
+    row['home_slots'] = 0
+    team = _team_name(row)
+    for division, matches in divisions_cont.items():
+      for match in matches:
+        if team in [match["Home"], match["Away"]]:
+          row['nbr_of_matches'] += 1
+    for the_date in _get_all_dates():
+      if row[the_date] in ["Home", ""]:
+        row['home_slots'] += 1
+
+  return divisions_cont
+
+
+# def init_matches1():
+#   divisions = {}
+#   for row in rows:
+#     if row['Division'] not in divisions:
+#       divisions[row['Division']]=[]
+#     team_name = _team_name(row)
+#     divisions[row['Division']].append(team_name)
+#   matches = []
+
+#   for division in divisions:
+#     for match in combinations(divisions[division], 2):
+#       matches.append({"Division":division, "Home": match[0], "Away": match[1], "Date": "", "Ground": ""})
+#       matches.append({"Division":division, "Home": match[1], "Away": match[0], "Date": "", "Ground": ""})
+#   return matches
 
 def _find_rows_for_ground(ground):
   matching_rows = []
@@ -135,28 +175,30 @@ def ground_available_for_away(ground, the_date):
   return True
 
 def team_available_for_away(team, the_date, matches):
-  def nbr_possible_home_slots(row):
-    count = 0
-    for the_date in _get_all_dates():
-      if row[the_date] in ["Home", ""]:
-        count += 1
-    return count
-
   row = get_row_for_team(team)
-  home_slots_available = nbr_possible_home_slots(row) 
   # team only plays 
   if row[the_date] == "Home":
     return False
   
+  initial_home_slots = row['home_slots'] 
+  total_home_matches = row['nbr_of_matches']/2
+  
   # team's Home window specific
-  home_slots_needed = 0
+  home_matches_allocated = 0
+  nbr_home_slots_used = 0
   for match in matches:
-    if match["Home"] == team and match["Date"] == "":
-      home_slots_needed += 1
+    if match["Home"] == team and match["Date"] != "":
+      home_matches_allocated += 1
+      if row[match["Date"]] == "" or row[match["Date"]] == "Home":
+        nbr_home_slots_used += 1
 
-  if home_slots_available < home_slots_needed:
+  nbr_home_matches_to_be_allocated = total_home_matches - home_matches_allocated
+  nbr_home_slots_available = initial_home_slots - nbr_home_slots_used
+  if nbr_home_slots_available == nbr_home_matches_to_be_allocated:
     return False
-
+  elif nbr_home_slots_available < nbr_home_matches_to_be_allocated:
+    # should never happen
+    assert False
   return True
     
 def get_row_for_team(the_team):
@@ -176,27 +218,39 @@ def add_constraint(constraint, team, the_date):
   row = get_row_for_team(team)
   row[the_date] = constraint
 
-def teams_available(the_match, the_date):
+def teams_available(the_match, home_team_row, away_team_row, the_date, matches):
   # if any team can't play on this date
-  home_team_row = get_row_for_team(the_match["Home"])
-  away_team_row = get_row_for_team(the_match["Away"])
+  # home_team_row = get_row_for_team(the_match["Home"])
+  # away_team_row = get_row_for_team(the_match["Away"])
   if home_team_row[the_date] == "No Play" or away_team_row[the_date] == "No Play":
     return False
 
   # if any team already has match allocated 
+  the_home_team = the_match["Home"]
+  the_away_team = the_match["Away"]
   for match in matches:
-    if match["Home"] in [the_match["Home"], the_match["Away"]] and match["Date"] == the_date:
+    this_home_team = match["Home"] 
+    this_away_team = match["Away"] 
+    this_date = match["Date"] 
+    # if (match["Away"] == the_match["Home"] or match["Away"]==the_match["Away"]) and match["Date"] == the_date:
+    #   return False
+    # if (match["Home"] == the_match["Home"] or match["Home"]==the_match["Away"]) and match["Date"] == the_date:
+    #   return False
+    # # if match["Away"] in [the_match["Home"], the_match["Away"]] and match["Date"] == the_date:
+    # #   return False
+    
+    if this_home_team in [the_home_team, the_away_team] and this_date == the_date:
       return False
-    if match["Away"] in [the_match["Home"], the_match["Away"]] and match["Date"] == the_date:
+    if this_away_team in [the_home_team, the_away_team] and this_date == the_date:
       return False
   return True
 
 
-def find_all_possible_dates(i, matches, grounds):
-  home_team_row = get_row_for_team(matches[i]["Home"])
-  away_team_row = get_row_for_team(matches[i]["Away"])
+def find_all_possible_dates(match, matches, grounds):
+  home_team_row = get_row_for_team(match["Home"])
+  away_team_row = get_row_for_team(match["Away"])
   ground =  home_team_row["Ground"]
-  opposition = matches[i]["Away"]
+  opposition = match["Away"]
 
   possible_dates = []
 
@@ -210,17 +264,18 @@ def find_all_possible_dates(i, matches, grounds):
       continue
 
     # can't do if teams cannot play
-    if not teams_available(matches[i], the_date):
+    if not teams_available(match, home_team_row, away_team_row, the_date, matches):
       continue
 
     possible_dates.append(the_date)
 
   return possible_dates, ground
 
-def all_matches_allotted(matches):
-  for match in matches:
-    if match["Date"] == "":
-      return False
+def all_matches_allotted(divisions):
+  for divison, matches in divisions.items():
+    for match in matches:
+      if match["Date"] == "":
+        return False
   return True
 
 def choose_match_with_lower_possibility(matches):
@@ -275,39 +330,131 @@ def possible_solutions(matches):
   for match in sorted_list:
     if match["Date"] != "":
       continue
-    for a_date in match["possible_dates"]:
+    for a_date in match["possible_dates"]: 
       yield match, a_date
+def number_of_allocated(divisions):
+  count = 0
+  for divison, matches in divisions.items():
+    for match in matches:
+      if match["Date"] != "":
+        count +=1
+  return count
 
-def build_fixtures(matches, grounds):
+
+def any_true(a, b):
+  return bool(a or b)
+
+
+def build_fixtures(divisions, grounds):
+  # for match in matches:
+  #   possible_dates, ground = find_all_possible_dates(match, matches, grounds)
+  #   match["possible_dates"] = possible_dates
+  # for match in matches:
+  #   if "Cambourne CC-2nd XI" in [match ["Home"]]:
+  #     match["constraints"] = 5
+  #   # elif "Wisbech Town CC-3rd XI" in [match["Away"], match ["Home"]]:
+  #   #   match["constraints"] = 4
+  #   # elif "March Town CC-2nd XI" in [match["Away"], match ["Home"]]:
+  #   #   match["constraints"] = 2
+  #   # elif "Madingley CC-1st XI" in [match["Away"], match ["Home"]]:
+  #   #   match["constraints"] = 3
+  #   else:
+  #     match["constraints"] = 0
+  #     pass
+
+  # sorted_list = sorted(matches, key=lambda d: d['constraints'])
+  # _build_fixtures(divisions, grounds, 0)
+  combinations = []
+  for division, matches in divisions.items():
+    for match in matches:
+      if match["Date"] != "":
+        continue
+      possible_dates, ground = find_all_possible_dates(match, matches, grounds)
+      for the_date in possible_dates:
+        combinations.append({"Home": match["Home"], "Away": match["Away"], "Date": the_date, "Ground": ground})
+  unique = []
+  print (len(combinations))
+  date_ground = []
+  home_opposition_ground = []
+  for combination in combinations:
+    if combination in unique:
+      assert False
+    if combination not in unique:
+      unique.append(combination)
+      i = {"date": combination["Date"], "ground":  combination["Ground"]}
+      j = {"date": combination["Date"], "Home":  combination["Home"], "Away":  combination["Away"]}
+      if i not in date_ground:
+        date_ground.append(i)
+      if j not in home_opposition_ground:
+        home_opposition_ground.append(j)
+  
+  reduce(get_unique, combinations)
+  print (len(date_ground))
+  print (len(home_opposition_ground))
+    # if combination in unique:
+    #   assert False
+
+
+
+def _build_fixtures(divisions, grounds, count):
+  count  = number_of_allocated(divisions)
+  print (rf"Number of matches allocated - {count}")
+  
   # may be we should do this in some sort of priority order
-  if all_matches_allotted(matches):
-    save_result_to_file(matches)
+  if all_matches_allotted(divisions):
+    save_result_to_file(divisions)
+    sys.exit()
     return
 
-  for i in range(len(matches)):
-    if matches[i]["Date"] != "":
-      continue
+  if count % 1 == 0:
+    for division, matches in divisions.items():
+      for match in matches:
+        possible_dates, ground = find_all_possible_dates(match, matches, grounds)
+        match["possible_dates"] = possible_dates
 
-    possible_dates, ground = find_all_possible_dates(i, matches, grounds)
-    
-    if len(possible_dates) == 0:
-      #  if possible_dates are zero then go back previous stage and run with another date
-      print ("This path wont work stop here")
-      return
-
-    matches[i]["possible_dates"] = possible_dates
-    matches[i]["Ground"] = ground
-
-  for possible_solution, the_date in possible_solutions(matches):
+      matches = sorted(matches, key=lambda d: len(d['possible_dates']))
+  # random.shuffle(matches)
+  for division, matches in divisions.items():
+    print (match)
     for match in matches:
-      if match["Home"] == possible_solution["Home"] and match["Away"] == possible_solution["Away"]:
-        break
-    match["Date"] = the_date
-    grounds[match["Ground"]][match["Date"]] = "Allotted"
-    print (possible_solution)
-    build_fixtures(copy.deepcopy(matches), copy.deepcopy(grounds))
+      if match["Date"] != "":
+        continue
 
-def _get_all_dates():
+      possible_dates, ground = find_all_possible_dates(match, matches, grounds)
+      match["possible_dates"] = possible_dates
+      
+      if len(possible_dates) == 0:
+        #  if possible_dates are zero then go back previous stage and run with another date
+        print ("This path wont work stop here")
+        print (match)
+        return False
+
+      for the_date in match["possible_dates"]:
+        print (the_date)
+        match["Date"] = the_date
+        match["Ground"] = ground
+        grounds[ground][the_date] = "Allotted"
+        if not _build_fixtures(copy.deepcopy(divisions), copy.deepcopy(grounds), number_of_allocated(divisions)):
+          match["Date"] = ""
+          grounds[ground][the_date] = ""
+
+      return True
+
+  # for possible_solution, the_date in possible_solutions(matches):
+  #   for match in matches:
+  #     if match["Home"] == possible_solution["Home"] and match["Away"] == possible_solution["Away"]:
+  #       break
+  #   match["Date"] = the_date
+  #   grounds[match["Ground"]][match["Date"]] = "Allotted"
+  #   print (possible_solution)
+  #   if not _build_fixtures(copy.deepcopy(matches), copy.deepcopy(grounds), number_of_allocated(matches)):
+  #     match["Date"] = ""
+  #     grounds[match["Ground"]][match["Date"]] = ""
+
+  
+rows = read_data("test.xlsx")
+
+def get_all_dates():
   dates = []
   for row in rows:
     for the_date in row:
@@ -317,10 +464,12 @@ def _get_all_dates():
     break
   return dates
 
-
-
-  
-rows = read_data("fix_.xlsx")
-matches = init_matches()
-grounds = init_ground_availability()
-build_fixtures(copy.deepcopy(matches), copy.deepcopy(grounds))
+sys.setrecursionlimit(3000)
+dates = get_all_dates()
+def _get_all_dates():
+  return dates
+# divisions = init_divisions()
+# grounds = init_ground_availability()
+# build_fixtures(copy.deepcopy(matches), copy.deepcopy(grounds))
+cProfile.run('build_fixtures(copy.deepcopy(init_divisions()), copy.deepcopy(init_ground_availability()))')
+# build_fixtures(copy.deepcopy(matches), copy.deepcopy(grounds))
