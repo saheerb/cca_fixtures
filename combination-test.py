@@ -33,7 +33,6 @@ def test_results(rows, divisions):
       team_row = get_row_for_team(rows, a_match["Home"])
       assert team_row[a_match["Date"]] != "No Play"
       the_team_name = team_name(team_row)
-      print (team_row[a_match["Date"]])
       if team_row[a_match["Date"]] == "Home":
         assert a_match["Home"] == the_team_name
       if team_row[a_match["Date"]] == "No Home":
@@ -73,7 +72,7 @@ def possible_solutions(rows, divisions):
 def build_fixtures(rows, divisions, grounds):
   print (rf"Allocated matches: {count_allocated(divisions)}")
   if all_matches_allotted(divisions):
-    save_result_to_file(rows, divisions, "result.xlsx")
+    save_result_to_file(rows, divisions, "result-div.xlsx")
     test_results(rows, divisions)
     print ("Solved")
     sys.exit()
@@ -102,6 +101,8 @@ def build_fixtures(rows, divisions, grounds):
       test_results(rows, divisions)
       grounds[possible_solution["Ground"]][possible_solution["Date"]] = "Allotted"
       build_fixtures(rows, copy.deepcopy(divisions), copy.deepcopy(grounds))
+      # depth search will find the solution
+      # anything else, reset the allocation
       grounds[possible_solution["Ground"]][possible_solution["Date"]] = ""
       possible_solution["Date"] = ""
       # if build_fixtures(rows, copy.deepcopy(divisions), copy.deepcopy(grounds)) == False:
@@ -115,7 +116,7 @@ def build_fixtures(rows, divisions, grounds):
 
 if __name__ == "__main__":
   sys.setrecursionlimit(3000)
-  rows = read_data("test.xlsx")
+  rows = read_data("fix-div.xlsx")
   grounds = init_ground_availability(rows)
   divisions = init_divisions(rows)
   print (get_all_dates(rows))
