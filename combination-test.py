@@ -4,6 +4,9 @@ import sys
 import random
 from utils import *
 
+# def get_all_dates(rows):
+#   pass
+
 def test_results(rows, divisions):
   # check all have dates
   # for division, matches in divisions.items():
@@ -47,14 +50,13 @@ def possible_solutions(rows, divisions):
     for match in this_matches:
       matches.append(match)
 
-  sorted_list = sorted(matches, key=lambda d: len(d['possible_dates']))
-
-  
+  sorted_list = sorted(matches, key=lambda d: len(d['possible_dates']), reverse=True)
 
   for match in sorted_list:
     if match["Date"] != "":
       continue
 
+    
     # Adjust dates such that "Home" matches are prioritized - BEGIN
     # possible_dates_prio = []
     # home_team_row = get_row_for_team(rows, match["Home"])
@@ -116,8 +118,8 @@ def build_fixtures(rows, divisions, grounds):
 
 if __name__ == "__main__":
   sys.setrecursionlimit(3000)
-  rows = read_data("fix-div.xlsx")
+  rows = read_data("fix-1.xlsx")
   grounds = init_ground_availability(rows)
   divisions = init_divisions(rows)
-  print (get_all_dates(rows))
+  # print (len(get_all_dates(rows)))
   build_fixtures(rows, divisions, grounds)    

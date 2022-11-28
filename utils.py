@@ -278,20 +278,49 @@ def count_allocated(divisions):
   return count
 
 @staticmethod
+def get_all_grounds(rows):
+  grounds = []
+  for row in rows:
+    if row["Ground"] not in grounds:
+      grounds.append(row["Ground"])
+  return grounds
+
+@staticmethod
+def get_all_teams(rows, division=""):
+  teams = []
+  for row in rows:
+    the_team = team_name(row)
+    if the_team not in teams:
+      if division != "" and row["Division"] != division:
+        continue
+      teams.append(the_team)
+  return teams
+
+@staticmethod
+def get_all_divisions(rows):
+  divisions = []
+  for row in rows:
+    if row["Division"] not in divisions:
+      divisions.append(row["Division"])
+  return divisions
+
+@staticmethod
 def get_all_dates(rows):
   dates = []
   for row in rows:
     for the_date in row:
       if re.match(r"[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]", the_date) is not None:
-        dates.append(the_date)
-    # do only for one row
-    break
-  date_dicts = {}
-  for the_date in dates:
-    date_dicts[the_date] = 0
-    for row in rows:
-      if row[the_date] != "":
-        date_dicts[the_date] += 1
+        if the_date not in dates:
+          dates.append(the_date)
+  return dates
+  #   # do only for one row
+  #   break
+  # date_dicts = {}
+  # for the_date in dates:
+  #   date_dicts[the_date] = 0
+  #   for row in rows:
+  #     if row[the_date] != "":
+  #       date_dicts[the_date] += 1
   
   return (dict(sorted(date_dicts.items(), key=lambda item: item[1], reverse=True))).keys()
 
