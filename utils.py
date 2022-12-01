@@ -14,9 +14,9 @@ from functools import reduce
 # resolve the constraints
 # if there are multiple ways to solve it, add a check point to return to it
 
-def read_data(book):
+def read_data(book, sheet="Grounds"):
   db = xl.readxl(book)
-  ws = db.ws('Grounds')
+  ws = db.ws(sheet)
   # get column
   row_nbr = 1
   col_nbr = 1
@@ -28,12 +28,13 @@ def read_data(book):
       break
     header[value]=col_nbr
     col_nbr += 1
-
+  print(f"{book} {header}")
   # For each row
   while True:
     row = {}
     row_nbr += 1
-    if ws.index(row_nbr, header["Division"]) == "":
+    # if row's 1st colum is empty quite
+    if ws.index(row_nbr, 1) == "":
       break
     for i in header:
       row[i] = ws.index(row_nbr, header[i])
@@ -41,46 +42,25 @@ def read_data(book):
   return rows
 
 
-def save_result_to_file(rows, divisions, file_name="temp_single.xlsx"):
-  db = xl.Database()
+def save_result_to_file(matches, file_name="temp_single.xlsx"):
+  db = xl.Database()  
   db.add_ws(ws="Grounds")
   row_nbr = 1
+
   # Header row in rows:
-  for row in rows:
+  for match in matches:
     col_nbr = 1
-    for key in row:      
+    for key in match:
       db.ws(ws="Grounds").update_index(row=row_nbr, col=col_nbr, val=key)
-      col_nbr += 1
+      col_nbr += 1 
     break
-  # Header row in rows
-  for row in rows:
+
+  for match in matches:
     col_nbr = 1
     row_nbr += 1
-    for value in row.values():      
+    for value in match.values():    
       db.ws(ws="Grounds").update_index(row=row_nbr, col=col_nbr, val=value)
-      col_nbr += 1
-  
-  db.add_ws(ws="Matches")
-  row_nbr = 1
-  for matches in divisions.values():
-    # Header row in rows:
-    for match in matches:
-      col_nbr = 1
-      db.ws(ws="Matches").update_index(row=row_nbr, col=col_nbr, val="Division")
-      for key in match:
-        col_nbr += 1      
-        db.ws(ws="Matches").update_index(row=row_nbr, col=col_nbr, val=key)
-      break
-    break
-  for division, matches in divisions.items():
-    # Header row in rows
-    for match in matches:
-      col_nbr = 1
-      row_nbr += 1
-      db.ws(ws="Matches").update_index(row=row_nbr, col=col_nbr, val=division)
-      for value in match.values():
-        col_nbr += 1      
-        db.ws(ws="Matches").update_index(row=row_nbr, col=col_nbr, val=value)
+      col_nbr += 1  
   xl.writexl(db=db, fn=file_name)
 
 def team_name(row):
@@ -268,6 +248,12 @@ def all_matches_allotted(divisions):
 #     match["possible_dates"] = possible_dates_prio
 #     for a_date in match["possible_dates"]: 
 #       yield match, a_date
+def get_division(rows, the_team_name):
+  for row in rows:
+    a_team_name = team_name(row)
+    if a_team_name == the_team_name:
+      return row["Division"]
+  assert False
 
 def count_allocated(divisions):
   count = 0

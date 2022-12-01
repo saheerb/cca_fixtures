@@ -10,7 +10,7 @@ def write_excel(results, rows, num):
     the_date  = result[3]
     division = get_division(rows, home_team)
     matches.append({"Division":division, "Home":home_team, "Away":away_team, "Ground":ground, "Date": the_date})
-  save_result_to_file(matches,rf"result-div{num}.xlsx")
+  save_result_to_file(matches,rf"result-partial.xlsx")
   
   pass
 def test_results(rows, results):
@@ -57,9 +57,8 @@ def test_results(rows, results):
     ground, home, opposition, the_date = result[0], result[1], result[2], result[3]
     home_team_row = get_row_for_team(rows, home)
     away_team_row = get_row_for_team(rows, home)
-    assert home_team_row[the_date] != "No Play"
-    assert away_team_row[the_date] != "No Play"
-    assert home_team_row[the_date] != "No Home"
+    assert home_team_row[the_date] not in ["No Home", "No Play"]
+    assert away_team_row[the_date] not in ["No Play"]
 
   # check Home condition
   for row in rows:
@@ -86,8 +85,10 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
       self._solution_limit = limit
 
   def on_solution_callback(self):
-      print ("Solution found")
       self._solution_count += 1
+      # print ("Solution found")
+      # return
+      
       match_count = 0
       result = []
       for g in self._grounds:
@@ -112,6 +113,7 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
       return self._solution_count
 
 def get_valid_states(rows):
+  must_states = get_must_have_states(rows)
   states = []
   for row in rows:
     ground = row["Ground"]
@@ -121,50 +123,87 @@ def get_valid_states(rows):
       if row[the_date] in ["No Home", "No Play"]:
         continue
       for opposition in get_all_teams(rows, division):
+        is_valid = True
         oppositions_row = get_row_for_team(rows,opposition)
-        if oppositions_row[the_date] == "No Play":
+        if oppositions_row[the_date] in ["No Play"]:
           continue
         if opposition == home_team:
            continue
-        states.append([ground, home_team, opposition, the_date])
+        # if this home vs opposition combo in any of the must_states
+        # take only state which matches the date
+        for must_state in must_states:
+          if must_state[0][1] == home_team and must_state[0][2] == opposition:
+            if must_state[0][3] != the_date:
+              is_valid = False
+              break
+        if is_valid:
+          states.append([ground, home_team, opposition, the_date])
   return states
 
-def get_must_have_states(rows):
+def must_home_matches(rows):
   states = []
+  # must  - Home 
   for row in rows:
     ground = row["Ground"]
     home_team = team_name(row)
+    division = row["Division"]
     states_for_oppositions = []
     for the_date in get_all_dates(rows):
       if row[the_date] not in ["Home"]:
         continue
-      for opposition in get_all_teams(rows):
+      for opposition in get_all_teams(rows, division):
         if opposition == home_team:
-           continue
+            continue
         states_for_oppositions.append([ground, home_team, opposition, the_date])
     if states_for_oppositions != []:
-     states.append(states_for_oppositions)
+      states.append(states_for_oppositions)
+  return states
+
+def get_must_have_states(rows):
+  states = []
+  # # match - pre-allocates
+  # matches = read_data("result-partial.xlsx")
+  # for match in matches:
+  #   states.append([[match["Ground"], match["Home"], match["Away"], match["Date"]]])
   return states
    
 def main():
-    all_rows = read_data("fix-1.xlsx")
+    all_rows = read_data("fix-3.xlsx")
     division = get_all_divisions(all_rows)
     rows= []
     for row in all_rows:
-      # if row["Division"] in ["CCA Senior League Division 1"]:
-      #   pass
-      # elif row["Division"] in ["CCA Senior League Division 2"]:
-      #   pass
-      # elif row["Division"] in ["CCA Senior League Division 3"]:
-      #   pass
-      # elif row["Division"] in [ "CCA Junior League 3 South"]:
-      #   pass
-      # elif row["Division"] in [ "CCA Junior League 3 North"]:
-      #   pass
-      # elif row["Division"] in [ "CCA Junior League 3 West"]:
-      #   pass
-      # else:
-      #   continue
+      if row["Division"] in ["CCA Senior League Division 1"]:
+        pass
+      elif row["Division"] in ["CCA Senior League Division 2"]:
+        pass
+      elif row["Division"] in ["CCA Senior League Division 3"]:
+        pass
+      elif row["Division"] in ["CCA Junior League 1 South"]:
+        pass
+      elif row["Division"] in ["CCA Junior League 1 North"]:
+        pass
+      elif row["Division"] in ["CCA Junior League 2 South"]:
+        pass
+      elif row["Division"] in ["CCA Junior League 2 North"]:
+        pass
+      elif row["Division"] in ["CCA Junior League 3 South"]:
+        pass
+      elif row["Division"] in ["CCA Junior League 3 North"]:
+        pass
+      elif row["Division"] in ["CCA Junior League 3 West"]:
+        pass
+      elif row["Division"] in ["CCA Junior League 4 South"]:
+        pass
+      elif row["Division"] in ["CCA Junior League 4 North"]:
+        pass
+      elif row["Division"] in ["CCA Junior League 4 West"]:
+        pass
+      elif row["Division"] in ["CCA Junior League 5 South"]:
+        pass
+      elif row["Division"] in ["CCA Junior League 5 North"]:
+        pass
+      else:
+        continue
       rows.append(row)
     # Data.
     num_teams = len(get_all_teams(rows))
@@ -177,7 +216,7 @@ def main():
     print ("Start making states")
     valid_states = get_valid_states(rows)
     print (len(valid_states))
-    must_have_states = get_must_have_states(rows)
+    # must_have_states = get_must_have_states(rows)
   
     
     # Creates the model.
@@ -190,27 +229,22 @@ def main():
       g,h,o,d = state[0],state[1],state[2],state[3]
       matches[g,h,o,d] = model.NewBoolVar(f'match_g{g}_h{h}_o{o}d_{d}')
 
-    # create match variable
-    # count =0
-    # for g in all_grounds:
-    #   for h in all_teams:
-    #     for o in all_teams:
-    #       for d in all_days:
-    #         count +=1
-    #         if count % 1000 == 0:
-    #           print (f"Processing {count} of {len(valid_states)}")
-    #         if [g,h,o,d] not in valid_states:
-    #            continue
-    #         matches[g,h,o,d] = model.NewBoolVar(f'match_g{g}_h{h}_o{o}d_{d}')
+    # respect must have; typically Home condition or matches already allocated
+    # for states in must_home_matches(rows):
+    #   constraints=[]
+    #   for a_state in states:
+    #     if a_state not in valid_states:
+    #       # print (a_state)
+    #       continue
+    #       # assert False
 
-    # for state in valid_states:
-    # for all h and o
-    # add to constraints[h_0].append(state)
-    # for constraint in constraints:
-    # model.AddExactlyOne(constraint)
+    #     g,h,o,d = a_state[0],a_state[1],a_state[2],a_state[3]
+    #     # print (f"{g}_{h}_{o}_{d}")
+    #     constraints.append(matches[g,h,o,d])
+    #   model.AddExactlyOne(constraints)
+
     
     print ("setting constraints home-opposition constraint")
-
     # all teams play exactly one match against all oppositions
     # regardless of ground or days
     constraints = {}
@@ -224,21 +258,6 @@ def main():
     for constraint in constraints.values():
       model.AddExactlyOne(constraint)
 
-    # all teams play exactly one match against all oppositions
-    # regardless of ground or days
-    # for h in all_teams:
-    #   for o in all_teams:
-    #     if h == o:
-    #       continue
-    #     model.AddExactlyOne(matches[g,h,o,d] for d in all_days for g in all_grounds if [g,h,o,d] in valid_states)
-
-    # for state in valid_states:
-    # for all h and d are different
-    # add to constraints[h_d].append(state)
-    # for constraint in constraints:
-    # model.AddAtMostOne(constraint)
-    # how to add the last one?
-        
     # team plays atmost one match in a day
     # regardless of ground or opposition 
     print ("setting constraints home-opposition constraint")
@@ -257,29 +276,8 @@ def main():
         constraints[f"{o}_{d}"] = []
         constraints[f"{o}_{d}"].append(matches[g,h,o,d])
 
-      # try:
-      #   constraints[f"{d}_{h}"].append(matches[g,h,o,d])
-      # except KeyError:
-      #   constraints[f"{d}_{h}"] = []
-      #   constraints[f"{d}_{h}"].append(matches[g,h,o,d])
-
     for constraint in constraints.values():
       model.AddAtMostOne(constraint)
-
-    # for h in all_teams:
-    #   for d in all_days:
-    #     model.AddAtMostOne(matches[g,h,o,d] for o in all_teams for g in all_grounds if [g,h,o,d] in valid_states)
-    #     model.AddAtMostOne(matches[g,o,h,d] for o in all_teams for g in all_grounds if [g,o,h,d] in valid_states)
-    #     states = []
-    #     for g in all_grounds:
-    #       for o in all_teams:
-    #         if o!=h:
-    #           if [g,o,h,d] in valid_states:
-    #             states.append(matches[g,o,h,d])
-    #           if [g,h,o,d] in valid_states:
-    #             states.append(matches[g,h,o,d])
-    #     model.AddAtMostOne(states)
-
   
     # at most one match on a ground on a day
     # regardless of team or opposition
@@ -293,29 +291,21 @@ def main():
         constraints[f"{g}_{d}"] = []
         constraints[f"{g}_{d}"].append(matches[g,h,o,d])
     for constraint in constraints.values():
-      model.AddAtMostOne(constraint)
-
-    # for g in all_grounds:
-    #    for d in all_days:
-    #       model.AddAtMostOne(matches[g,h,o,d] for h in all_teams for o in all_teams if [g,h,o,d] in valid_states)        
-  
-    # respect must have states
-    # for state in must_have_states:
-    #   model.AddAtLeastOne(state)        
+      model.AddAtMostOne(constraint)       
 
     print ("solve")
     # Creates the model.
     solver = cp_model.CpSolver()
     solver.parameters.log_search_progress = True
-    # solver.parameters.num_search_workers = 0
+    solver.parameters.num_search_workers = 8
     solver.parameters.linearization_level = 0
 
     # Display the first five solutions.
-    solution_limit = 10000
+    solution_limit = 1
     solution_printer = SolutionPrinter(rows, valid_states, matches, all_grounds, all_teams, all_days, solution_limit)
 
     # Enumerate all solutions.
-    solver.parameters.enumerate_all_solutions = True
+    # solver.parameters.enumerate_all_solutions = True
     print ("Start solving")
     solver.Solve(model, solution_printer)
 

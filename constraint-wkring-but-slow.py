@@ -86,7 +86,7 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
       self._solution_limit = limit
 
   def on_solution_callback(self):
-      print ("Solution found")
+      print (self.Value)
       self._solution_count += 1
       match_count = 0
       result = []
@@ -115,12 +115,11 @@ def get_valid_states(rows):
   states = []
   for row in rows:
     ground = row["Ground"]
-    division = row["Division"]
     home_team = team_name(row)
     for the_date in get_all_dates(rows):
       if row[the_date] in ["No Home", "No Play"]:
         continue
-      for opposition in get_all_teams(rows, division):
+      for opposition in get_all_teams(rows):
         oppositions_row = get_row_for_team(rows,opposition)
         if oppositions_row[the_date] == "No Play":
           continue
@@ -147,25 +146,8 @@ def get_must_have_states(rows):
   return states
    
 def main():
-    all_rows = read_data("fix-1.xlsx")
-    division = get_all_divisions(all_rows)
-    rows= []
-    for row in all_rows:
-      # if row["Division"] in ["CCA Senior League Division 1"]:
-      #   pass
-      # elif row["Division"] in ["CCA Senior League Division 2"]:
-      #   pass
-      # elif row["Division"] in ["CCA Senior League Division 3"]:
-      #   pass
-      # elif row["Division"] in [ "CCA Junior League 3 South"]:
-      #   pass
-      # elif row["Division"] in [ "CCA Junior League 3 North"]:
-      #   pass
-      # elif row["Division"] in [ "CCA Junior League 3 West"]:
-      #   pass
-      # else:
-      #   continue
-      rows.append(row)
+    rows = read_data("fix-1.xlsx")
+    
     # Data.
     num_teams = len(get_all_teams(rows))
     num_grounds = len(get_all_grounds(rows))
@@ -173,10 +155,9 @@ def main():
     all_teams = get_all_teams(rows)
     all_days = get_all_dates(rows)
     all_grounds = get_all_grounds(rows)
-    
+    print (num_teams*num_teams*num_grounds*num_days)
     print ("Start making states")
     valid_states = get_valid_states(rows)
-    print (len(valid_states))
     must_have_states = get_must_have_states(rows)
   
     
@@ -185,23 +166,18 @@ def main():
 
     matches = {}
     print ("Start making variables")
-
-    for state in valid_states:
-      g,h,o,d = state[0],state[1],state[2],state[3]
-      matches[g,h,o,d] = model.NewBoolVar(f'match_g{g}_h{h}_o{o}d_{d}')
-
     # create match variable
-    # count =0
-    # for g in all_grounds:
-    #   for h in all_teams:
-    #     for o in all_teams:
-    #       for d in all_days:
-    #         count +=1
-    #         if count % 1000 == 0:
-    #           print (f"Processing {count} of {len(valid_states)}")
-    #         if [g,h,o,d] not in valid_states:
-    #            continue
-    #         matches[g,h,o,d] = model.NewBoolVar(f'match_g{g}_h{h}_o{o}d_{d}')
+    count =0
+    for g in all_grounds:
+      for h in all_teams:
+        for o in all_teams:
+          for d in all_days:
+            count +=1
+            if count % 1000 == 0:
+              print (f"Processing {count} of {len(valid_states)}")
+            if [g,h,o,d] not in valid_states:
+               continue
+            matches[g,h,o,d] = model.NewBoolVar(f'match_g{g}_h{h}_o{o}d_{d}')
 
     # for state in valid_states:
     # for all h and o
@@ -209,28 +185,14 @@ def main():
     # for constraint in constraints:
     # model.AddExactlyOne(constraint)
     
-    print ("setting constraints home-opposition constraint")
-
+    print ("Start setting constraints")
     # all teams play exactly one match against all oppositions
     # regardless of ground or days
-    constraints = {}
-    for state in valid_states:
-      g,h,o,d = state[0],state[1],state[2],state[3]
-      try:
-        constraints[f"{h}_{o}"].append(matches[g,h,o,d])
-      except KeyError:
-        constraints[f"{h}_{o}"] = []
-        constraints[f"{h}_{o}"].append(matches[g,h,o,d])
-    for constraint in constraints.values():
-      model.AddExactlyOne(constraint)
-
-    # all teams play exactly one match against all oppositions
-    # regardless of ground or days
-    # for h in all_teams:
-    #   for o in all_teams:
-    #     if h == o:
-    #       continue
-    #     model.AddExactlyOne(matches[g,h,o,d] for d in all_days for g in all_grounds if [g,h,o,d] in valid_states)
+    for h in all_teams:
+      for o in all_teams:
+        if h == o:
+          continue
+        model.AddExactlyOne(matches[g,h,o,d] for d in all_days for g in all_grounds if [g,h,o,d] in valid_states)
 
     # for state in valid_states:
     # for all h and d are different
@@ -239,83 +201,45 @@ def main():
     # model.AddAtMostOne(constraint)
     # how to add the last one?
         
-    # team plays atmost one match in a day
+    # team plays only one match in a day
     # regardless of ground or opposition 
-    print ("setting constraints home-opposition constraint")
-    constraints = {}
-    for state in valid_states:
-      g,h,o,d = state[0],state[1],state[2],state[3]
-      try:
-        constraints[f"{h}_{d}"].append(matches[g,h,o,d])
-      except KeyError:
-        constraints[f"{h}_{d}"] = []
-        constraints[f"{h}_{d}"].append(matches[g,h,o,d])
-
-      try:
-        constraints[f"{o}_{d}"].append(matches[g,h,o,d])
-      except KeyError:
-        constraints[f"{o}_{d}"] = []
-        constraints[f"{o}_{d}"].append(matches[g,h,o,d])
-
-      # try:
-      #   constraints[f"{d}_{h}"].append(matches[g,h,o,d])
-      # except KeyError:
-      #   constraints[f"{d}_{h}"] = []
-      #   constraints[f"{d}_{h}"].append(matches[g,h,o,d])
-
-    for constraint in constraints.values():
-      model.AddAtMostOne(constraint)
-
-    # for h in all_teams:
-    #   for d in all_days:
-    #     model.AddAtMostOne(matches[g,h,o,d] for o in all_teams for g in all_grounds if [g,h,o,d] in valid_states)
-    #     model.AddAtMostOne(matches[g,o,h,d] for o in all_teams for g in all_grounds if [g,o,h,d] in valid_states)
-    #     states = []
-    #     for g in all_grounds:
-    #       for o in all_teams:
-    #         if o!=h:
-    #           if [g,o,h,d] in valid_states:
-    #             states.append(matches[g,o,h,d])
-    #           if [g,h,o,d] in valid_states:
-    #             states.append(matches[g,h,o,d])
-    #     model.AddAtMostOne(states)
+    for h in all_teams:
+      for d in all_days:
+        model.AddAtMostOne(matches[g,h,o,d] for o in all_teams for g in all_grounds if [g,h,o,d] in valid_states)
+        model.AddAtMostOne(matches[g,o,h,d] for o in all_teams for g in all_grounds if [g,o,h,d] in valid_states)
+        states = []
+        for g in all_grounds:
+          for o in all_teams:
+            if o!=h:
+              if [g,o,h,d] in valid_states:
+                states.append(matches[g,o,h,d])
+              if [g,h,o,d] in valid_states:
+                states.append(matches[g,h,o,d])
+        model.AddAtMostOne(states)
 
   
     # at most one match on a ground on a day
     # regardless of team or opposition
-    print ("setting ground constraint")
-    constraints = {}
-    for state in valid_states:
-      g,h,o,d = state[0],state[1],state[2],state[3]
-      try:
-        constraints[f"{g}_{d}"].append(matches[g,h,o,d])
-      except KeyError:
-        constraints[f"{g}_{d}"] = []
-        constraints[f"{g}_{d}"].append(matches[g,h,o,d])
-    for constraint in constraints.values():
-      model.AddAtMostOne(constraint)
-
-    # for g in all_grounds:
-    #    for d in all_days:
-    #       model.AddAtMostOne(matches[g,h,o,d] for h in all_teams for o in all_teams if [g,h,o,d] in valid_states)        
+    for g in all_grounds:
+       for d in all_days:
+          model.AddAtMostOne(matches[g,h,o,d] for h in all_teams for o in all_teams if [g,h,o,d] in valid_states)        
   
     # respect must have states
     # for state in must_have_states:
     #   model.AddAtLeastOne(state)        
 
-    print ("solve")
     # Creates the model.
     solver = cp_model.CpSolver()
     solver.parameters.log_search_progress = True
-    # solver.parameters.num_search_workers = 0
+    solver.parameters.num_search_workers = 8
     solver.parameters.linearization_level = 0
 
     # Display the first five solutions.
-    solution_limit = 10000
+    solution_limit = 1000
     solution_printer = SolutionPrinter(rows, valid_states, matches, all_grounds, all_teams, all_days, solution_limit)
 
     # Enumerate all solutions.
-    solver.parameters.enumerate_all_solutions = True
+    # solver.parameters.enumerate_all_solutions = True
     print ("Start solving")
     solver.Solve(model, solution_printer)
 
