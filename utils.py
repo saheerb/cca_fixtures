@@ -9,6 +9,7 @@ import random
 import copy
 from itertools import combinations
 from functools import reduce
+from collections import deque
 
 # find teams with max contraints
 # resolve the constraints
@@ -41,6 +42,20 @@ def read_data(book, sheet="Grounds"):
     rows.append(row)
   return rows
 
+def window(seq, n=2):
+    it = iter(seq)
+    win = deque((next(it, None) for _ in range(n)), maxlen=n)
+    yield win
+    append = win.append
+    for e in it:
+        append(e)
+        yield win
+
+def get_text(a_window):
+  text = ""
+  for i in a_window:
+    text += i
+  return text
 
 def save_result_to_file(matches, file_name="temp_single.xlsx"):
   db = xl.Database()  
@@ -269,6 +284,22 @@ def get_all_grounds(rows):
   for row in rows:
     if row["Ground"] not in grounds:
       grounds.append(row["Ground"])
+  
+  ground_teams ={}
+  for row in rows:
+    try:
+      # if "Quy" in row["Ground"]:
+      #   print (row["Ground"])
+      ground_teams[row["Ground"]].append(team_name(row))
+    except KeyError:
+      ground_teams[row["Ground"]] = []
+      ground_teams[row["Ground"]].append({"Division":row["Division"] , "team":team_name(row)})
+  
+  for ground, teams in ground_teams.items():
+    if len(teams) > 1:
+      pass
+      # print (ground)
+      # print (teams)
   return grounds
 
 @staticmethod
@@ -308,6 +339,6 @@ def get_all_dates(rows):
   #     if row[the_date] != "":
   #       date_dicts[the_date] += 1
   
-  return (dict(sorted(date_dicts.items(), key=lambda item: item[1], reverse=True))).keys()
+  # return (dict(sorted(date_dicts.items(), key=lambda item: item[1], reverse=True))).keys()
 
-  return dates
+  # return dates

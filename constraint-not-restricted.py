@@ -301,7 +301,7 @@ def main():
     solver.parameters.linearization_level = 0
 
     # Display the first five solutions.
-    solution_limit = 1
+    solution_limit = 1000
     solution_printer = SolutionPrinter(rows, valid_states, matches, all_grounds, all_teams, all_days, solution_limit)
 
     # Enumerate all solutions.
