@@ -1,6 +1,7 @@
 from ortools.sat.python import cp_model
 from utils import *
 import shutil
+from test import test_results_indexes
 
 def write_excel(results, result_file, rows, num):
   matches = []
@@ -42,63 +43,6 @@ def remove_invalids(results):
   #     if the_result["Home"] == a_result["Home"] and the_result["Away"] == a_result["Away"]:
   #       assert False
 
-def test_results(rows, results):
-  # all teams in a division is playing against each other
-  # for division in get_all_divisions(rows):
-  #   for team_name in get_all_teams(rows, division):
-  #     for a_match in results:
-  #       home_team = match[1]
-  #       away_team = match[2]
-  #       for the_match in results:
-  #         if a_match == the_match:
-  #           continue
-  #         if home_team == the_match[1]:
-  #   pass
-
-  #   for team in get_all_teams(rows, division):
-  #     # find all matches for the team
-  #     team_row = team_name(row)
-  #     matches = []
-  #     for match in results:
-  #       home_team = match[1]
-  #       away_team = match[2]
-  #       if team_name in [home_team, away_team]:
-  #         pass
-
-  
-  # a team has equal number of home m
-
-  # no two teams are playing on the same ground
-
-  # no two teams playing on same date
-  for result in results:
-    ground, fixture_home, fixture_opposition, fixture_date = result[0], result[1], result[2], result[3]
-    for a_result in results:
-      if result == a_result:
-        continue
-      if fixture_date == a_result[3]:
-        assert fixture_home not in [a_result[1], a_result[2]]
-        assert fixture_opposition not in [a_result[1], a_result[2]]
-
-
-  # check No Home/No Play condition
-  for result in results:
-    ground, home, opposition, the_date = result[0], result[1], result[2], result[3]
-    home_team_row = get_row_for_team(rows, home)
-    away_team_row = get_row_for_team(rows, home)
-    assert home_team_row[the_date] not in ["No Home", "No Play", "Off Request"]
-    assert away_team_row[the_date] not in ["No Play", "Off Request"]
-
-  # check Home condition
-  for row in rows:
-    for the_date in get_all_dates(rows):
-      if row[the_date] == "Home":
-        home_team_row = get_row_for_team(rows, home)
-        # team_name(home_team_row)
-        ground = home_team_row["Ground"]
-        pass
-        # results[g,h,o,d]
-
 class SolutionPrinter(cp_model.CpSolverSolutionCallback):
   """Print intermediate solutions."""
 
@@ -134,7 +78,7 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
 
       print('Match Count: %i' % match_count)
       write_excel(result, self._result_file, self._rows, self._solution_count)
-      test_results(self._rows, result)
+      test_results_indexes(self._rows, result)
       if self._solution_count >= self._solution_limit:
           print('Stop search after %i solutions' % self._solution_limit)
           self.StopSearch()
@@ -216,13 +160,10 @@ def get_must_have_states(rows, partial_results):
     states.append([match["Ground"], match["Home"], match["Away"], match["Date"]])
   return states
 
-def must_constraint(model, rows, matches, valid_states, partial_results):
+def must_constraint(model, rows, matches, partial_results):
   must_states = get_must_have_states(rows, partial_results)
   for state in must_states:
     g,h,o,d = state[0],state[1],state[2],state[3]
-    if state not in valid_states:
-      print (state)
-      continue
     model.AddExactlyOne(matches[g,h,o,d])
 
 def make_variables(model, valid_states):
@@ -318,37 +259,42 @@ def teams_on_a_day_constraint(model, rows, valid_states, matches):
     model.AddAtMostOne(constraint)
 
 def ground_constraint(model, rows, valid_states, matches):
-  # team plays atmost one match in a day
-  # regardless of ground or opposition 
-  print ("setting constraints home-opposition constraint")
+  print ("setting ground constraint")
   constraints = {}
   for state in valid_states:
     g,h,o,d = state[0],state[1],state[2],state[3]
     try:
-      constraints[f"{h}_{d}"].append(matches[g,h,o,d])
+      constraints[f"{g}_{d}"].append(matches[g,h,o,d])
     except KeyError:
-      constraints[f"{h}_{d}"] = []
-      constraints[f"{h}_{d}"].append(matches[g,h,o,d])
-
-    try:
-      constraints[f"{o}_{d}"].append(matches[g,h,o,d])
-    except KeyError:
-      constraints[f"{o}_{d}"] = []
-      constraints[f"{o}_{d}"].append(matches[g,h,o,d])
-
+      constraints[f"{g}_{d}"] = []
+      constraints[f"{g}_{d}"].append(matches[g,h,o,d])
   for constraint in constraints.values():
-    model.AddAtMostOne(constraint)
+    model.AddAtMostOne(constraint)  
 
 def main():
   all_rows = read_data("data.xlsx")
+  processed_divisions = []
   
   # create an empty partial file
   partial_file = "result-partial.xlsx"
-  # save_result_to_file({},partial_file)
+  save_result_to_file({},partial_file)
 
-  result_file = f"all.xlsx"
-  partial_results = read_data(partial_file)
-  process(all_rows, result_file, partial_results)
+  for division in get_all_divisions(all_rows):
+    partial_results = read_data(partial_file)
+    if division not in processed_divisions:
+      processed_divisions.append(division)
+    rows = []
+    for row in all_rows:
+      if row["Division"] in processed_divisions:
+        result_file = f"{division}.xlsx"
+        rows.append(row)
+
+    if process(rows, result_file, partial_results) == 0:
+      print(f"No solution for {division}")
+      sys.exit()
+    else:
+      shutil.copyfile(result_file, partial_file)
+      # copy result_file to partial_file
 
 def home_opposition_constraint(model, valid_states, matches):
     print ("setting constraints home-opposition constraint")
@@ -372,7 +318,7 @@ def process(rows, result_file, partial_results=[]):
     
     print ("Start making states")
     # match - pre-allocates
-    # matches = read_data("result-partial.xlsx")
+    matches = read_data("result-partial.xlsx")
 
     valid_states = get_valid_states(rows, partial_results)
     print (f"Valid states: {len(valid_states)}")
@@ -394,7 +340,7 @@ def process(rows, result_file, partial_results=[]):
     # number_of_matches_constraint(model, rows, valid_states, matches)
 
     print ("Set Must constraint")  
-    must_constraint(model, rows, matches, valid_states, partial_results)   
+    must_constraint(model, rows, matches, partial_results)   
 
     print ("Set Home Match constraint")  
     must_home_match_constraint(model, rows, valid_states, matches)
@@ -409,7 +355,7 @@ def process(rows, result_file, partial_results=[]):
     # Creates the model.
     solver = cp_model.CpSolver()
     # solver.parameters.log_search_progress = True
-    solver.parameters.num_search_workers = 8
+    solver.parameters.num_search_workers = 1
     # solver.parameters.linearization_level = 1
     solver.preferred_variable_order = 3
     solver.randomize_search = True
@@ -419,7 +365,7 @@ def process(rows, result_file, partial_results=[]):
 
     # Enumerate all solutions.
     # solver.parameters.enumerate_all_solutions = True
-    print ("Start solving")
+    print (f"Start solving {result_file}")
     solver.Solve(model, solution_printer)
 
     # Statistics.y 
