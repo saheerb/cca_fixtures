@@ -1,7 +1,9 @@
+#!/usr/bin/env python
 from ortools.sat.python import cp_model
 from utils import *
 import shutil
 from test import test_results_indexes
+import click
 
 def write_excel(results, result_file, rows, num):
   matches = []
@@ -46,7 +48,7 @@ def remove_invalids(results):
 class SolutionPrinter(cp_model.CpSolverSolutionCallback):
   """Print intermediate solutions."""
 
-  def __init__(self, rows, result_file, valid_states, matches, grounds, teams, dates, limit):
+  def __init__(self, rows, result_file, result_status_file, valid_states, matches, grounds, teams, dates, limit):
       cp_model.CpSolverSolutionCallback.__init__(self)
       self._result_file = result_file
       self._rows = rows
@@ -57,23 +59,25 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
       self._grounds =grounds
       self._solution_count = 0
       self._solution_limit = limit
+      self._result_status_file = result_status_file
 
   def on_solution_callback(self):
+      print('Found  Solution')
       self._solution_count += 1
       # print ("Solution found")
       # return
       
       match_count = 0
       result = []
-      for g in self._grounds:
-        for h in self._teams:
-          for o in self._teams:
-            for d in self._dates:
-              if [g,h,o,d] not in self._valid_states:
-                continue
-              if self.Value(self._matches[(g,h,o,d)]):
-                match_count +=1
-                result.append([g,h,o,d])
+      print ("Creating result states")
+      for state in self._valid_states:
+        g=state[0]
+        h=state[1]
+        o=state[2]
+        d=state[3]
+        if self.Value(self._matches[(g,h,o,d)]):
+          match_count +=1
+          result.append([g,h,o,d])
                 # print(f'Team-{h} playing against Team-{o} on {d} at {g}')
 
       print('Match Count: %i' % match_count)
@@ -82,6 +86,9 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
       if self._solution_count >= self._solution_limit:
           print('Stop search after %i solutions' % self._solution_limit)
           self.StopSearch()
+          with open(self._result_status_file, "w") as the_file:
+            the_file.write("0")
+          sys.exit(0)
 
   def solution_count(self):
       return self._solution_count
@@ -271,31 +278,6 @@ def ground_constraint(model, rows, valid_states, matches):
   for constraint in constraints.values():
     model.AddAtMostOne(constraint)  
 
-def main():
-  all_rows = read_data("data.xlsx")
-  processed_divisions = []
-  
-  # create an empty partial file
-  partial_file = "result-partial.xlsx"
-  save_result_to_file({},partial_file)
-
-  for division in get_all_divisions(all_rows):
-    partial_results = read_data(partial_file)
-    if division not in processed_divisions:
-      processed_divisions.append(division)
-    rows = []
-    for row in all_rows:
-      if row["Division"] in processed_divisions:
-        result_file = f"{division}.xlsx"
-        rows.append(row)
-
-    if process(rows, result_file, partial_results) == 0:
-      print(f"No solution for {division}")
-      sys.exit()
-    else:
-      shutil.copyfile(result_file, partial_file)
-      # copy result_file to partial_file
-
 def home_opposition_constraint(model, valid_states, matches):
     print ("setting constraints home-opposition constraint")
     # all teams play exactly one match against all oppositions
@@ -311,15 +293,12 @@ def home_opposition_constraint(model, valid_states, matches):
     for constraint in constraints.values():
       model.AddExactlyOne(constraint)
 
-def process(rows, result_file, partial_results=[]):
+def process(rows, result_file, result_status_file, partial_results=[]):
     all_teams = get_all_teams(rows)
     all_days = get_all_dates(rows)
     all_grounds = get_all_grounds(rows)
     
     print ("Start making states")
-    # match - pre-allocates
-    matches = read_data("result-partial.xlsx")
-
     valid_states = get_valid_states(rows, partial_results)
     print (f"Valid states: {len(valid_states)}")
     
@@ -354,7 +333,7 @@ def process(rows, result_file, partial_results=[]):
     print ("solve")
     # Creates the model.
     solver = cp_model.CpSolver()
-    solver.parameters.log_search_progress = True
+    # solver.parameters.log_search_progress = True
     solver.parameters.num_workers = 8
     solver.parameters.linearization_level = 0
     # solver.preferred_variable_order = 3
@@ -363,7 +342,7 @@ def process(rows, result_file, partial_results=[]):
     solver.parameters.stop_after_first_solution=True
     # Display the first five solutions.
     solution_limit = 1
-    solution_printer = SolutionPrinter(rows, result_file, valid_states, matches, all_grounds, all_teams, all_days, solution_limit)
+    solution_printer = SolutionPrinter(rows, result_file, result_status_file, valid_states, matches, all_grounds, all_teams, all_days, solution_limit)
 
     # Enumerate all solutions.
     # solver.parameters.enumerate_all_solutions = True
@@ -379,5 +358,59 @@ def process(rows, result_file, partial_results=[]):
 
     return solution_printer.solution_count()
 
+@click.command()
+@click.option(
+    "--data-file",
+    required = True
+)
+@click.option(
+    "--partial-result-file",
+    required = True
+)
+@click.option(
+    "--final-result-file",
+    required = True
+)
+@click.option(
+    "--division-file",
+    required = True
+)
+@click.option(
+    "--result-status-file",
+    required = True
+)
+def solve(
+    data_file,
+    partial_result_file,
+    final_result_file,
+    division_file,
+    result_status_file
+):
+  all_rows = read_data(data_file)
+
+  divisions = []
+  with open(division_file) as the_file:
+    for line in the_file.readlines():
+      divisions.append(line.strip())
+
+  print ("dddddddd")
+  print (divisions)
+  print ("dddddddd")
+
+  partial_results = read_data(partial_result_file)
+  rows = []
+
+  
+  for row in all_rows:
+    if row["Division"] in divisions:
+      rows.append(row)
+
+  if process(rows, final_result_file, result_status_file, partial_results) == 0:
+    print(f"No solution found")
+  
+  with open(result_status_file, "w") as the_file:
+    the_file.write("1")
+    sys.exit(1)
+
 if __name__ == '__main__':
-    main()
+    solve()
