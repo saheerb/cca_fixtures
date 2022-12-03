@@ -9,15 +9,14 @@ import random
 import copy
 from itertools import combinations
 from functools import reduce
-from collections import deque
 
 # find teams with max contraints
 # resolve the constraints
 # if there are multiple ways to solve it, add a check point to return to it
 
-def read_data(book, sheet="Grounds"):
+def read_data(book):
   db = xl.readxl(book)
-  ws = db.ws(sheet)
+  ws = db.ws('Grounds')
   # get column
   row_nbr = 1
   col_nbr = 1
@@ -29,53 +28,59 @@ def read_data(book, sheet="Grounds"):
       break
     header[value]=col_nbr
     col_nbr += 1
-  # print(f"{book} {header}")
+
   # For each row
   while True:
     row = {}
     row_nbr += 1
-    # if row's 1st colum is empty quite
-    if ws.index(row_nbr, 1) == "":
+    if ws.index(row_nbr, header["Division"]) == "":
       break
     for i in header:
       row[i] = ws.index(row_nbr, header[i])
     rows.append(row)
   return rows
 
-def window(seq, n=2):
-    it = iter(seq)
-    win = deque((next(it, None) for _ in range(n)), maxlen=n)
-    yield win
-    append = win.append
-    for e in it:
-        append(e)
-        yield win
 
-def get_text(a_window):
-  text = ""
-  for i in a_window:
-    text += i
-  return text
-
-def save_result_to_file(matches, file_name="temp_single.xlsx"):
-  db = xl.Database()  
+def save_result_to_file(rows, divisions, file_name="temp_single.xlsx"):
+  db = xl.Database()
   db.add_ws(ws="Grounds")
   row_nbr = 1
-
   # Header row in rows:
-  for match in matches:
+  for row in rows:
     col_nbr = 1
-    for key in match:
+    for key in row:      
       db.ws(ws="Grounds").update_index(row=row_nbr, col=col_nbr, val=key)
-      col_nbr += 1 
+      col_nbr += 1
     break
-
-  for match in matches:
+  # Header row in rows
+  for row in rows:
     col_nbr = 1
     row_nbr += 1
-    for value in match.values():    
+    for value in row.values():      
       db.ws(ws="Grounds").update_index(row=row_nbr, col=col_nbr, val=value)
-      col_nbr += 1  
+      col_nbr += 1
+  
+  db.add_ws(ws="Matches")
+  row_nbr = 1
+  for matches in divisions.values():
+    # Header row in rows:
+    for match in matches:
+      col_nbr = 1
+      db.ws(ws="Matches").update_index(row=row_nbr, col=col_nbr, val="Division")
+      for key in match:
+        col_nbr += 1      
+        db.ws(ws="Matches").update_index(row=row_nbr, col=col_nbr, val=key)
+      break
+    break
+  for division, matches in divisions.items():
+    # Header row in rows
+    for match in matches:
+      col_nbr = 1
+      row_nbr += 1
+      db.ws(ws="Matches").update_index(row=row_nbr, col=col_nbr, val=division)
+      for value in match.values():
+        col_nbr += 1      
+        db.ws(ws="Matches").update_index(row=row_nbr, col=col_nbr, val=value)
   xl.writexl(db=db, fn=file_name)
 
 def team_name(row):
@@ -263,12 +268,6 @@ def all_matches_allotted(divisions):
 #     match["possible_dates"] = possible_dates_prio
 #     for a_date in match["possible_dates"]: 
 #       yield match, a_date
-def get_division(rows, the_team_name):
-  for row in rows:
-    a_team_name = team_name(row)
-    if a_team_name == the_team_name:
-      return row["Division"]
-  assert False
 
 def count_allocated(divisions):
   count = 0
@@ -277,49 +276,6 @@ def count_allocated(divisions):
       if match["Date"] != "":
         count +=1
   return count
-
-@staticmethod
-def get_all_grounds(rows):
-  grounds = []
-  for row in rows:
-    if row["Ground"] not in grounds:
-      grounds.append(row["Ground"])
-  
-  ground_teams ={}
-  for row in rows:
-    try:
-      # if "Quy" in row["Ground"]:
-      #   print (row["Ground"])
-      ground_teams[row["Ground"]].append(team_name(row))
-    except KeyError:
-      ground_teams[row["Ground"]] = []
-      ground_teams[row["Ground"]].append({"Division":row["Division"] , "team":team_name(row)})
-  
-  for ground, teams in ground_teams.items():
-    if len(teams) > 1:
-      pass
-      # print (ground)
-      # print (teams)
-  return grounds
-
-@staticmethod
-def get_all_teams(rows, division=""):
-  teams = []
-  for row in rows:
-    the_team = team_name(row)
-    if the_team not in teams:
-      if division != "" and row["Division"] != division:
-        continue
-      teams.append(the_team)
-  return teams
-
-@staticmethod
-def get_all_divisions(rows):
-  divisions = []
-  for row in rows:
-    if row["Division"] not in divisions:
-      divisions.append(row["Division"])
-  return divisions
 
 @staticmethod
 def get_all_dates(rows):
@@ -339,6 +295,6 @@ def get_all_dates(rows):
   #     if row[the_date] != "":
   #       date_dicts[the_date] += 1
   
-  # return (dict(sorted(date_dicts.items(), key=lambda item: item[1], reverse=True))).keys()
+  return (dict(sorted(date_dicts.items(), key=lambda item: item[1], reverse=True))).keys()
 
-  # return dates
+  return dates

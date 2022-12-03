@@ -1,0 +1,6 @@
+* A team has enough dates on window
+- If 10 teams are playing, team needs at least 18 free weeks
+* Have enough Home windows
+- If 10 team are playing in a division, you have at least 9 weeks without "No Home" + "No Play"
+* A division does not exceed "No Home" Matches on a given Date
+- If 10 team are playing in a division, you can't have 5 teams with "No Home"
