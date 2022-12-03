@@ -4,3 +4,6 @@
 - If 10 team are playing in a division, you have at least 9 weeks without "No Home" + "No Play"
 * A division does not exceed "No Home" Matches on a given Date
 - If 10 team are playing in a division, you can't have 5 teams with "No Home"
+* No two "No Play" on same date, if fixture is tight
+- If 9 teams are on 18 windows, then minimum 4 matches need to be set on any given day
+  So, Can't have one date with 3 matches.
