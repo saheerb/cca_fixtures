@@ -369,8 +369,8 @@ def process(rows, result_file, partial_results=[]):
     all_grounds = get_all_grounds(rows)
     
     logging.debug ("Start making states")
-    # match - pre-allocates
-    matches = read_data("result-partial.xlsx")
+    # # match - pre-allocates
+    # matches = read_data("results/result-partial.xlsx")
 
     valid_states = get_valid_states(rows, partial_results)
     logging.debug (f"Valid states: {len(valid_states)}")
