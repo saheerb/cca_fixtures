@@ -152,8 +152,7 @@ def ground_available_for_away(ground, the_date):
     # if there is no window for an away match
   return True
 
-def team_available_for_away(rows, team, the_date, matches):
-  row = get_row_for_team(rows, team)
+def team_available_for_away(row, team, the_date, matches):
   # team only plays 
   if row[the_date] == "Home":
     return False
@@ -174,7 +173,7 @@ def team_available_for_away(rows, team, the_date, matches):
   nbr_home_slots_available = initial_home_slots - nbr_home_slots_used
   # if nbr_home_slots_available == nbr_home_matches_to_be_allocated:
   #   return False
-  if nbr_home_slots_available < nbr_home_matches_to_be_allocated:
+  if nbr_home_slots_available <= nbr_home_matches_to_be_allocated:
     # should never happen
     return False
   return True
@@ -304,14 +303,23 @@ def get_all_grounds(rows):
 
 @staticmethod
 def get_all_teams(rows, division=""):
-  teams = []
+  teams = {}
   for row in rows:
+    constraints = 0
     the_team = team_name(row)
+
+    for the_date in get_all_dates(rows):
+      if row[the_date] != "":
+        constraints += 1
+
     if the_team not in teams:
       if division != "" and row["Division"] != division:
         continue
-      teams.append(the_team)
-  return teams
+      teams[the_team]=constraints
+  
+  st = dict(sorted(teams.items(), key=lambda item: item[1], reverse=True))
+
+  return list(st.keys())
 
 @staticmethod
 def get_all_divisions(rows):
