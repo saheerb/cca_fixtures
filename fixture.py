@@ -2,6 +2,7 @@ from ortools.sat.python import cp_model
 from utils import *
 import shutil
 from test import test_results_indexes
+import logging
 
 def write_excel(results, result_file, rows, num):
   matches = []
@@ -31,7 +32,7 @@ def remove_invalids(results):
     if bValid:
       valid_results.append(the_result)
 
-  print (len(valid_results))    
+  logging.debug (len(valid_results))    
   import time
   time.sleep(60)
 
@@ -65,22 +66,21 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
       
       match_count = 0
       result = []
-      for g in self._grounds:
-        for h in self._teams:
-          for o in self._teams:
-            for d in self._dates:
-              if [g,h,o,d] not in self._valid_states:
-                continue
-              if self.Value(self._matches[(g,h,o,d)]):
-                match_count +=1
-                result.append([g,h,o,d])
+      for state in self._valid_states:
+        g=state[0]
+        h=state[1]
+        o=state[2]
+        d=state[3]
+        if self.Value(self._matches[(g,h,o,d)]):
+          match_count +=1
+          result.append([g,h,o,d])
                 # print(f'Team-{h} playing against Team-{o} on {d} at {g}')
 
-      print('Match Count: %i' % match_count)
+      logging.debug('Match Count: %i' % match_count)
       write_excel(result, self._result_file, self._rows, self._solution_count)
       test_results_indexes(self._rows, result)
       if self._solution_count >= self._solution_limit:
-          print('Stop search after %i solutions' % self._solution_limit)
+          logging.debug('Stop search after %i solutions' % self._solution_limit)
           self.StopSearch()
 
   def solution_count(self):
@@ -239,7 +239,7 @@ def must_home_match_constraint(model, rows, valid_states, matches):
 def teams_on_a_day_constraint(model, rows, valid_states, matches):
   # team plays atmost one match in a day
   # regardless of ground or opposition 
-  print ("setting constraints home-opposition constraint")
+  logging.debug ("setting constraints home-opposition constraint")
   constraints = {}
   for state in valid_states:
     g,h,o,d = state[0],state[1],state[2],state[3]
@@ -259,7 +259,7 @@ def teams_on_a_day_constraint(model, rows, valid_states, matches):
     model.AddAtMostOne(constraint)
 
 def ground_constraint(model, rows, valid_states, matches):
-  print ("setting ground constraint")
+  logging.debug ("setting ground constraint")
   constraints = {}
   for state in valid_states:
     g,h,o,d = state[0],state[1],state[2],state[3]
@@ -271,33 +271,85 @@ def ground_constraint(model, rows, valid_states, matches):
   for constraint in constraints.values():
     model.AddAtMostOne(constraint)  
 
-def main():
-  all_rows = read_data("data.xlsx")
-  processed_divisions = []
+def add_consecutive_matches(rows, result_file):
+  results = read_data(result_file)
+  dates = get_all_dates(rows)
   
-  # create an empty partial file
-  partial_file = "result-partial.xlsx"
-  save_result_to_file({},partial_file)
+  for team in get_all_teams(rows):
+    # matches are ordered by date
+    matches = get_all_matches(team, results, type="Home")
+    max_consecutive = 0
+    prev_match = None
+    consecutive = 1
+    for match in matches:
+      if prev_match == None:
+        consecutive = 1
+      else:
+        match_date = datetime.strptime(match["Date"], "%Y/%m/%d")
+        prev_match_date = datetime.strptime(prev_match["Date"], "%Y/%m/%d")
+        difference = abs((match_date - prev_match_date).days)
+        if difference <= 7:
+          consecutive += 1
+        else:
+          consecutive = 1
+      if consecutive > max_consecutive:
+        max_consecutive = consecutive
+      prev_match = match
+    team_row = get_row_for_team(rows, team)
+    team_row["max_consecutive"] = max_consecutive
+  save_result_to_file(rows, "results/result_with_consecutive.xlsx")
+      
 
-  for division in get_all_divisions(all_rows):
-    partial_results = read_data(partial_file)
-    if division not in processed_divisions:
-      processed_divisions.append(division)
-    rows = []
-    for row in all_rows:
-      if row["Division"] in processed_divisions:
-        result_file = f"{division}.xlsx"
-        rows.append(row)
 
-    if process(rows, result_file, partial_results) == 0:
-      print(f"No solution for {division}")
+
+
+
+def main():
+  data_file = "data.xlsx"
+  all_rows = read_data(data_file)
+
+  
+  attempt = 1
+  while True:
+    processed_divisions = []
+    # create an empty partial file
+    partial_file = "result-partial.xlsx"
+    save_result_to_file({},partial_file)
+    solution_found = False
+    print (f"Attempt: {attempt}")
+    for division in get_all_divisions(all_rows):
+      print (f"Solving: {division}")
+      partial_results = read_data(partial_file)
+      if division not in processed_divisions:
+        processed_divisions.append(division)
+      rows = []
+      for row in all_rows:
+        if row["Division"] in processed_divisions:
+          result_file = f"tmp/{division}.xlsx"
+          rows.append(row)
+
+      if process(rows, result_file, partial_results) == 0:
+        print(f"No solution for {division}")
+        # start from beginning
+        attempt += 1
+        solution_found = False
+        break
+      else:
+        solution_found = True
+        shutil.copyfile(result_file, partial_file)
+        # copy result_file to partial_file
+    if solution_found == True:
+      break
+    elif attempt > 100:
+      print(f"No solution found in {attempt} attempts")
       sys.exit()
-    else:
-      shutil.copyfile(result_file, partial_file)
-      # copy result_file to partial_file
+
+  shutil.copyfile(partial_file, "results/result.xlsx")
+  results = read_data("results/result.xlsx")
+  add_consecutive_matches(rows, results)
 
 def home_opposition_constraint(model, valid_states, matches):
-    print ("setting constraints home-opposition constraint")
+    logging.debug ("setting constraints home-opposition constraint")
     # all teams play exactly one match against all oppositions
     # regardless of ground or days
     constraints = {}
@@ -316,49 +368,49 @@ def process(rows, result_file, partial_results=[]):
     all_days = get_all_dates(rows)
     all_grounds = get_all_grounds(rows)
     
-    print ("Start making states")
+    logging.debug ("Start making states")
     # match - pre-allocates
     matches = read_data("result-partial.xlsx")
 
     valid_states = get_valid_states(rows, partial_results)
-    print (f"Valid states: {len(valid_states)}")
+    logging.debug (f"Valid states: {len(valid_states)}")
     
     # Creates the model.
     model = cp_model.CpModel()
 
-    print ("Start making variables")
+    logging.debug ("Start making variables")
     matches = make_variables(model, valid_states)
 
-    print ("Set Home vs Opposition - Play exactly once") 
+    logging.debug ("Set Home vs Opposition - Play exactly once") 
     home_opposition_constraint(model, valid_states, matches)
 
-    print ("Set Consecutive dates constraint")    
+    logging.debug ("Set Consecutive dates constraint")    
     set_consecutive_date_constraint(model, rows, valid_states, matches)
 
     # Number of matches - same as Home vs Opposition - so no need
     # print ("Set Number of Matches Constraint")  
     # number_of_matches_constraint(model, rows, valid_states, matches)
 
-    print ("Set Must constraint")  
+    logging.debug ("Set Must constraint")  
     must_constraint(model, rows, matches, partial_results)   
 
-    print ("Set Home Match constraint")  
+    logging.debug ("Set Home Match constraint")  
     must_home_match_constraint(model, rows, valid_states, matches)
 
-    print ("Set Home Opposition constraint")  
+    logging.debug ("Set Home Opposition constraint")  
     teams_on_a_day_constraint(model, rows, valid_states, matches)
 
-    print ("Set Ground constraint")  
+    logging.debug ("Set Ground constraint")  
     ground_constraint(model, rows, valid_states, matches)   
 
-    print ("solve")
+    logging.debug ("solve")
     # Creates the model.
     solver = cp_model.CpSolver()
-    solver.parameters.log_search_progress = True
+    # solver.parameters.log_search_progress = True
     solver.parameters.num_workers = 8
     solver.parameters.linearization_level = 0
-    # solver.preferred_variable_order = 3
-    # solver.randomize_search = True
+    solver.preferred_variable_order = 3
+    solver.randomize_search = True
     solver.subsolvers=0
     solver.parameters.stop_after_first_solution=True
     # Display the first five solutions.
@@ -367,15 +419,15 @@ def process(rows, result_file, partial_results=[]):
 
     # Enumerate all solutions.
     # solver.parameters.enumerate_all_solutions = True
-    print (f"Start solving {result_file}")
+    # print (f"Start solving {result_file}")
     solver.Solve(model, solution_printer)
 
     # Statistics.y 
-    print('\nStatistics')
-    print('  - conflicts      : %i' % solver.NumConflicts())
-    print('  - branches       : %i' % solver.NumBranches())
-    print('  - wall time      : %f s' % solver.WallTime())
-    print('  - solutions found: %i' % solution_printer.solution_count())
+    logging.debug('\nStatistics')
+    logging.debug('  - conflicts      : %i' % solver.NumConflicts())
+    logging.debug('  - branches       : %i' % solver.NumBranches())
+    logging.debug('  - wall time      : %f s' % solver.WallTime())
+    logging.debug('  - solutions found: %i' % solution_printer.solution_count())
 
     return solution_printer.solution_count()
 

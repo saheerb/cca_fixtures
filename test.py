@@ -68,21 +68,25 @@ def test_results(rows, matches):
   test_no_dates_conflicts(rows, matches)
   test_no_ground_conflicts(rows, matches)
   test_conditions(rows, matches)
+  print ("all tests done")
 
 def test_results_indexes(rows, matches):
   match_dicts = []
   for match in matches:
     match_dicts.append({"Ground":match[0], "Home":match[1], "Away":match[2],"Date": match[3]})
 
+  
   test_number_of_matches(rows, match_dicts)
   test_no_dates_conflicts(rows, match_dicts)
   test_no_ground_conflicts(rows, match_dicts)
   test_conditions(rows, match_dicts)
+  
 
 def main():
   rows = read_data("data.xlsx")
-  matches = read_data("results.xlsx")
+  matches = read_data("tmp/result-partial-1.xlsx")
   test_results(rows, matches)
+  print ("all tests done")
 
 
 if __name__ == '__main__':

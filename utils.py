@@ -322,6 +322,17 @@ def get_all_divisions(rows):
   return divisions
 
 @staticmethod
+def get_all_matches(team_name, results, type="Home"):
+  matches = []
+  for a_result in results:
+    if type == "Home" and a_result[type] == team_name:
+      matches.append(a_result)
+    if type == "Away" and a_result[type] == team_name:
+      matches.append(a_result)
+  matches = sorted(matches, key=lambda d: len(d['Date']))
+  return matches
+
+@staticmethod
 def get_all_dates(rows):
   dates = []
   for row in rows:
