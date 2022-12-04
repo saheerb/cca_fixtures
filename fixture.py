@@ -271,8 +271,7 @@ def ground_constraint(model, rows, valid_states, matches):
   for constraint in constraints.values():
     model.AddAtMostOne(constraint)  
 
-def add_consecutive_matches(rows, result_file):
-  results = read_data(result_file)
+def add_consecutive_matches(rows, results):
   dates = get_all_dates(rows)
   
   for team in get_all_teams(rows):
@@ -297,7 +296,7 @@ def add_consecutive_matches(rows, result_file):
       prev_match = match
     team_row = get_row_for_team(rows, team)
     team_row["max_consecutive"] = max_consecutive
-  save_result_to_file(rows, "results/result_with_consecutive.xlsx")
+  save_result_to_file(rows, "results/data_with_consecutive.xlsx")
       
 
 
