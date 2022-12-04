@@ -43,7 +43,21 @@ In a nutshell
 * Add constraints
 * Find solutions for one division after another as given above. 
 
-##
-# Limitations
+# Future Ideas
+## Solve constraints first 
+Current final solution is done by solving division after division. This at times is not giving "best" solution. Solve teams with "constraints" first and move on to next team.
+
+## Solve remaining matches
+During course of the season, fixture may need to be regenerated. So, load all "must fixture"
+and solve rest
+
+## Run this program from Gooogle colab
+Read data from Google drive, run from Google colab and store result in Google colab
+
+## Add UI/Web
+Add proper user interface
+
+
+#  Limitations
 * CK3 case - CK3 wants to share two grounds, which is not currently possible. 
 * Consecutive matches - Not working perfectly
