@@ -313,7 +313,7 @@ def main():
   while True:
     processed_divisions = []
     # create an empty partial file
-    partial_file = "result-partial.xlsx"
+    partial_file = "results/result-partial.xlsx"
     save_result_to_file({},partial_file)
     solution_found = False
     print (f"Attempt: {attempt}")
