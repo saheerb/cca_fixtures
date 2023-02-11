@@ -161,36 +161,6 @@ def get_valid_states(rows, partial_results):
             states.append([the_ground, home_team, opposition, the_date])
   return states
 
-# def get_valid_states(rows, partial_results):
-#   must_states = get_must_have_states(rows, partial_results)
-#   states = []
-#   for row in rows:
-#     ground = row["Ground"]
-#     division = row["Division"]
-#     home_team = team_name(row)
-#     for the_date in get_all_dates(rows):
-#       if row[the_date] in ["No Home", "No Play", "Off Request"]:
-#         continue
-#       for opposition in get_all_teams(rows, division):
-#         is_valid = True
-#         oppositions_row = get_row_for_team(rows,opposition)
-#         if oppositions_row[the_date] in ["No Play", "Off Request"]:
-#           continue
-#         if opposition == home_team:
-#           continue
-#         # if this home vs opposition combo in any of the must_states
-#         # take only state which matches the date
-#         for must_state in must_states:
-#           if must_state[1] == home_team:
-#             if must_state[2] == opposition and must_state[3] == the_date:
-#               is_valid = True
-#               break
-#             else:
-#               is_valid = False
-#         if is_valid:
-#           states.append([ground, home_team, opposition, the_date])
-#   return states
-
 def must_home_matches(rows):
   states = []
   # must  - Home 
@@ -198,16 +168,16 @@ def must_home_matches(rows):
     ground = row["Ground"]
     home_team = team_name(row)
     division = row["Division"]
+    states_for_oppositions = []
     for the_date in get_all_dates(rows):
-      states_for_oppositions = []
       if row[the_date] not in ["Home"]:
         continue
       for opposition in get_all_teams(rows, division):
         if opposition == home_team:
             continue
         states_for_oppositions.append([ground, home_team, opposition, the_date])
-      if states_for_oppositions != []:
-        states.append(states_for_oppositions)
+    if states_for_oppositions != []:
+      states.append(states_for_oppositions)
   return states
 
 def get_must_have_states(rows, partial_results):
@@ -228,30 +198,6 @@ def make_variables(model, valid_states):
     g,h,o,d = state[0],state[1],state[2],state[3]
     matches[g,h,o,d] = model.NewBoolVar(f'match_g{g}_h{h}_o{o}d_{d}')
   return matches
-
-# def distribute_legs(model, rows, valid_states, matches):
-#   all_dates = get_all_dates(rows)
-#   for division in get_all_divisions(rows):
-#     for team in get_all_teams(rows, division):
-#       team_row = get_row_for_team(rows, team)
-#       states={}
-#       for state in valid_states:
-#         g,h,o,d = state[0],state[1],state[2],state[3]
-#         if team != h:
-#           continue
-#         # get maximum consecutive for this team
-#         # add 1 because we are building windows that are not allowed
-#         for a_window in window(all_dates, int(team_row["Leg Distance"])+1):
-#           if d in a_window:
-#             window_id = get_text(a_window)
-#             try:
-#               states[window_id].append(matches[g,h,o,d])
-#             except:
-#               states[window_id] = []
-#               states[window_id].append(matches[g,h,o,d])
-
-#       for state in states.values():
-#         model.Add(sum(state) <= int(team_row["Max Consecutive"]))
 
 def set_consecutive_date_constraint(model, rows, valid_states, matches):
   all_dates = get_all_dates(rows)
@@ -302,9 +248,6 @@ def must_home_match_constraint(model, rows, valid_states, matches):
   # Home condition
   for states in must_home_matches(rows):
     constraints=[]
-    print ("____")
-    print (states)
-    print ("+++++")
     for a_state in states:
       if a_state not in valid_states:
         # print (a_state)
@@ -313,7 +256,7 @@ def must_home_match_constraint(model, rows, valid_states, matches):
         # That's why we are here
         continue
         # assert False
-      print (a_state)
+
       g,h,o,d = a_state[0],a_state[1],a_state[2],a_state[3]
       # print (f"{g}_{h}_{o}_{d}")
       constraints.append(matches[g,h,o,d])
@@ -391,10 +334,10 @@ def build_from_partial_result(data_rows, partial_results):
   # sys.exit()
   if process(data_rows, result_file, partial_results) == 0:
     print(f"No solution found")
-  results = read_data("tmp/re1_1.xlsx")
-  add_consecutive_matches(data_rows, results, "tmp/re-with-cons.xlsx")
-  play_cricket_upload_format("tmp/re1_1.xlsx", "tmp/play-cricket-upload.xlsx")
-  play_cricket_download_format("tmp/re1_1.xlsx", "tmp/play-cricket-download.xlsx")
+  else:
+    results = read_data("tmp/re1_1.xlsx")
+    add_consecutive_matches(data_rows, results, "tmp/re-with-cons.xlsx")
+    play_cricket_format("tmp/re1_1.xlsx", "tmp/play-cricket.xlsx")
   # test_result
   
   pass
@@ -508,33 +451,9 @@ def main():
   shutil.copyfile(partial_file, "results/result.xlsx")
   results = read_data("results/result.xlsx")
   add_consecutive_matches(rows, results)
-  play_cricket_upload_format("results/result.xlsx", "results/play-cricket-upload.xlsx")
-  play_cricket_download_format("results/result.xlsx", "results/play-cricket-download.xlsx")
+  play_cricket_format("results/result.xlsx", "results/play-cricket.xlsx")
 
-def play_cricket_download_format(in_file, out_file):
-  results = read_data(in_file)
-  result_with_date = []
-  keys = [
-    "Date",	
-    "Home Team",	"Away Team",
-    "Division / Cup",	"Ground"
-  ]
-										 	
-  for result in results:
-    r = {}
-    for key in keys:
-      if key == "Home Team":
-        r[key] = result["Home"]
-      elif key == "Away Team":
-        r[key] = result["Away"]
-      elif key == "Division / Cup":
-        r[key] = result["Division"]
-      else:
-        r[key] = result[key]
-    result_with_date.append(r)
-  save_result_to_file(result_with_date, out_file)
-
-def play_cricket_upload_format(in_file="results/result.xlsx", out_file="results/play-cricket.xlsx"):
+def play_cricket_format(in_file="results/result.xlsx", out_file="results/play-cricket.xlsx"):
   results = read_data(in_file)
   result_with_date = []
   keys = [

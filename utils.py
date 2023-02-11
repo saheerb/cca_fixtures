@@ -10,12 +10,14 @@ import copy
 from itertools import combinations
 from functools import reduce
 from collections import deque
+import urllib.parse
+import html
 
 # find teams with max contraints
 # resolve the constraints
 # if there are multiple ways to solve it, add a check point to return to it
 
-def read_data(book, sheet="Grounds"):
+def read_data(book, sheet="Fixtures"):
   db = xl.readxl(book)
   ws = db.ws(sheet)
   # get column
@@ -29,8 +31,7 @@ def read_data(book, sheet="Grounds"):
       break
     header[value]=col_nbr
     col_nbr += 1
-  # print(f"{book} {header}")
-  # For each row
+
   while True:
     row = {}
     row_nbr += 1
@@ -38,7 +39,8 @@ def read_data(book, sheet="Grounds"):
     if ws.index(row_nbr, 1) == "":
       break
     for i in header:
-      row[i] = ws.index(row_nbr, header[i])
+      value = ws.index(row_nbr, header[i])
+      row[i] = html.escape(str(value))
     rows.append(row)
   return rows
 
@@ -57,30 +59,31 @@ def get_text(a_window):
     text += i
   return text
 
-def save_result_to_file(matches, file_name="temp_single.xlsx"):
+def save_result_to_file(matches, file_name="temp_single.xlsx", ws="Fixtures"):
   db = xl.Database()  
-  db.add_ws(ws="Grounds")
+  db.add_ws(ws=ws)
   row_nbr = 1
 
   # Header row in rows:
   for match in matches:
     col_nbr = 1
     for key in match:
-      db.ws(ws="Grounds").update_index(row=row_nbr, col=col_nbr, val=key)
+      db.ws(ws=ws).update_index(row=row_nbr, col=col_nbr, val=key)
       col_nbr += 1 
     break
-
   for match in matches:
     col_nbr = 1
     row_nbr += 1
-    for value in match.values():    
-      db.ws(ws="Grounds").update_index(row=row_nbr, col=col_nbr, val=value)
+    for value in match.values():
+      value = html.unescape(str(value))
+      value = str(value).replace("&", "and")
+      db.ws(ws=ws).update_index(row=row_nbr, col=col_nbr, val=value)
       col_nbr += 1  
   xl.writexl(db=db, fn=file_name)
 
 def team_name(row):
   # print (row)
-  return row['Club'] + "-" +row['Team']
+  return row['Club'] + " - " +row['Team']
 
 def init_ground_availability(rows):
   grounds = {}
@@ -267,8 +270,35 @@ def get_division(rows, the_team_name):
   for row in rows:
     a_team_name = team_name(row)
     if a_team_name == the_team_name:
-      return row["Division"]
+      return row["Division"], row["Division ID"]
   assert False
+
+def get_team_id(rows, the_team_name):
+  for row in rows:
+    a_team_name = team_name(row)
+    if a_team_name == the_team_name:
+      return row["Team ID"]
+
+def get_grounds(rows, the_team_name):
+  team_row = get_row_for_team(rows, the_team_name)
+  if team_row["Alternative Grounds"] != "":
+    return [team_row["Ground"]]+ team_row["Alternative Grounds"].split(",")
+  else:
+    return [team_row["Ground"]]
+
+def get_ground_name(rows, the_team_name):
+  for row in rows:
+    a_team_name = team_name(row)
+    if a_team_name == the_team_name:
+      return row["Ground"]
+  print (the_team_name)
+  assert False
+
+def get_ground_id(rows, the_team_name):
+  for row in rows:
+    a_team_name = team_name(row)
+    if a_team_name == the_team_name:
+      return row["Ground ID"]
 
 def count_allocated(divisions):
   count = 0
@@ -311,15 +341,36 @@ def get_all_teams(rows, division=""):
       if division != "" and row["Division"] != division:
         continue
       teams.append(the_team)
+  random.shuffle(teams)
   return teams
 
 @staticmethod
-def get_all_divisions(rows):
+def get_all_division1(rows):
   divisions = []
   for row in rows:
     if row["Division"] not in divisions:
       divisions.append(row["Division"])
   return divisions
+
+@staticmethod
+def get_all_divisions(rows):
+  return[
+        "CCA Senior League Division 1", 
+        "CCA Junior League 3 North",
+        "CCA Senior League Division 2",
+        "CCA Junior League 5 North",
+            "CCA Junior League 5 South",
+        "CCA Junior League 4 West",
+      "CCA Junior League 4 South",
+    "CCA Junior League 4 North",
+    "CCA Junior League 1 South",
+    "CCA Junior League 1 North",
+    "CCA Junior League 2 North",
+    "CCA Junior League 3 South",
+    "CCA Senior League Division 3",
+    "CCA Junior League 3 West",
+    "CCA Junior League 2 South"
+  ]
 
 @staticmethod
 def get_all_matches(team_name, results, type="Home"):
