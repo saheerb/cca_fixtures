@@ -104,7 +104,7 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
       write_excel(result, self._result_file, self._rows, global_solution_cnt)
       test_results_indexes(self._rows, result)
       if self._solution_count >= self._solution_limit:
-          logging.debug('Stop search after %i solutions' % self._solution_limit)
+          logging.info('Stop search after %i solutions' % self._solution_limit)
           self.StopSearch()
 
   def solution_count(self):
@@ -302,9 +302,9 @@ def must_home_match_constraint(model, rows, valid_states, matches):
   # Home condition
   for states in must_home_matches(rows):
     constraints=[]
-    print ("____")
-    print (states)
-    print ("+++++")
+    # print ("____")
+    # print (states)
+    # print ("+++++")
     for a_state in states:
       if a_state not in valid_states:
         # print (a_state)
@@ -313,7 +313,7 @@ def must_home_match_constraint(model, rows, valid_states, matches):
         # That's why we are here
         continue
         # assert False
-      print (a_state)
+      # print (a_state)
       g,h,o,d = a_state[0],a_state[1],a_state[2],a_state[3]
       # print (f"{g}_{h}_{o}_{d}")
       constraints.append(matches[g,h,o,d])
@@ -392,7 +392,7 @@ def build_from_partial_result(data_rows, partial_results):
   if process(data_rows, result_file, partial_results) == 0:
     print(f"No solution found")
   results = read_data("tmp/re1_1.xlsx")
-  add_consecutive_matches(data_rows, results, "tmp/re-with-cons.xlsx")
+  add_consecutive_matches(data_rows, results, "tmp/re1-with-cons.xlsx")
   play_cricket_upload_format("tmp/re1_1.xlsx", "tmp/play-cricket-upload.xlsx")
   play_cricket_download_format("tmp/re1_1.xlsx", "tmp/play-cricket-download.xlsx")
   # test_result
@@ -623,18 +623,18 @@ def process(rows, result_file, partial_results=[]):
     # Creates the model.
     solver = cp_model.CpSolver()
     # solver.parameters.log_search_progress = True
-    solver.parameters.num_workers = 8
+    # solver.parameters.num_workers = 8
     solver.parameters.linearization_level = 0
     solver.preferred_variable_order = 3
     solver.randomize_search = True
     solver.subsolvers=0
-    solver.parameters.stop_after_first_solution=True
+    # solver.parameters.stop_after_first_solution=True
     # Display the first five solutions.
-    solution_limit = 10000
+    solution_limit = 100
     solution_printer = SolutionPrinter(rows, result_file, valid_states, matches, all_grounds, all_teams, all_days, solution_limit)
 
     # Enumerate all solutions.
-    # solver.parameters.enumerate_all_solutions = True
+    solver.parameters.enumerate_all_solutions = True
     # print (f"Start solving {result_file}")
     solver.Solve(model, solution_printer)
 
