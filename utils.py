@@ -1,5 +1,4 @@
 import cProfile
-import pylightxl as xl
 import json
 from datetime import datetime, timedelta
 from collections import OrderedDict
@@ -11,39 +10,13 @@ from itertools import combinations
 from functools import reduce
 from collections import deque
 import urllib.parse
-import html
+import logging
+from excel import *
+
 
 # find teams with max contraints
 # resolve the constraints
 # if there are multiple ways to solve it, add a check point to return to it
-
-def read_data(book, sheet="Fixtures"):
-  db = xl.readxl(book)
-  ws = db.ws(sheet)
-  # get column
-  row_nbr = 1
-  col_nbr = 1
-  header = {}
-  rows = []
-  while True:
-    value = ws.index(row_nbr, col_nbr)
-    if value == "":
-      break
-    header[value]=col_nbr
-    col_nbr += 1
-
-  while True:
-    row = {}
-    row_nbr += 1
-    # if row's 1st colum is empty quite
-    if ws.index(row_nbr, 1) == "":
-      break
-    for i in header:
-      value = ws.index(row_nbr, header[i])
-      row[i] = html.escape(str(value))
-    rows.append(row)
-  return rows
-
 def window(seq, n=2):
     it = iter(seq)
     win = deque((next(it, None) for _ in range(n)), maxlen=n)
@@ -59,28 +32,40 @@ def get_text(a_window):
     text += i
   return text
 
-def save_result_to_file(matches, file_name="temp_single.xlsx", ws="Fixtures"):
-  db = xl.Database()  
-  db.add_ws(ws=ws)
-  row_nbr = 1
+def write_results(results, result_file, rows, num):
+  matches = []
+  with open('2024/results.json', 'w') as f:
+    json.dump(results, f, indent=4)
+  with open('2024/data.json', 'w') as f:
+    json.dump(rows, f, indent=4)
+  # Division ID	Match Date	Time	Home Team ID	Away Team ID	Ground ID	Ground Name
+  for result in results:
+    ground = result[0]
+    home_team = result[1]
+    away_team = result[2]
+    the_date  = result[3]
+    home_team_id = get_team_id(rows, home_team)
+    away_team_id = get_team_id(rows, away_team)
+    ground_id = get_ground_id(rows, home_team)
+    division, div_id = get_division(rows, home_team)
+    yyy, mm, dd = the_date.split("/")
+    matches.append({
+                  "Division":division, "Division ID": div_id, 
+                  "Home":home_team, "Home Team ID": home_team_id,
+                  "Away":away_team, "Away Team ID": away_team_id,
+                  "Ground":ground, "Ground ID": ground_id,
+                  # "Match Date": "%s/%s/%s" % (dd, mm, yyy), "Time": "13:00"})
+                  "Date": the_date, "Time": "13:00"})
+  extension = result_file.split(".")[-1]
+  result_path = result_file.split(".")[:-1][0]
+  logging.info(result_path)
+  logging.info(f"{result_path}_{num}.{extension}")
+  # save_result_to_file(matches,f"{result_path}_{num}.{extension}")
+  save_result_to_file(matches,f"{result_path}.{extension}")
+  pass
 
-  # Header row in rows:
-  for match in matches:
-    col_nbr = 1
-    for key in match:
-      db.ws(ws=ws).update_index(row=row_nbr, col=col_nbr, val=key)
-      col_nbr += 1 
-    break
-  for match in matches:
-    col_nbr = 1
-    row_nbr += 1
-    for value in match.values():
-      value = html.unescape(str(value))
-      value = str(value).replace("&", "and")
-      db.ws(ws=ws).update_index(row=row_nbr, col=col_nbr, val=value)
-      col_nbr += 1  
-  xl.writexl(db=db, fn=file_name)
 
+  # TODO: Check gaps
 def team_name(row):
   # print (row)
   return row['Club'] + " - " +row['Team']
@@ -270,14 +255,14 @@ def get_division(rows, the_team_name):
   for row in rows:
     a_team_name = team_name(row)
     if a_team_name == the_team_name:
-      return row["Division"], row["Division ID"]
+      return row["Division"], row["Div URL"].split("/")[-1]
   assert False
 
 def get_team_id(rows, the_team_name):
   for row in rows:
     a_team_name = team_name(row)
     if a_team_name == the_team_name:
-      return row["Team ID"]
+      return row["Team URL"].split("/")[-1]
 
 def get_grounds(rows, the_team_name):
   team_row = get_row_for_team(rows, the_team_name)
@@ -298,7 +283,7 @@ def get_ground_id(rows, the_team_name):
   for row in rows:
     a_team_name = team_name(row)
     if a_team_name == the_team_name:
-      return row["Ground ID"]
+      return row["Ground URL"].split("/")[-1]
 
 def count_allocated(divisions):
   count = 0
@@ -308,7 +293,7 @@ def count_allocated(divisions):
         count +=1
   return count
 
-@staticmethod
+# @staticmethod
 def get_all_grounds(rows):
   grounds = []
   for row in rows:
@@ -332,7 +317,7 @@ def get_all_grounds(rows):
       # print (teams)
   return grounds
 
-@staticmethod
+# @staticmethod
 def get_all_teams(rows, division=""):
   teams = []
   for row in rows:
@@ -344,35 +329,15 @@ def get_all_teams(rows, division=""):
   random.shuffle(teams)
   return teams
 
-@staticmethod
-def get_all_division1(rows):
+# @staticmethod
+def get_all_divisions(rows):
   divisions = []
   for row in rows:
     if row["Division"] not in divisions:
       divisions.append(row["Division"])
   return divisions
 
-@staticmethod
-def get_all_divisions(rows):
-  return[
-        "CCA Senior League Division 1", 
-        "CCA Junior League 3 North",
-        "CCA Senior League Division 2",
-        "CCA Junior League 5 North",
-            "CCA Junior League 5 South",
-        "CCA Junior League 4 West",
-      "CCA Junior League 4 South",
-    "CCA Junior League 4 North",
-    "CCA Junior League 1 South",
-    "CCA Junior League 1 North",
-    "CCA Junior League 2 North",
-    "CCA Junior League 3 South",
-    "CCA Senior League Division 3",
-    "CCA Junior League 3 West",
-    "CCA Junior League 2 South"
-  ]
-
-@staticmethod
+# @staticmethod
 def get_all_matches(team_name, results, type="Home"):
   matches = []
   for a_result in results:
@@ -383,12 +348,12 @@ def get_all_matches(team_name, results, type="Home"):
   matches = sorted(matches, key=lambda d: len(d['Date']))
   return matches
 
-@staticmethod
+# @staticmethod
 def get_all_dates(rows):
   dates = []
   for row in rows:
     for the_date in row:
-      if re.match(r"[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]", the_date) is not None:
+      if re.match(r"[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]", the_date) is not None:
         if the_date not in dates:
           dates.append(the_date)
   return dates

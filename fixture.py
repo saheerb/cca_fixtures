@@ -33,6 +33,7 @@ def write_excel(results, result_file, rows, num):
   logging.info(num)
   logging.info(f"{result_path}_{num}.{extension}")
   save_result_to_file(matches,f"{result_path}_{num}.{extension}")
+  save_result_to_file(matches,f"{result_path}.{extension}")
   
   pass
 
@@ -101,6 +102,9 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
       # diff_count = diff_count(result)
       # if diff_count(result) < min_diff_count:
       #   min_diff_count = diff_count
+      logging.info("+++++++")
+      logging.info(self._result_file)
+      logging.info("+++++++")
       write_excel(result, self._result_file, self._rows, global_solution_cnt)
       test_results_indexes(self._rows, result)
       if self._solution_count >= self._solution_limit:
@@ -227,33 +231,69 @@ def make_variables(model, valid_states):
   for state in valid_states:
     g,h,o,d = state[0],state[1],state[2],state[3]
     matches[g,h,o,d] = model.NewBoolVar(f'match_g{g}_h{h}_o{o}d_{d}')
+  # gap between home matches
+  for state in valid_states:
+    g,h,o,d = state[0],state[1],state[2],state[3]
+    
+
   return matches
 
-# def distribute_legs(model, rows, valid_states, matches):
-#   all_dates = get_all_dates(rows)
-#   for division in get_all_divisions(rows):
-#     for team in get_all_teams(rows, division):
-#       team_row = get_row_for_team(rows, team)
-#       states={}
-#       for state in valid_states:
-#         g,h,o,d = state[0],state[1],state[2],state[3]
-#         if team != h:
-#           continue
-#         # get maximum consecutive for this team
-#         # add 1 because we are building windows that are not allowed
-#         for a_window in window(all_dates, int(team_row["Leg Distance"])+1):
-#           if d in a_window:
-#             window_id = get_text(a_window)
-#             try:
-#               states[window_id].append(matches[g,h,o,d])
-#             except:
-#               states[window_id] = []
-#               states[window_id].append(matches[g,h,o,d])
+def set_home_away_leg_constraints(model, rows, valid_states, matches):
+  all_dates = get_all_dates(rows)
+  for division in get_all_divisions(rows):
+    for home_team in get_all_teams(rows, division):
+      for opposition in get_all_teams(rows, division):
+        if home_team == opposition:
+          continue
 
-#       for state in states.values():
-#         model.Add(sum(state) <= int(team_row["Max Consecutive"]))
+        states={}
+        for state in valid_states:
+          g,h,o,d = state[0],state[1],state[2],state[3]
+          if home_team != h and opposition != o:
+            continue
+          # get maximum consecutive for this team
+          # add 1 because we are building windows that are not allowed
+          window_size = 7
+          for i in range(0, len(all_dates), window_size):
+            if d in all_dates[i:i+window_size]:
+              window_id = get_text(all_dates[i:i+window_size])
+              try:
+                states[window_id].append(matches[g,h,o,d])
+              except:
+                states[window_id] = []
+                states[window_id].append(matches[g,h,o,d])
+
+        for state in states.values():
+          model.Minimize(sum(state))
 
 def set_consecutive_date_constraint(model, rows, valid_states, matches):
+  all_dates = get_all_dates(rows)
+  for division in get_all_divisions(rows):
+    for team in get_all_teams(rows, division):
+      team_row = get_row_for_team(rows, team)
+      states={}
+      for state in valid_states:
+        g,h,o,d = state[0],state[1],state[2],state[3]
+        if team != h:
+          continue
+        # get maximum consecutive for this team
+        # add 1 because we are building windows that are not allowed
+        for i in range(0, len(all_dates), 2):
+          # print (all_dates[i:i+2])
+        # for a_window in window(all_dates, 3):
+          if d in all_dates[i:i+2]:
+            window_id = get_text(all_dates[i:i+2])
+            try:
+              states[window_id].append(matches[g,h,o,d])
+            except:
+              states[window_id] = []
+              states[window_id].append(matches[g,h,o,d])
+
+      for state in states.values():
+        model.Minimize(sum(state))
+        # model.Add(sum(state) <= int(team_row["Max Consecutive"]))
+
+def set_consecutive_date_constraint_org(model, rows, valid_states, matches):
   all_dates = get_all_dates(rows)
   for division in get_all_divisions(rows):
     for team in get_all_teams(rows, division):
@@ -340,7 +380,7 @@ def teams_on_a_day_constraint(model, rows, valid_states, matches):
 
   for constraint in constraints.values():
     model.AddAtMostOne(constraint)
-
+### TODO - add consecutive clauses
 def ground_constraint(model, rows, valid_states, matches):
   logging.debug ("setting ground constraint")
   constraints = {}
@@ -453,19 +493,29 @@ def diff(org, result):
   return (len(diff1) + len(diff2))
 
 def main():
+  data_file = "data.xlsx"
+  all_rows = read_data(data_file, "Grounds")
+  if process(all_rows, "final.xlsx", {}) == 0:
+    print(f"No solution..")
+    # start from beginning
+    attempt += 1
+    solution_found = False
+
+
+def old_main():
   # diff()
   # sys.exit()
   partial_file = "results/play-cricket-normalised-updated.xlsx"
   partial_file = "results/play-cricket-normalised.xlsx"
   data_file = "data.xlsx"
   all_rows = read_data(data_file, "Grounds")
-  partial_results = read_data(partial_file, "Fixtures")
+  # partial_results = read_data(partial_file, "Fixtures")
   # for _ in partial_results:
   #   print (_)
-  build_from_partial_result(all_rows, partial_results)
+  # build_from_partial_result(all_rows, partial_results)
 
   # diff()
-  exit()
+  # exit()
 
   # if process(all_rows, "results/result-partial.xlsx", []) == 0:
   #   print(f"No solution for {division}")
@@ -534,6 +584,7 @@ def play_cricket_download_format(in_file, out_file):
     result_with_date.append(r)
   save_result_to_file(result_with_date, out_file)
 
+
 def play_cricket_upload_format(in_file="results/result.xlsx", out_file="results/play-cricket.xlsx"):
   results = read_data(in_file)
   result_with_date = []
@@ -601,8 +652,11 @@ def process(rows, result_file, partial_results=[]):
     home_opposition_constraint(model, valid_states, matches)
 
     logging.debug ("Set Consecutive dates constraint")    
-    set_consecutive_date_constraint(model, rows, valid_states, matches)
+    # set_consecutive_date_constraint(model, rows, valid_states, matches)
+    # set_consecutive_date_constraint_org(model, rows, valid_states, matches)
 
+    logging.debug ("Set Home/Away Leg constraint")    
+    set_home_away_leg_constraints(model, rows, valid_states, matches)
     # Number of matches - same as Home vs Opposition - so no need
     # print ("Set Number of Matches Constraint")  
     number_of_matches_constraint(model, rows, valid_states, matches)
@@ -630,16 +684,17 @@ def process(rows, result_file, partial_results=[]):
     solver.subsolvers=0
     # solver.parameters.stop_after_first_solution=True
     # Display the first five solutions.
-    solution_limit = 100
+    solution_limit = 1
     solution_printer = SolutionPrinter(rows, result_file, valid_states, matches, all_grounds, all_teams, all_days, solution_limit)
 
     # Enumerate all solutions.
-    solver.parameters.enumerate_all_solutions = True
+    # solver.parameters.enumerate_all_solutions = True
     # print (f"Start solving {result_file}")
-    solver.Solve(model, solution_printer)
+    status = solver.Solve(model, solution_printer)
 
     # Statistics.y 
     logging.debug('\nStatistics')
+    logging.debug('  - status      : %i %i' % (status, cp_model.FEASIBLE))
     logging.debug('  - conflicts      : %i' % solver.NumConflicts())
     logging.debug('  - branches       : %i' % solver.NumBranches())
     logging.debug('  - wall time      : %f s' % solver.WallTime())
@@ -649,4 +704,11 @@ def process(rows, result_file, partial_results=[]):
 
 if __name__ == '__main__':
   logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+  data_file = "data.xlsx"
+  all_rows = read_data(data_file, "Grounds")
+  all_dates = get_all_dates(all_rows)
+  # for i in range(0, len(all_dates), 2):
+  #   print (all_dates[i:i+2])
+  # for a_window in window(all_dates, 3):
+  #   print (a_window)
   main()

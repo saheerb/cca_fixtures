@@ -9,38 +9,11 @@ def test_conditions(rows, matches):
     away_team = the_match["Away"]
     home_row = get_row_for_team(rows, home_team)
     away_row = get_row_for_team(rows, away_team)
-    try:
-      assert home_row[match_date] != "No Home"
-      assert home_row[match_date] != "No Play"
-      assert home_row[match_date] != "Off Request"
-      assert away_row[match_date] != "No Play"
-      assert away_row[match_date] != "Off Request"
-    except:
-      print (the_match)
-      continue
-
-  #   for the_date in 
-  # for team_row in rows:
-  #   home_team_name = team_name(team_row)
-  #   for the_match in matches:
-  #     if the_match["Home"] != home_team_name:
-  #       continue
-  #     for the_date in get_all_dates(rows):
-  #       print (the_date)
-  #       print (team_row[the_date])
-  #       print (the_match)
-  #       assert team_row[the_date] != "No Home"
-  #       assert team_row[the_date] != "No Play"
-  #       assert team_row[the_date] != "Off Request"
-
-  #   for the_date in get_all_dates(rows):
-  #     if team_row[the_date] == "Home":
-  #       # match exists
-  #       bHome = False
-  #       for a_match in matches:
-  #         if a_match["Home"] == home_team_name and a_match["Date"] == the_date:
-  #            bHome = True
-  #       assert bHome == True
+    assert home_row[match_date] != "No Home"
+    assert home_row[match_date] != "No Play"
+    assert home_row[match_date] != "Off Request"
+    assert away_row[match_date] != "No Play"
+    assert away_row[match_date] != "Off Request"
 
 def test_no_ground_conflicts(rows, matches):
   for the_match in matches:
@@ -81,11 +54,9 @@ def test_number_of_matches(rows, matches):
           home_matches_count += 1
         if team_name == a_match["Away"]:
           away_matches_count += 1
-      try:
-        assert nb_expected_one_leg_matches == home_matches_count
-        assert nb_expected_one_leg_matches == away_matches_count
-      except:
-        print (team_name)
+
+      assert nb_expected_one_leg_matches == home_matches_count
+      assert nb_expected_one_leg_matches == away_matches_count
 
 
 def test_results(rows, matches):
@@ -99,13 +70,7 @@ def test_results_indexes(rows, matches):
   match_dicts = []
   for match in matches:
     match_dicts.append({"Ground":match[0], "Home":match[1], "Away":match[2],"Date": match[3]})
-
   test_results(rows, match_dicts)
-  # test_number_of_matches(rows, match_dicts)
-  # test_no_dates_conflicts(rows, match_dicts)
-  # test_no_ground_conflicts(rows, match_dicts)
-  # test_conditions(rows, match_dicts)
-  
 
 def main():
   rows = read_data("data.xlsx")

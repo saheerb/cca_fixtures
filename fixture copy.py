@@ -161,6 +161,36 @@ def get_valid_states(rows, partial_results):
             states.append([the_ground, home_team, opposition, the_date])
   return states
 
+# def get_valid_states(rows, partial_results):
+#   must_states = get_must_have_states(rows, partial_results)
+#   states = []
+#   for row in rows:
+#     ground = row["Ground"]
+#     division = row["Division"]
+#     home_team = team_name(row)
+#     for the_date in get_all_dates(rows):
+#       if row[the_date] in ["No Home", "No Play", "Off Request"]:
+#         continue
+#       for opposition in get_all_teams(rows, division):
+#         is_valid = True
+#         oppositions_row = get_row_for_team(rows,opposition)
+#         if oppositions_row[the_date] in ["No Play", "Off Request"]:
+#           continue
+#         if opposition == home_team:
+#           continue
+#         # if this home vs opposition combo in any of the must_states
+#         # take only state which matches the date
+#         for must_state in must_states:
+#           if must_state[1] == home_team:
+#             if must_state[2] == opposition and must_state[3] == the_date:
+#               is_valid = True
+#               break
+#             else:
+#               is_valid = False
+#         if is_valid:
+#           states.append([ground, home_team, opposition, the_date])
+#   return states
+
 def must_home_matches(rows):
   states = []
   # must  - Home 
@@ -334,10 +364,10 @@ def build_from_partial_result(data_rows, partial_results):
   # sys.exit()
   if process(data_rows, result_file, partial_results) == 0:
     print(f"No solution found")
-  else:
-    results = read_data("tmp/re1_1.xlsx")
-    add_consecutive_matches(data_rows, results, "tmp/re-with-cons.xlsx")
-    play_cricket_format("tmp/re1_1.xlsx", "tmp/play-cricket.xlsx")
+  results = read_data("tmp/re1_1.xlsx")
+  add_consecutive_matches(data_rows, results, "tmp/re-with-cons.xlsx")
+  play_cricket_upload_format("tmp/re1_1.xlsx", "tmp/play-cricket-upload.xlsx")
+  play_cricket_download_format("tmp/re1_1.xlsx", "tmp/play-cricket-download.xlsx")
   # test_result
   
   pass
@@ -451,9 +481,33 @@ def main():
   shutil.copyfile(partial_file, "results/result.xlsx")
   results = read_data("results/result.xlsx")
   add_consecutive_matches(rows, results)
-  play_cricket_format("results/result.xlsx", "results/play-cricket.xlsx")
+  play_cricket_upload_format("results/result.xlsx", "results/play-cricket-upload.xlsx")
+  play_cricket_download_format("results/result.xlsx", "results/play-cricket-download.xlsx")
 
-def play_cricket_format(in_file="results/result.xlsx", out_file="results/play-cricket.xlsx"):
+def play_cricket_download_format(in_file, out_file):
+  results = read_data(in_file)
+  result_with_date = []
+  keys = [
+    "Date",	
+    "Home Team",	"Away Team",
+    "Division / Cup",	"Ground"
+  ]
+										 	
+  for result in results:
+    r = {}
+    for key in keys:
+      if key == "Home Team":
+        r[key] = result["Home"]
+      elif key == "Away Team":
+        r[key] = result["Away"]
+      elif key == "Division / Cup":
+        r[key] = result["Division"]
+      else:
+        r[key] = result[key]
+    result_with_date.append(r)
+  save_result_to_file(result_with_date, out_file)
+
+def play_cricket_upload_format(in_file="results/result.xlsx", out_file="results/play-cricket.xlsx"):
   results = read_data(in_file)
   result_with_date = []
   keys = [
