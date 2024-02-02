@@ -61,7 +61,7 @@ def write_results(results, result_file, rows, num):
   logging.info(result_path)
   logging.info(f"{result_path}_{num}.{extension}")
   # save_result_to_file(matches,f"{result_path}_{num}.{extension}")
-  save_result_to_file(matches,f"{result_path}.{extension}")
+  write_excel(matches,f"{result_path}.{extension}")
   pass
 
 
@@ -70,15 +70,15 @@ def team_name(row):
   # print (row)
   return row['Club'] + " - " +row['Team']
 
-def init_ground_availability(rows):
-  grounds = {}
-  for row in rows:
-    grounds[row["Ground"]] = {}
-    for i in row:
-      if not re.match(r"[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]", i) is not None:
-        continue
-      grounds[row["Ground"]][i] = ""
-  return grounds
+# def init_ground_availability(rows):
+#   grounds = {}
+#   for row in rows:
+#     grounds[row["Ground"]] = {}
+#     for i in row:
+#       if not re.match(r"[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]", i) is not None:
+#         continue
+#       grounds[row["Ground"]][i] = ""
+#   return grounds
 
 def init_divisions(rows):
   divisions = {}
@@ -276,7 +276,6 @@ def get_ground_name(rows, the_team_name):
     a_team_name = team_name(row)
     if a_team_name == the_team_name:
       return row["Ground"]
-  print (the_team_name)
   assert False
 
 def get_ground_id(rows, the_team_name):
@@ -338,6 +337,24 @@ def get_all_divisions(rows):
   return divisions
 
 # @staticmethod
+def get_all_divisions1(rows):
+  divisions = [
+              # "CCA Senior League Division 1",
+               "CCA Senior League Division 2",
+              #  "CCA Senior League Division 3",
+              #  "CCA Junior League 1 North",
+              #  "CCA Junior League 1 South",
+              #  "CCA Junior League 2 North",
+              #  "CCA Junior League 2 South",
+              #  "CCA Junior League 3 North",
+               "CCA Junior League 3 South",
+              #  "CCA Junior League 3 West"
+  ]
+  return divisions
+               
+
+
+# @staticmethod
 def get_all_matches(team_name, results, type="Home"):
   matches = []
   for a_result in results:
@@ -353,7 +370,7 @@ def get_all_dates(rows):
   dates = []
   for row in rows:
     for the_date in row:
-      if re.match(r"[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]", the_date) is not None:
+      if re.match(r"[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]", the_date) is not None:
         if the_date not in dates:
           dates.append(the_date)
   return dates

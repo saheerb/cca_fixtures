@@ -58,18 +58,24 @@ def get_max_consecutive(team, type="Home"):
   return max_consecutive
 
 dates = get_all_dates(rows)
-result_metas = []
 for division in get_all_divisions(rows):
+  print (division)
+  result_metas = []
   for home_team in get_all_teams(rows, division):
     row = get_row_for_team(rows, home_team)
     row["home_cons"]=get_max_consecutive(home_team, "Home")
     row["away_cons"]=get_max_consecutive(home_team, "Away")
     meta = {}
     for away_team in get_all_teams(rows, division):
-      meta[home_team] = "-"
-      if home_team == away_team: 
+      meta ["1home_team"] = home_team
+      if home_team == away_team:
+        meta[home_team] = "-"
         continue
       meta[away_team] = get_gap(home_team, away_team, results)
     result_metas.append(meta)
-print (result_metas)
-      
+    fn = division.replace(' ','')
+  sorted_metas = []
+  for meta in result_metas:
+    sorted_metas.append(dict(sorted(meta.items())))
+  save_result_to_file(sorted_metas, f"tmp/1{fn}.xlsx", division)
+  sys.exit()

@@ -5,6 +5,7 @@ import shutil
 from test import test_results_indexes
 from test import test_results
 import logging
+import os
 
 global_solution_cnt = 0
 
@@ -73,7 +74,8 @@ def must_home_matches(rows):
 def get_must_have_states(rows, partial_results):
   states = []
   for match in partial_results:
-    states.append([match["Ground"], match["Home"], match["Away"], match["Date"]])
+    if match in rows:
+      states.append([match["Ground"], match["Home"], match["Away"], match["Date"]])
   return states
 
 def must_constraint(model, rows, matches, partial_results):
@@ -93,7 +95,7 @@ def make_variables(model, rows):
   return matches
 
 def home_opposition_match_date_gap(model, rows, matches):
-  consecutives = 1
+  consecutives = 10
   team_states = {}
   for division in get_all_divisions(rows):
     for h in get_all_teams(rows, division):
@@ -122,13 +124,14 @@ def home_opposition_match_date_gap(model, rows, matches):
           home_oppostions = []
           for a_home_oppostion_match in matches_in_consecutive_window:
             home_oppostions.append(a_home_oppostion_match)
+          model.AddExactlyOne(home_oppostions)
           # model.AddAtMostOne(home_oppostions)
-          model.Minimize(sum(home_oppostions))
+          # model.Minimize(sum(home_oppostions))
 
 def consecutive_home_or_aways(model, rows, matches):
   home_states = {}
   away_states = {}
-  consecutives = 1
+  default_consecutives = 5
   for division in get_all_divisions(rows):
     for h in get_all_teams(rows, division):
       for o in get_all_teams(rows, division):
@@ -153,7 +156,7 @@ def consecutive_home_or_aways(model, rows, matches):
         try:
           consecutives = int(get_row_for_team(rows, team)["Max Consecutive"])
         except:
-          consecutives = 6
+          consecutives = default_consecutives
 
         for date_index in range(len(all_dates) - consecutives):
           matches_in_consecutive_window = []
@@ -164,13 +167,13 @@ def consecutive_home_or_aways(model, rows, matches):
             except KeyError:
               pass
 
-          model.Minimize(sum(matches_in_consecutive_window))
-          # model.AddBoolOr(matches_in_consecutive_window)
+          # model.Minimize(sum(matches_in_consecutive_window))
+          model.AddBoolOr(matches_in_consecutive_window)
 
-          # negated_match = []
-          # for a_negated_match in matches_in_consecutive_window:
-          #   negated_match.append(a_negated_match.Not())
-          # model.AddBoolOr(negated_match)
+          negated_match = []
+          for a_negated_match in matches_in_consecutive_window:
+            negated_match.append(a_negated_match.Not())
+          model.AddBoolOr(negated_match)
 
 def number_of_matches_constraint(model, rows, valid_states, matches):
   for division in get_all_divisions(rows):
@@ -249,7 +252,7 @@ def add_consecutive_matches(rows, results, out_file="results/data_with_consecuti
   
   for team in get_all_teams(rows):
     # matches are ordered by date
-    matches = get_all_matches(team, results, type="Home")
+    matches = _get_all_matches(team, results, type="Home")
     max_consecutive = 0
     prev_match = None
     consecutive = 1
@@ -257,8 +260,8 @@ def add_consecutive_matches(rows, results, out_file="results/data_with_consecuti
       if prev_match == None:
         consecutive = 1
       else:
-        match_date = datetime.strptime(match["Date"], "%d/%m/%Y")
-        prev_match_date = datetime.strptime(prev_match["Date"], "%d/%m/%Y")
+        match_date = datetime.strptime(match["Date"], "%Y/%m/%d")
+        prev_match_date = datetime.strptime(prev_match["Date"], "%Y/%m/%d")
         difference = abs((match_date - prev_match_date).days)
         if difference <= 7:
           consecutive += 1
@@ -269,39 +272,163 @@ def add_consecutive_matches(rows, results, out_file="results/data_with_consecuti
       prev_match = match
     team_row = get_row_for_team(rows, team)
     team_row["max_consecutive"] = max_consecutive
-  save_result_to_file(rows, out_file)
+  write_excel(rows, out_file)
       
-def build_from_partial_result(data_rows, partial_results):
-  result_file = f"tmp/re1.xlsx"
-  # print (len(partial_results))
-  # print (len(partial_results))
-  # test_results(data_rows, partial_results)
-  # sys.exit()
-  if process(data_rows, result_file, partial_results) == 0:
-    print(f"No solution found")
-  results = read_data("tmp/re1_1.xlsx")
-  add_consecutive_matches(data_rows, results, "tmp/re1-with-cons.xlsx")
-  play_cricket_upload_format("tmp/re1_1.xlsx", "tmp/play-cricket-upload.xlsx")
-  play_cricket_download_format("tmp/re1_1.xlsx", "tmp/play-cricket-download.xlsx")
-  # test_result  
-  pass
+# def build_from_partial_result(data_rows, partial_results):
+#   result_file = f"tmp/re1.xlsx"
+#   # print (len(partial_results))
+#   # print (len(partial_results))
+#   # test_results(data_rows, partial_results)
+#   # sys.exit()
+#   if process(data_rows, result_file, partial_results) == 0:
+#     print(f"No solution found")
+#   results = read_excel("tmp/re1_1.xlsx")
+#   add_consecutive_matches(data_rows, results, "tmp/re1-with-cons.xlsx")
+#   play_cricket_upload_format("tmp/re1_1.xlsx", "tmp/play-cricket-upload.xlsx")
+#   play_cricket_download_format("tmp/re1_1.xlsx", "tmp/play-cricket-download.xlsx")
+#   # test_result  
+#   pass
 
-def main():
+def main(partial_file=None, run_one_after_another=False):
   data_file = "2024/data.xlsx"
   result_file = "2024/result.xlsx"
   udated_data_file = "2024/data_cons.xlsx"
-  all_rows = read_data(data_file, "Grounds")
-  if process(all_rows, result_file, {}) == 0:
-    print(f"No solution..")
+  solution_found = False
+
+  partial_results = []
+  if partial_file:
+    partial_results = read_excel(partial_file, "Fixtures")
+
+  all_rows = read_excel(data_file, "Grounds")
+
+  if run_one_after_another:
+    partial_tmp_file = "2024/tmp/result-partial.xlsx"
+    processed_divisions = []
+    if partial_file ==  None:
+      write_excel({},partial_tmp_file)
+    else:
+      shutil.copy(partial_file, partial_tmp_file)
+  
+    for division in get_all_divisions(all_rows):
+      solution_found = False
+      # if division in ["CCA Senior League Division 1",
+      #                 "CCA Senior League Division 2",
+      #                 "CCA Senior League Division 3"]:
+      #   continue
+      print (f"Solving: {division}")
+      partial_results = read_excel(partial_tmp_file)
+      if division not in processed_divisions:
+        processed_divisions.append(division)
+      rows = []
+      for row in all_rows:
+        if row["Division"] in processed_divisions:
+          result_file = f"2024/tmp/{division}.xlsx"
+          rows.append(row)
+
+      if process(rows, result_file, partial_results) == 0:
+        print(f"No solution..")
+        sys.exit()
+      else:
+        shutil.copyfile(result_file, partial_tmp_file)
+      solution_found = True
   else:
-    results = read_data(result_file)
-    add_consecutive_matches(all_rows, results, out_file=udated_data_file)
-    # # start from beginning
-    # attempt += 1
-    # solution_found = False
+    if process(all_rows, result_file, partial_results) == 0:
+      print(f"No solution..")
+    else:
+      solution_found = True
+  
+  results = read_excel(result_file)
+  if solution_found:
+    add_result_meta(all_rows, results, result_file)
+
+def add_result_meta(rows, results, result_file):
+  def _get_short_name(division):
+
+    m = re.search("[0-9]", division)
+    if m != None: nb=m.group(0)
+    m = re.search("Junior|Senior", division)
+    if m != None: div=m.group(0)
+    m = re.search("South|North|West", division)
+    if m != None: zone=m.group(0)
+    try:
+      return f"{div}-{nb}-{zone}"
+    except:
+      return f"{div}-{nb}"
+  
+  def _get_all_matches(team_name, results, type="Home"):
+    def conv_date(str):
+      d = datetime.strptime(str, "%Y/%m/%d")
+      return d
+    matches = []
+    for a_result in results:
+      if type == "Home" and a_result["Home"] == team_name:
+        matches.append(a_result)
+      if type == "Away" and a_result["Away"] == team_name:
+        matches.append(a_result)
+    matches = sorted(matches, key=lambda d: conv_date(d["Date"]))
+    return matches
+
+  def _get_gap(home_team, away_team, matches):
+    matched = []
+    for match in matches:
+      if (match["Home"] == home_team and match["Away"] == away_team) or\
+          (match["Away"] == home_team and match["Home"] == away_team):
+          matched.append(match)
+    assert 2 == len(matched)
+    match_date = datetime.strptime(matched[0]["Date"], "%Y/%m/%d")
+    prev_match_date = datetime.strptime(matched[1]["Date"], "%Y/%m/%d")
+    difference = abs((match_date - prev_match_date).days)
+    return difference/7
+
+  def _get_max_consecutive(team, results, type="Home"):
+    # matches are ordered by date
+    matches = _get_all_matches(team, results, type)
+    max_consecutive = 0
+    prev_match = None
+    consecutive = 1
+    for match in matches:
+      if prev_match == None:
+        consecutive = 1
+      else:
+        match_date = datetime.strptime(match["Date"], "%Y/%m/%d")
+        prev_match_date = datetime.strptime(prev_match["Date"], "%Y/%m/%d")
+        assert match_date > prev_match_date
+        difference = (match_date - prev_match_date).days
+        if difference == 7:
+          consecutive += 1
+        else:
+          consecutive = 1
+      if consecutive > max_consecutive:
+        max_consecutive = consecutive
+      prev_match = match
+    return max_consecutive
+
+  div_dict = {}
+  for division in get_all_divisions(rows):
+    result_metas = []
+    for home_team in get_all_teams(rows, division):
+      # row = get_row_for_team(rows, home_team)
+      meta = {}
+      meta["home_team"] = home_team
+      meta["home_cons"]=_get_max_consecutive(home_team, results, "Home")
+      meta["away_cons"]=_get_max_consecutive(home_team, results, "Away")
+      for away_team in get_all_teams(rows, division):
+        if home_team == away_team:
+          meta[home_team] = "-"
+          continue
+        meta[away_team] = _get_gap(home_team, away_team, results)
+      result_metas.append(meta)
+    sorted_metas = []
+
+    div = _get_short_name(division)
+    # .replace(' ','_')
+    for meta in result_metas:
+      sorted_metas.append(dict(sorted(meta.items())))
+    div_dict[div]=sorted_metas
+  update_excel(result_file, sheets_dict=div_dict)
 
 def play_cricket_download_format(in_file, out_file):
-  results = read_data(in_file)
+  results = read_excel(in_file)
   result_with_date = []
   keys = [
     "Date",	
@@ -321,10 +448,10 @@ def play_cricket_download_format(in_file, out_file):
       else:
         r[key] = result[key]
     result_with_date.append(r)
-  save_result_to_file(result_with_date, out_file)
+  write_excel(result_with_date, out_file)
 
 def play_cricket_upload_format(in_file="results/result.xlsx", out_file="results/play-cricket.xlsx"):
-  results = read_data(in_file)
+  results = read_excel(in_file)
   result_with_date = []
   keys = [
             "Division ID",
@@ -351,7 +478,7 @@ def play_cricket_upload_format(in_file="results/result.xlsx", out_file="results/
       else:
         r[key] = result[key]
     result_with_date.append(r)
-  save_result_to_file(result_with_date, out_file)
+  write_excel(result_with_date, out_file)
 
 def invlalid_constraints(models, rows, matches):
     logging.debug ("setting constraints home-opposition constraint")
@@ -366,11 +493,13 @@ def invlalid_constraints(models, rows, matches):
           for g in get_grounds(rows, h):
             for d in get_all_dates(rows):
               if h == o:
-                models.AddExactlyOne(matches[g,h,o,d].Not())
-              if home_row[d] in ["No Play", "Off Request", "No Home"]:
-                models.AddExactlyOne(matches[g,h,o,d].Not())
+                models.AddBoolOr(matches[g,h,o,d].Not())
+              elif home_row[d] in ["No Play", "Off Request", "No Home"]:
+                # if  home_row[d] in ["No Home"] and g == "Saffron Walden County High School" and h=="Saffron Walden CC - 4th XI":
+                #   print (matches[g,h,o,d])
+                models.AddBoolOr(matches[g,h,o,d].Not())
               elif away_row[d] in ["No Play", "Off Request"]:
-                models.AddExactlyOne(matches[g,h,o,d].Not())
+                models.AddBoolOr(matches[g,h,o,d].Not())
 
 def home_opposition_constraint(model, rows, matches):
     logging.debug ("setting constraints home-opposition constraint")
@@ -413,19 +542,19 @@ def process(rows, result_file, partial_results=[]):
     # logging.debug ("Set Home Opposition constraint")  
     teams_on_a_day_constraint(model, rows, matches)
 
-    # logging.debug ("Set Must constraint from partial result")  
+    # # logging.debug ("Set Must constraint from partial result")  
     must_constraint(model, rows, matches, partial_results)   
 
-    # logging.debug ("Set Home Match constraint")  
+    # # logging.debug ("Set Home Match constraint")  
     must_home_match_constraint(model, rows, matches)
 
-    # logging.debug ("Set Consecutive dates constraint")    
+    # # logging.debug ("Set Consecutive dates constraint")    
     home_opposition_match_date_gap(model, rows, matches)
 
     # logging.debug ("Set Consecutive dates constraint")    
-    # consecutive_home_or_aways(model, rows, matches)
+    consecutive_home_or_aways(model, rows, matches)
 
-    logging.debug ("Invalid constraints")
+    # logging.debug ("Invalid constraints")
     invlalid_constraints(model, rows, matches)  
  
     # print ("Set Number of Matches Constraint")  
@@ -434,13 +563,13 @@ def process(rows, result_file, partial_results=[]):
     logging.debug ("solve")
     # Creates the model.
     solver = cp_model.CpSolver()
-    # solver.parameters.stop_after_first_solution=True
+    solver.parameters.stop_after_first_solution=True
     # Display the first five solutions.
     solution_limit = 10
     solution_printer = SolutionPrinter(rows, result_file, matches, all_grounds, all_teams, all_days, solution_limit)
 
     # Enumerate all solutions.
-    solver.parameters.enumerate_all_solutions = True
+    # solver.parameters.enumerate_all_solutions = True
     # print (f"Start solving {result_file}")
     status = solver.Solve(model, solution_printer)
 
@@ -457,6 +586,7 @@ def process(rows, result_file, partial_results=[]):
 if __name__ == '__main__':
   logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
   data_file = "data.xlsx"
-  all_rows = read_data(data_file, "Grounds")
+  all_rows = read_excel(data_file, "Grounds")
   all_dates = get_all_dates(all_rows)
+  # main("2024/partial_results.xlsx", False)
   main()

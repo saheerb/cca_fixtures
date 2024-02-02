@@ -1,0 +1,568 @@
+date,time,home,away,venue,league,umpire1,realumpire1,umpire2,realumpire2,observer,realobserver,off,moved,notes
+07/04/2024,11:00,Saffron Walden,Sawston & Babraham,Consder,Friendly,,,,,,,,,
+13/04/2024,11:00,Saffron Walden,Bishops Stortford,,Friendly,,,,,,,,,
+20/04/2024,12:00,Eaton Socon,Old Leysians,,Whitings 1,,,,,,,,,Pink Ball
+20/04/2024,12:00,Ramsey,Cambridge Saint Giles,,Whitings 1,,,,,,,,,Pink Ball
+20/04/2024,12:00,Saffron Walden II,Blunham,,Whitings 1,,,,,,,,,Pink Ball
+20/04/2024,12:00,Sawston & Babraham II,Histon,,Whitings 1,,,,,,,,,Pink Ball
+20/04/2024,12:00,Southill Park,Foxton Granta,,Whitings 1,,,,,,,,,Pink Ball
+20/04/2024,12:00,Wisbech Town,Burwell & Exning,,Whitings 1,,,,,,,,,Pink Ball
+27/04/2024,12:00,Blunham,Wisbech Town,,Whitings 1,,,,,,,,,Pink Ball
+27/04/2024,12:00,Burwell & Exning,Old Leysians,,Whitings 1,,,,,,,,,Pink Ball
+27/04/2024,12:00,Cambridge Saint Giles,Saffron Walden II,,Whitings 1,,,,,,,,,Pink Ball
+27/04/2024,12:00,Foxton Granta,Sawston & Babraham II,,Whitings 1,,,,,,,,,Pink Ball
+27/04/2024,12:00,Histon,Ramsey,,Whitings 1,,,,,,,,,Pink Ball
+27/04/2024,12:00,Southill Park,Eaton Socon,,Whitings 1,,,,,,,,,Pink Ball
+27/04/2024,12:00,Stamford Town,Newmarket,,Whitings 2,,,,,,,,,Pink Ball
+27/04/2024,12:30,Eaton Socon II,Barnack,,Whitings 3,,,,,,,,,
+27/04/2024,13:00,Ramsey II,Wisbech Town II,,CCA Sen 1,,,,,,,,,
+04/05/2024,12:00,Blunham,Cambridge Saint Giles,,Whitings 1,,,,,,,,,Pink Ball
+04/05/2024,12:00,Eaton Socon,Foxton Granta,,Whitings 1,,,,,,,,,Pink Ball
+04/05/2024,12:00,Ramsey,Old Leysians,,Whitings 1,,,,,,,,,Pink Ball
+04/05/2024,12:00,Saffron Walden II,Burwell & Exning,,Whitings 1,,,,,,,,,Pink Ball
+04/05/2024,12:00,Sawston & Babraham II,Southill Park,,Whitings 1,,,,,,,,,Pink Ball
+04/05/2024,12:00,Wisbech Town,Histon,,Whitings 1,,,,,,,,,Pink Ball
+04/05/2024,12:00,Cambridge NCI,Upwood,,Whitings 2,,,,,,,,,Pink Ball
+04/05/2024,12:00,Castor & Ailsworth,Kimbolton,,Whitings 2,,,,,,,,,Pink Ball
+04/05/2024,12:00,Godmanchester Town,Stamford Town,,Whitings 2,,,,,,,,,Pink Ball
+04/05/2024,12:00,March Town,Newmarket,,Whitings 2,,,,,,,,,Pink Ball
+04/05/2024,12:00,Saint Ives & Warboys,Biggleswade Town,,Whitings 2,,,,,,,,,Pink Ball
+04/05/2024,12:30,Barnack,Royston,,Whitings 3,,,,,,,,,
+04/05/2024,12:30,Foxton Granta II,Eaton Socon II,,Whitings 3,,,,,,,,,
+04/05/2024,12:30,Histon II,Cambourne,,Whitings 3,,,,,,,,,
+04/05/2024,12:30,Waresley,Ufford Park,,Whitings 3,,,,,,,,,
+04/05/2024,13:00,Bluntisham,Wisbech Town II,,CCA Sen 1,,,,,,,,,
+04/05/2024,13:00,City of Ely,Abington,,CCA Sen 1,,,,,,,,,
+04/05/2024,13:00,Horseheath,Ramsey II,,CCA Sen 1,,,,,,,,,
+04/05/2024,13:00,Thriplow,Longstanton Grasshoppers,,CCA Sen 1,,,,,,,,,
+04/05/2024,13:00,Wilburton,Fulbourn Institute,,CCA Sen 1,,,,,,,,,
+04/05/2024,13:00,Cambourne II,Linton Village,,CCA Sen 2,,,,,,,,,
+04/05/2024,13:00,Cambridge Old Monks,Audley End,,CCA Sen 2,,,,,,,,,
+04/05/2024,13:00,Cambridge St Giles II,Chatteris,,CCA Sen 2,,,,,,,,,
+04/05/2024,13:00,Milton,Madingley,,CCA Sen 2,,,,,,,,,
+04/05/2024,13:00,Wilbrahams,Saffron Walden III,,CCA Sen 2,,,,,,,,,
+04/05/2024,13:00,Buntingford,TAC,,CCA Sen 3,,,,,,,,,
+04/05/2024,13:00,Chesterfords,March Town II,,CCA Sen 3,,,,,,,,,
+04/05/2024,13:00,Elmdon,Chippenham,,CCA Sen 3,,,,,,,,,
+04/05/2024,13:00,Ickleton,Saint Ives & Warboys II,,CCA Sen 3,,,,,,,,,
+04/05/2024,13:00,Little Shelford,Cottenham,,CCA Sen 3,,,,,,,,,
+11/05/2024,12:00,Burwell & Exning,Ramsey,,Whitings 1,,,,,,,,,Pink Ball
+11/05/2024,12:00,Cambridge Saint Giles,Sawston & Babraham II,,Whitings 1,,,,,,,,,Pink Ball
+11/05/2024,12:00,Foxton Granta,Old Leysians,,Whitings 1,,,,,,,,,Pink Ball
+11/05/2024,12:00,Histon,Blunham,,Whitings 1,,,,,,,,,Pink Ball
+11/05/2024,12:00,Saffron Walden II,Eaton Socon,,Whitings 1,,,,,,,,,Pink Ball
+11/05/2024,12:00,Southill Park,Wisbech Town,,Whitings 1,,,,,,,,,Pink Ball
+11/05/2024,12:00,Biggleswade Town,Godmanchester Town,,Whitings 2,,,,,,,,,Pink Ball
+11/05/2024,12:00,Kimbolton,Cambridge NCI,,Whitings 2,,,,,,,,,Pink Ball
+11/05/2024,12:00,March Town,Castor & Ailsworth,,Whitings 2,,,,,,,,,Pink Ball
+11/05/2024,12:00,Stamford Town,Saint Ives & Warboys,,Whitings 2,,,,,,,,,Pink Ball
+11/05/2024,12:00,Upwood,Newmarket,,Whitings 2,,,,,,,,,Pink Ball
+11/05/2024,12:30,Cambourne,Ufford Park,,Whitings 3,,,,,,,,,
+11/05/2024,12:30,Huntingdon & District,Royston,,Whitings 3,,,,,,,,,
+11/05/2024,12:30,Waresley,Histon II,,Whitings 3,,,,,,,,,
+11/05/2024,13:00,Abington,Bluntisham,,CCA Sen 1,,,,,,,,,
+11/05/2024,13:00,Fulbourn Institute,City of Ely,,CCA Sen 1,,,,,,,,,
+11/05/2024,13:00,Longstanton Grasshoppers,Horseheath,,CCA Sen 1,,,,,,,,,
+11/05/2024,13:00,Ramsey II,Wilburton,,CCA Sen 1,,,,,,,,,
+11/05/2024,13:00,Wisbech Town II,Thriplow,,CCA Sen 1,,,,,,,,,
+11/05/2024,13:00,Chatteris,Audley End,,CCA Sen 2,,,,,,,,,
+11/05/2024,13:00,Linton Village,Cambridge St Giles II,,CCA Sen 2,,,,,,,,,
+11/05/2024,13:00,Milton,Cambourne II,,CCA Sen 2,,,,,,,,,
+11/05/2024,13:00,Saffron Walden III,Madingley,,CCA Sen 2,,,,,,,,,
+11/05/2024,13:00,Wilbrahams,Cambridge Old Monks,,CCA Sen 2,,,,,,,,,
+11/05/2024,13:00,Chesterfords,Buntingford,,CCA Sen 3,,,,,,,,,
+11/05/2024,13:00,Chippenham,March Town II,,CCA Sen 3,,,,,,,,,
+11/05/2024,13:00,Little Shelford,Ickleton,,CCA Sen 3,,,,,,,,,
+11/05/2024,13:00,Saint Ives & Warboys II,Cottenham,,CCA Sen 3,,,,,,,,,
+11/05/2024,13:00,TAC,Elmdon,,CCA Sen 3,,,,,,,,,
+18/05/2024,12:00,Blunham,Old Leysians,,Whitings 1,,,,,,,,,Pink Ball
+18/05/2024,12:00,Cambridge Saint Giles,Histon,,Whitings 1,,,,,,,,,Pink Ball
+18/05/2024,12:00,Eaton Socon,Burwell & Exning,,Whitings 1,,,,,,,,,Pink Ball
+18/05/2024,12:00,Ramsey,Southill Park,,Whitings 1,,,,,,,,,Pink Ball
+18/05/2024,12:00,Sawston & Babraham II,Saffron Walden II,,Whitings 1,,,,,,,,,Pink Ball
+18/05/2024,12:00,Wisbech Town,Foxton Granta,,Whitings 1,,,,,,,,,Pink Ball
+18/05/2024,12:00,Cambridge NCI,Biggleswade Town,,Whitings 2,,,,,,,,,Pink Ball
+18/05/2024,12:00,Castor & Ailsworth,Upwood,,Whitings 2,,,,,,,,,Pink Ball
+18/05/2024,12:00,Godmanchester Town,March Town,,Whitings 2,,,,,,,,,Pink Ball
+18/05/2024,12:00,Kimbolton,Stamford Town,,Whitings 2,,,,,,,,,Pink Ball
+18/05/2024,12:00,Newmarket,Saint Ives & Warboys,,Whitings 2,,,,,,,,,Pink Ball
+18/05/2024,12:30,Foxton Granta II,Barnack,,Whitings 3,,,,,,,,,
+18/05/2024,12:30,Histon II,Huntingdon & District,,Whitings 3,,,,,,,,,
+18/05/2024,12:30,Royston,Cambourne,,Whitings 3,,,,,,,,,
+18/05/2024,12:30,Ufford Park,Waresley,,Whitings 3,,,,,,,,,
+18/05/2024,13:00,Bluntisham,Fulbourn Institute,,CCA Sen 1,,,,,,,,,
+18/05/2024,13:00,City of Ely,Ramsey II,,CCA Sen 1,,,,,,,,,
+18/05/2024,13:00,Horseheath,Wisbech Town II,,CCA Sen 1,,,,,,,,,
+18/05/2024,13:00,Thriplow,Abington,,CCA Sen 1,,,,,,,,,
+18/05/2024,13:00,Wilburton,Longstanton Grasshoppers,,CCA Sen 1,,,,,,,,,
+18/05/2024,13:00,Audley End,Cambridge St Giles II,,CCA Sen 2,,,,,,,,,
+18/05/2024,13:00,Cambourne II,Madingley,,CCA Sen 2,,,,,,,,,
+18/05/2024,13:00,Chatteris,Wilbrahams,,CCA Sen 2,,,,,,,,,
+18/05/2024,13:00,Linton Village,Cambridge Old Monks,,CCA Sen 2,,,,,,,,,
+18/05/2024,13:00,Milton,Saffron Walden III,,CCA Sen 2,,,,,,,,,
+18/05/2024,13:00,Chippenham,Chesterfords,,CCA Sen 3,,,,,,,,,
+18/05/2024,13:00,Cottenham,TAC,,CCA Sen 3,,,,,,,,,
+18/05/2024,13:00,Ickleton,Elmdon,,CCA Sen 3,,,,,,,,,
+18/05/2024,13:00,March Town II,Little Shelford,,CCA Sen 3,,,,,,,,,
+18/05/2024,13:00,Saint Ives & Warboys II,Buntingford,,CCA Sen 3,,,,,,,,,
+25/05/2024,11:00,Blunham,Ramsey,,Whitings 1,,,,,,,,,Red Ball
+25/05/2024,11:00,Burwell & Exning,Cambridge Saint Giles,,Whitings 1,,,,,,,,,Red Ball
+25/05/2024,11:00,Old Leysians,Sawston & Babraham II,,Whitings 1,,,,,,,,,Red Ball
+25/05/2024,11:00,Saffron Walden II,Foxton Granta,,Whitings 1,,,,,,,,,Red Ball
+25/05/2024,11:00,Southill Park,Histon,,Whitings 1,,,,,,,,,Red Ball
+25/05/2024,11:00,Wisbech Town,Eaton Socon,,Whitings 1,,,,,,,,,Red Ball
+25/05/2024,12:00,Biggleswade Town,Newmarket,,Whitings 2,,,,,,,,,Pink Ball
+25/05/2024,12:00,Cambridge NCI,Castor & Ailsworth,,Whitings 2,,,,,,,,,Pink Ball
+25/05/2024,12:00,March Town,Stamford Town,,Whitings 2,,,,,,,,,Pink Ball
+25/05/2024,12:00,Saint Ives & Warboys,Kimbolton,,Whitings 2,,,,,,,,,Pink Ball
+25/05/2024,12:00,Upwood,Godmanchester Town,,Whitings 2,,,,,,,,,Pink Ball
+25/05/2024,12:30,Eaton Socon II,Cambourne,,Whitings 3,,,,,,,,,
+25/05/2024,12:30,Foxton Granta II,Ufford Park,,Whitings 3,,,,,,,,,
+25/05/2024,12:30,Histon II,Barnack,,Whitings 3,,,,,,,,,
+25/05/2024,12:30,Waresley,Royston,,Whitings 3,,,,,,,,,
+25/05/2024,13:00,Abington,Wilburton,,CCA Sen 1,,,,,,,,,
+25/05/2024,13:00,Fulbourn Institute,Wisbech Town II,,CCA Sen 1,,,,,,,,,
+25/05/2024,13:00,Horseheath,Bluntisham,,CCA Sen 1,,,,,,,,,
+25/05/2024,13:00,Longstanton Grasshoppers,City of Ely,,CCA Sen 1,,,,,,,,,
+25/05/2024,13:00,Ramsey II,Thriplow,,CCA Sen 1,,,,,,,,,
+25/05/2024,13:00,Audley End,Milton,,CCA Sen 2,,,,,,,,,
+25/05/2024,13:00,Cambridge Old Monks,Chatteris,,CCA Sen 2,,,,,,,,,
+25/05/2024,13:00,Madingley,Linton Village,,CCA Sen 2,,,,,,,,,
+25/05/2024,13:00,Saffron Walden III,Cambridge St Giles II,,CCA Sen 2,,,,,,,,,
+25/05/2024,13:00,Wilbrahams,Cambourne II,,CCA Sen 2,,,,,,,,,
+25/05/2024,13:00,Buntingford,March Town II,,CCA Sen 3,,,,,,,,,
+25/05/2024,13:00,Chesterfords,Cottenham,,CCA Sen 3,,,,,,,,,
+25/05/2024,13:00,Elmdon,Saint Ives & Warboys II,,CCA Sen 3,,,,,,,,,
+25/05/2024,13:00,Little Shelford,Chippenham,,CCA Sen 3,,,,,,,,,
+25/05/2024,13:00,TAC,Ickleton,,CCA Sen 3,,,,,,,,,
+01/06/2024,11:00,Cambridge Saint Giles,Wisbech Town,,Whitings 1,,,,,,,,,Red Ball
+01/06/2024,11:00,Eaton Socon,Ramsey,,Whitings 1,,,,,,,,,Red Ball
+01/06/2024,11:00,Foxton Granta,Burwell & Exning,,Whitings 1,,,,,,,,,Red Ball
+01/06/2024,11:00,Histon,Saffron Walden II,,Whitings 1,,,,,,,,,Red Ball
+01/06/2024,11:00,Old Leysians,Southill Park,,Whitings 1,,,,,,,,,Red Ball
+01/06/2024,11:00,Sawston & Babraham II,Blunham,,Whitings 1,,,,,,,,,Red Ball
+01/06/2024,12:00,Castor & Ailsworth,Biggleswade Town,,Whitings 2,,,,,,,,,Red Ball
+01/06/2024,12:00,Godmanchester Town,Cambridge NCI,,Whitings 2,,,,,,,,,Red Ball
+01/06/2024,12:00,Kimbolton,Upwood,,Whitings 2,,,,,,,,,Red Ball
+01/06/2024,12:00,March Town,Saint Ives & Warboys,,Whitings 2,,,,,,,,,Red Ball
+01/06/2024,12:00,Newmarket,Stamford Town,,Whitings 2,,,,,,,,,Red Ball
+01/06/2024,12:30,Cambourne,Foxton Granta II,,Whitings 3,,,,,,,,,
+01/06/2024,12:30,Royston,Eaton Socon II,,Whitings 3,,,,,,,,,
+01/06/2024,12:30,Ufford Park,Histon II,,Whitings 3,,,,,,,,,
+01/06/2024,12:30,Waresley,Huntingdon & District,,Whitings 3,,,,,,,,,
+01/06/2024,13:00,Bluntisham,City of Ely,,CCA Sen 1,,,,,,,,,
+01/06/2024,13:00,Fulbourn Institute,Horseheath,,CCA Sen 1,,,,,,,,,
+01/06/2024,13:00,Ramsey II,Abington,,CCA Sen 1,,,,,,,,,
+01/06/2024,13:00,Wilburton,Thriplow,,CCA Sen 1,,,,,,,,,
+01/06/2024,13:00,Wisbech Town II,Longstanton Grasshoppers,,CCA Sen 1,,,,,,,,,
+01/06/2024,13:00,Audley End,Cambourne II,,CCA Sen 2,,,,,,,,,
+01/06/2024,13:00,Chatteris,Saffron Walden III,,CCA Sen 2,,,,,,,,,
+01/06/2024,13:00,Madingley,Cambridge Old Monks,,CCA Sen 2,,,,,,,,,
+01/06/2024,13:00,Milton,Linton Village,,CCA Sen 2,,,,,,,,,
+01/06/2024,13:00,Wilbrahams,Cambridge St Giles II,,CCA Sen 2,,,,,,,,,
+01/06/2024,13:00,Buntingford,Little Shelford,,CCA Sen 3,,,,,,,,,
+01/06/2024,13:00,Cottenham,Elmdon,,CCA Sen 3,,,,,,,,,
+01/06/2024,13:00,Ickleton,Chippenham,,CCA Sen 3,,,,,,,,,
+01/06/2024,13:00,Saint Ives & Warboys II,March Town II,,CCA Sen 3,,,,,,,,,
+01/06/2024,13:00,TAC,Chesterfords,,CCA Sen 3,,,,,,,,,
+08/06/2024,11:00,Burwell & Exning,Blunham,,Whitings 1,,,,,,,,,Red Ball
+08/06/2024,11:00,Cambridge Saint Giles,Southill Park,,Whitings 1,,,,,,,,,Red Ball
+08/06/2024,11:00,Foxton Granta,Histon,,Whitings 1,,,,,,,,,Red Ball
+08/06/2024,11:00,Saffron Walden II,Ramsey,,Whitings 1,,,,,,,,,Red Ball
+08/06/2024,11:00,Sawston & Babraham II,Eaton Socon,,Whitings 1,,,,,,,,,Red Ball
+08/06/2024,11:00,Wisbech Town,Old Leysians,,Whitings 1,,,,,,,,,Red Ball
+08/06/2024,12:00,Biggleswade Town,Upwood,,Whitings 2,,,,,,,,,Red Ball
+08/06/2024,12:00,Godmanchester Town,Newmarket,,Whitings 2,,,,,,,,,Red Ball
+08/06/2024,12:00,March Town,Kimbolton,,Whitings 2,,,,,,,,,Red Ball
+08/06/2024,12:00,Saint Ives & Warboys,Castor & Ailsworth,,Whitings 2,,,,,,,,,Red Ball
+08/06/2024,12:00,Stamford Town,Cambridge NCI,,Whitings 2,,,,,,,,,Red Ball
+08/06/2024,12:30,Eaton Socon II,Waresley,,Whitings 3,,,,,,,,,
+08/06/2024,12:30,Histon II,Foxton Granta II,,Whitings 3,,,,,,,,,
+08/06/2024,12:30,Huntingdon & District,Barnack,,Whitings 3,,,,,,,,,
+08/06/2024,12:30,Royston,Ufford Park,,Whitings 3,,,,,,,,,
+08/06/2024,13:00,Abington,Wisbech Town II,,CCA Sen 1,,,,,,,,,
+08/06/2024,13:00,Horseheath,Wilburton,,CCA Sen 1,,,,,,,,,
+08/06/2024,13:00,Longstanton Grasshoppers,Fulbourn Institute,,CCA Sen 1,,,,,,,,,
+08/06/2024,13:00,Ramsey II,Bluntisham,,CCA Sen 1,,,,,,,,,
+08/06/2024,13:00,Thriplow,City of Ely,,CCA Sen 1,,,,,,,,,
+08/06/2024,13:00,Audley End,Madingley,,CCA Sen 2,,,,,,,,,
+08/06/2024,13:00,Cambourne II,Saffron Walden III,,CCA Sen 2,,,,,,,,,
+08/06/2024,13:00,Cambridge Old Monks,Cambridge St Giles II,,CCA Sen 2,,,,,,,,,
+08/06/2024,13:00,Linton Village,Chatteris,,CCA Sen 2,,,,,,,,,
+08/06/2024,13:00,Milton,Wilbrahams,,CCA Sen 2,,,,,,,,,
+08/06/2024,13:00,Chesterfords,Saint Ives & Warboys II,,CCA Sen 3,,,,,,,,,
+08/06/2024,13:00,Chippenham,Buntingford,,CCA Sen 3,,,,,,,,,
+08/06/2024,13:00,Elmdon,Little Shelford,,CCA Sen 3,,,,,,,,,
+08/06/2024,13:00,Ickleton,Cottenham,,CCA Sen 3,,,,,,,,,
+08/06/2024,13:00,TAC,March Town II,,CCA Sen 3,,,,,,,,,
+15/06/2024,11:00,Blunham,Foxton Granta,,Whitings 1,,,,,,,,,Red Ball
+15/06/2024,11:00,Eaton Socon,Cambridge Saint Giles,,Whitings 1,,,,,,,,,Red Ball
+15/06/2024,11:00,Histon,Old Leysians,,Whitings 1,,,,,,,,,Red Ball
+15/06/2024,11:00,Ramsey,Sawston & Babraham II,,Whitings 1,,,,,,,,,Red Ball
+15/06/2024,11:00,Southill Park,Burwell & Exning,,Whitings 1,,,,,,,,,Red Ball
+15/06/2024,11:00,Wisbech Town,Saffron Walden II,,Whitings 1,,,,,,,,,Red Ball
+15/06/2024,12:00,Biggleswade Town,Stamford Town,,Whitings 2,,,,,,,,,Red Ball
+15/06/2024,12:00,Cambridge NCI,March Town,,Whitings 2,,,,,,,,,Red Ball
+15/06/2024,12:00,Kimbolton,Godmanchester Town,,Whitings 2,,,,,,,,,Red Ball
+15/06/2024,12:00,Newmarket,Castor & Ailsworth,,Whitings 2,,,,,,,,,Red Ball
+15/06/2024,12:00,Upwood,Saint Ives & Warboys,,Whitings 2,,,,,,,,,Red Ball
+15/06/2024,12:30,Foxton Granta II,Royston,,Whitings 3,,,,,,,,,
+15/06/2024,12:30,Huntingdon & District,Eaton Socon II,,Whitings 3,,,,,,,,,
+15/06/2024,12:30,Ufford Park,Cambourne,,Whitings 3,,,,,,,,,
+15/06/2024,12:30,Waresley,Barnack,,Whitings 3,,,,,,,,,
+15/06/2024,13:00,Bluntisham,Thriplow,,CCA Sen 1,,,,,,,,,
+15/06/2024,13:00,Fulbourn Institute,Abington,,CCA Sen 1,,,,,,,,,
+15/06/2024,13:00,Horseheath,City of Ely,,CCA Sen 1,,,,,,,,,
+15/06/2024,13:00,Longstanton Grasshoppers,Ramsey II,,CCA Sen 1,,,,,,,,,
+15/06/2024,13:00,Wilburton,Wisbech Town II,,CCA Sen 1,,,,,,,,,
+15/06/2024,13:00,Audley End,Linton Village,,CCA Sen 2,,,,,,,,,
+15/06/2024,13:00,Cambourne II,Chatteris,,CCA Sen 2,,,,,,,,,
+15/06/2024,13:00,Cambridge St Giles II,Milton,,CCA Sen 2,,,,,,,,,
+15/06/2024,13:00,Saffron Walden III,Cambridge Old Monks,,CCA Sen 2,,,,,,,,,
+15/06/2024,13:00,Wilbrahams,Madingley,,CCA Sen 2,,,,,,,,,
+15/06/2024,13:00,Buntingford,Elmdon,,CCA Sen 3,,,,,,,,,
+15/06/2024,13:00,Cottenham,Chippenham,,CCA Sen 3,,,,,,,,,
+15/06/2024,13:00,Little Shelford,Chesterfords,,CCA Sen 3,,,,,,,,,
+15/06/2024,13:00,March Town II,Ickleton,,CCA Sen 3,,,,,,,,,
+15/06/2024,13:00,Saint Ives & Warboys II,TAC,,CCA Sen 3,,,,,,,,,
+22/06/2024,11:00,Burwell & Exning,Histon,,Whitings 1,,,,,,,,,Red Ball
+22/06/2024,11:00,Cambridge Saint Giles,Old Leysians,,Whitings 1,,,,,,,,,Red Ball
+22/06/2024,11:00,Eaton Socon,Blunham,,Whitings 1,,,,,,,,,Red Ball
+22/06/2024,11:00,Foxton Granta,Ramsey,,Whitings 1,,,,,,,,,Red Baqll
+22/06/2024,11:00,Saffron Walden II,Southill Park,,Whitings 1,,,,,,,,,Red Ball
+22/06/2024,11:00,Sawston & Babraham II,Wisbech Town,,Whitings 1,,,,,,,,,Red Ball
+22/06/2024,12:00,Cambridge NCI,Saint Ives & Warboys,,Whitings 2,,,,,,,,,Red Ball
+22/06/2024,12:00,Godmanchester Town,Castor & Ailsworth,,Whitings 2,,,,,,,,,Red Ball
+22/06/2024,12:00,Kimbolton,Newmarket,,Whitings 2,,,,,,,,,Red Ball
+22/06/2024,12:00,March Town,Biggleswade Town,,Whitings 2,,,,,,,,,Red Ball
+22/06/2024,12:00,Upwood,Stamford Town,,Whitings 2,,,,,,,,,Red Ball
+22/06/2024,12:30,Barnack,Cambourne,,Whitings 3,,,,,,,,,
+22/06/2024,12:30,Histon II,Royston,,Whitings 3,,,,,,,,,
+22/06/2024,12:30,Huntingdon & District,Waresley,,Whitings 3,,,,,,,,,
+22/06/2024,12:30,Ufford Park,Eaton Socon II,,Whitings 3,,,,,,,,,
+22/06/2024,13:00,Abington,Longstanton Grasshoppers,,CCA Sen 1,,,,,,,,,
+22/06/2024,13:00,Ramsey II,Fulbourn Institute,,CCA Sen 1,,,,,,,,,
+22/06/2024,13:00,Thriplow,Horseheath,,CCA Sen 1,,,,,,,,,
+22/06/2024,13:00,Wilburton,Bluntisham,,CCA Sen 1,,,,,,,,,
+22/06/2024,13:00,Wisbech Town II,City of Ely,,CCA Sen 1,,,,,,,,,
+22/06/2024,13:00,Audley End,Wilbrahams,,CCA Sen 2,,,,,,,,,
+22/06/2024,13:00,Cambourne II,Cambridge St Giles II,,CCA Sen 2,,,,,,,,,
+22/06/2024,13:00,Cambridge Old Monks,Milton,,CCA Sen 2,,,,,,,,,
+22/06/2024,13:00,Chatteris,Madingley,,CCA Sen 2,,,,,,,,,
+22/06/2024,13:00,Saffron Walden III,Linton Village,,CCA Sen 2,,,,,,,,,
+22/06/2024,13:00,Chesterfords,Ickleton,,CCA Sen 3,,,,,,,,,
+22/06/2024,13:00,Cottenham,Buntingford,,CCA Sen 3,,,,,,,,,
+22/06/2024,13:00,Elmdon,March Town II,,CCA Sen 3,,,,,,,,,
+22/06/2024,13:00,Little Shelford,TAC,,CCA Sen 3,,,,,,,,,
+22/06/2024,13:00,Saint Ives & Warboys II,Chippenham,,CCA Sen 3,,,,,,,,,
+29/06/2024,11:00,Burwell & Exning,Sawston & Babraham II,,Whitings 1,,,,,,,,,Red Ball
+29/06/2024,11:00,Foxton Granta,Cambridge Saint Giles,,Whitings 1,,,,,,,,,Red Ball
+29/06/2024,11:00,Histon,Eaton Socon,,Whitings 1,,,,,,,,,Red Ball
+29/06/2024,11:00,Old Leysians,Saffron Walden II,Ground required,Whitings 1,,,,,,,,,Red Ball
+29/06/2024,11:00,Ramsey,Wisbech Town,,Whitings 1,,,,,,,,,Red Ball
+29/06/2024,11:00,Southill Park,Blunham,,Whitings 1,,,,,,,,,Red Ball
+29/06/2024,12:00,Biggleswade Town,Kimbolton,,Whitings 2,,,,,,,,,Red Ball
+29/06/2024,12:00,Castor & Ailsworth,Stamford Town,,Whitings 2,,,,,,,,,Red Ball
+29/06/2024,12:00,March Town,Upwood,,Whitings 2,,,,,,,,,Red Ball
+29/06/2024,12:00,Newmarket,Cambridge NCI,,Whitings 2,,,,,,,,,Red Ball
+29/06/2024,12:00,Saint Ives & Warboys,Godmanchester Town,,Whitings 2,,,,,,,,,Red Ball
+29/06/2024,12:30,Barnack,Foxton Granta II,,Whitings 3,,,,,,,,,
+29/06/2024,12:30,Eaton Socon II,Histon II,,Whitings 3,,,,,,,,,
+29/06/2024,12:30,Royston,Huntingdon & District,,Whitings 3,,,,,,,,,
+29/06/2024,12:30,Waresley,Cambourne,,Whitings 3,,,,,,,,,
+29/06/2024,13:00,Bluntisham,Longstanton Grasshoppers,,CCA Sen 1,,,,,,,,,
+29/06/2024,13:00,City of Ely,Wilburton,,CCA Sen 1,,,,,,,,,
+29/06/2024,13:00,Fulbourn Institute,Thriplow,,CCA Sen 1,,,,,,,,,
+29/06/2024,13:00,Horseheath,Abington,,CCA Sen 1,,,,,,,,,
+29/06/2024,13:00,Wisbech Town II,Ramsey II,,CCA Sen 1,,,,,,,,,
+29/06/2024,13:00,Audley End,Saffron Walden III,,CCA Sen 2,,,,,,,,,
+29/06/2024,13:00,Cambourne II,Cambridge Old Monks,,CCA Sen 2,,,,,,,,,
+29/06/2024,13:00,Cambridge St Giles II,Madingley,,CCA Sen 2,,,,,,,,,
+29/06/2024,13:00,Chatteris,Milton,,CCA Sen 2,,,,,,,,,
+29/06/2024,13:00,Wilbrahams,Linton Village,,CCA Sen 2,,,,,,,,,
+29/06/2024,13:00,Buntingford,Ickleton,,CCA Sen 3,,,,,,,,,
+29/06/2024,13:00,Chippenham,TAC,,CCA Sen 3,,,,,,,,,
+29/06/2024,13:00,Cottenham,March Town II,,CCA Sen 3,,,,,,,,,
+29/06/2024,13:00,Elmdon,Chesterfords,,CCA Sen 3,,,,,,,,,
+29/06/2024,13:00,Little Shelford,Saint Ives & Warboys II,,CCA Sen 3,,,,,,,,,
+06/07/2024,11:00,Blunham,Saffron Walden II,,Whitings 1,,,,,,,,,Red Ball
+06/07/2024,11:00,Burwell & Exning,Wisbech Town,,Whitings 1,,,,,,,,,Red Ball
+06/07/2024,11:00,Cambridge Saint Giles,Ramsey,,Whitings 1,,,,,,,,,Red Ball
+06/07/2024,11:00,Foxton Granta,Southill Park,,Whitings 1,,,,,,,,,Red Ball
+06/07/2024,11:00,Histon,Sawston & Babraham II,,Whitings 1,,,,,,,,,Red Ball
+06/07/2024,11:00,Old Leysians,Eaton Socon,,Whitings 1,,,,,,,,,Red Ball
+06/07/2024,12:00,Biggleswade Town,Saint Ives & Warboys,,Whitings 2,,,,,,,,,Red Ball
+06/07/2024,12:00,Kimbolton,Castor & Ailsworth,,Whitings 2,,,,,,,,,Red Ball
+06/07/2024,12:00,Newmarket,March Town,,Whitings 2,,,,,,,,,Red Ball
+06/07/2024,12:00,Stamford Town,Godmanchester Town,,Whitings 2,,,,,,,,,Red Ball
+06/07/2024,12:00,Upwood,Cambridge NCI,,Whitings 2,,,,,,,,,Red Ball
+06/07/2024,12:30,Cambourne,Histon II,,Whitings 3,,,,,,,,,
+06/07/2024,12:30,Eaton Socon II,Ufford Park,,Whitings 3,,,,,,,,,
+06/07/2024,12:30,Huntingdon & District,Foxton Granta II,,Whitings 3,,,,,,,,,
+06/07/2024,12:30,Royston,Barnack,,Whitings 3,,,,,,,,,
+06/07/2024,13:00,Abington,City of Ely,,CCA Sen 1,,,,,,,,,
+06/07/2024,13:00,Fulbourn Institute,Wilburton,,CCA Sen 1,,,,,,,,,
+06/07/2024,13:00,Longstanton Grasshoppers,Thriplow,,CCA Sen 1,,,,,,,,,
+06/07/2024,13:00,Ramsey II,Horseheath,,CCA Sen 1,,,,,,,,,
+06/07/2024,13:00,Wisbech Town II,Bluntisham,,CCA Sen 1,,,,,,,,,
+06/07/2024,13:00,Audley End,Cambridge Old Monks,,CCA Sen 2,,,,,,,,,
+06/07/2024,13:00,Chatteris,Cambridge St Giles II,,CCA Sen 2,,,,,,,,,
+06/07/2024,13:00,Linton Village,Cambourne II,,CCA Sen 2,,,,,,,,,
+06/07/2024,13:00,Madingley,Milton,,CCA Sen 2,,,,,,,,,
+06/07/2024,13:00,Saffron Walden III,Wilbrahams,,CCA Sen 2,,,,,,,,,
+06/07/2024,13:00,Chippenham,Elmdon,,CCA Sen 3,,,,,,,,,
+06/07/2024,13:00,Cottenham,Little Shelford,,CCA Sen 3,,,,,,,,,
+06/07/2024,13:00,March Town II,Chesterfords,,CCA Sen 3,,,,,,,,,
+06/07/2024,13:00,Saint Ives & Warboys II,Ickleton,,CCA Sen 3,,,,,,,,,
+06/07/2024,13:00,TAC,Buntingford,,CCA Sen 3,,,,,,,,,
+11/07/2024,11:30,Saffron Walden,MCC,,Friendly,,,,,,,,,
+13/07/2024,11:00,Eaton Socon,Southill Park,,Whitings 1,,,,,,,,,Red Ball
+13/07/2024,11:00,Old Leysians,Burwell & Exning,,Whitings 1,,,,,,,,,Red Ball
+13/07/2024,11:00,Ramsey,Histon,,Whitings 1,,,,,,,,,Red Ball
+13/07/2024,11:00,Saffron Walden II,Cambridge Saint Giles,,Whitings 1,,,,,,,,,Red Ball
+13/07/2024,11:00,Sawston & Babraham II,Foxton Granta,,Whitings 1,,,,,,,,,Red Ball
+13/07/2024,11:00,Wisbech Town,Blunham,,Whitings 1,,,,,,,,,Red Ball
+13/07/2024,12:00,Cambridge NCI,Kimbolton,,Whitings 2,,,,,,,,,Red Ball
+13/07/2024,12:00,Castor & Ailsworth,March Town,,Whitings 2,,,,,,,,,Red Ball
+13/07/2024,12:00,Godmanchester Town,Biggleswade Town,,Whitings 2,,,,,,,,,Red Ball
+13/07/2024,12:00,Newmarket,Upwood,,Whitings 2,,,,,,,,,Red Ball
+13/07/2024,12:00,Saint Ives & Warboys,Stamford Town,,Whitings 2,,,,,,,,,Red Ball
+13/07/2024,12:30,Cambourne,Barnack,,Whitings 3,,,,,,,,,
+13/07/2024,12:30,Foxton Granta II,Huntingdon & District,,Whitings 3,,,,,,,,,
+13/07/2024,12:30,Histon II,Ufford Park,,Whitings 3,,,,,,,,,
+13/07/2024,12:30,Royston,Waresley,,Whitings 3,,,,,,,,,
+13/07/2024,13:00,Bluntisham,Abington,,CCA Sen 1,,,,,,,,,
+13/07/2024,13:00,City of Ely,Fulbourn Institute,,CCA Sen 1,,,,,,,,,
+13/07/2024,13:00,Horseheath,Longstanton Grasshoppers,,CCA Sen 1,,,,,,,,,
+13/07/2024,13:00,Thriplow,Wisbech Town II,,CCA Sen 1,,,,,,,,,
+13/07/2024,13:00,Wilburton,Ramsey II,,CCA Sen 1,,,,,,,,,
+13/07/2024,13:00,Audley End,Chatteris,,CCA Sen 2,,,,,,,,,
+13/07/2024,13:00,Cambridge Old Monks,Wilbrahams,,CCA Sen 2,,,,,,,,,
+13/07/2024,13:00,Cambridge St Giles II,Linton Village,,CCA Sen 2,,,,,,,,,
+13/07/2024,13:00,Madingley,Cambourne II,,CCA Sen 2,,,,,,,,,
+13/07/2024,13:00,Saffron Walden III,Milton,,CCA Sen 2,,,,,,,,,
+13/07/2024,13:00,Buntingford,Chesterfords,,CCA Sen 3,,,,,,,,,
+13/07/2024,13:00,Cottenham,Saint Ives & Warboys II,,CCA Sen 3,,,,,,,,,
+13/07/2024,13:00,Elmdon,TAC,,CCA Sen 3,,,,,,,,,
+13/07/2024,13:00,Ickleton,Little Shelford,,CCA Sen 3,,,,,,,,,
+13/07/2024,13:00,March Town II,Chippenham,,CCA Sen 3,,,,,,,,,
+20/07/2024,11:00,Burwell & Exning,Saffron Walden II,,Whitings 1,,,,,,,,,Red Ball
+20/07/2024,11:00,Cambridge Saint Giles,Blunham,,Whitings 1,,,,,,,,,Red Ball
+20/07/2024,11:00,Foxton Granta,Eaton Socon,,Whitings 1,,,,,,,,,Red Ball
+20/07/2024,11:00,Histon,Wisbech Town,,Whitings 1,,,,,,,,,Red Ball
+20/07/2024,11:00,Old Leysians,Ramsey,,Whitings 1,,,,,,,,,Red Ball
+20/07/2024,11:00,Southill Park,Sawston & Babraham II,,Whitings 1,,,,,,,,,Red Ball
+20/07/2024,12:00,Biggleswade Town,Cambridge NCI,,Whitings 2,,,,,,,,,Red Ball
+20/07/2024,12:00,March Town,Godmanchester Town,,Whitings 2,,,,,,,,,Red Ball
+20/07/2024,12:00,Saint Ives & Warboys,Newmarket,,Whitings 2,,,,,,,,,Red Ball
+20/07/2024,12:00,Stamford Town,Kimbolton,,Whitings 2,,,,,,,,,Red Ball
+20/07/2024,12:00,Upwood,Castor & Ailsworth,,Whitings 2,,,,,,,,,Red Ball
+20/07/2024,12:30,Barnack,Waresley,,Whitings 3,,,,,,,,,
+20/07/2024,12:30,Cambourne,Royston,,Whitings 3,,,,,,,,,
+20/07/2024,12:30,Eaton Socon II,Foxton Granta II,,Whitings 3,,,,,,,,,
+20/07/2024,12:30,Huntingdon & District,Histon II,,Whitings 3,,,,,,,,,
+20/07/2024,13:00,Abington,Thriplow,,CCA Sen 1,,,,,,,,,
+20/07/2024,13:00,Fulbourn Institute,Bluntisham,,CCA Sen 1,,,,,,,,,
+20/07/2024,13:00,Longstanton Grasshoppers,Wilburton,,CCA Sen 1,,,,,,,,,
+20/07/2024,13:00,Ramsey II,City of Ely,,CCA Sen 1,,,,,,,,,
+20/07/2024,13:00,Wisbech Town II,Horseheath,,CCA Sen 1,,,,,,,,,
+20/07/2024,13:00,Cambridge Old Monks,Cambourne II,,CCA Sen 2,,,,,,,,,
+20/07/2024,13:00,Linton Village,Wilbrahams,,CCA Sen 2,,,,,,,,,
+20/07/2024,13:00,Madingley,Cambridge St Giles II,,CCA Sen 2,,,,,,,,,
+20/07/2024,13:00,Milton,Chatteris,,CCA Sen 2,,,,,,,,,
+20/07/2024,13:00,Saffron Walden III,Audley End,,CCA Sen 2,,,,,,,,,
+20/07/2024,13:00,Chesterfords,Little Shelford,,CCA Sen 3,,,,,,,,,
+20/07/2024,13:00,Chippenham,Cottenham,,CCA Sen 3,,,,,,,,,
+20/07/2024,13:00,Elmdon,Buntingford,,CCA Sen 3,,,,,,,,,
+20/07/2024,13:00,Ickleton,March Town II,,CCA Sen 3,,,,,,,,,
+20/07/2024,13:00,TAC,Saint Ives & Warboys II,,CCA Sen 3,,,,,,,,,
+27/07/2024,11:00,Blunham,Histon,,Whitings 1,,,,,,,,,Red Ball
+27/07/2024,11:00,Eaton Socon,Saffron Walden II,,Whitings 1,,,,,,,,,Red Ball
+27/07/2024,11:00,Old Leysians,Foxton Granta,,Whitings 1,,,,,,,,,Red Ball
+27/07/2024,11:00,Ramsey,Burwell & Exning,,Whitings 1,,,,,,,,,Red Ball
+27/07/2024,11:00,Sawston & Babraham II,Cambridge Saint Giles,,Whitings 1,,,,,,,,,Red Ball
+27/07/2024,11:00,Wisbech Town,Southill Park,,Whitings 1,,,,,,,,,Red Ball
+27/07/2024,12:00,Castor & Ailsworth,Cambridge NCI,,Whitings 2,,,,,,,,,Red Ball
+27/07/2024,12:00,Godmanchester Town,Upwood,,Whitings 2,,,,,,,,,Red Ball
+27/07/2024,12:00,Kimbolton,Saint Ives & Warboys,,Whitings 2,,,,,,,,,Red Ball
+27/07/2024,12:00,Newmarket,Biggleswade Town,,Whitings 2,,,,,,,,,Red Ball
+27/07/2024,12:00,Stamford Town,March Town,,Whitings 2,,,,,,,,,Red Ball
+27/07/2024,12:30,Barnack,Eaton Socon II,,Whitings 3,,,,,,,,,
+27/07/2024,12:30,Foxton Granta II,Cambourne,,Whitings 3,,,,,,,,,
+27/07/2024,12:30,Histon II,Waresley,,Whitings 3,,,,,,,,,
+27/07/2024,12:30,Ufford Park,Huntingdon & District,,Whitings 3,,,,,,,,,
+27/07/2024,13:00,Abington,Ramsey II,,CCA Sen 1,,,,,,,,,
+27/07/2024,13:00,City of Ely,Bluntisham,,CCA Sen 1,,,,,,,,,
+27/07/2024,13:00,Horseheath,Fulbourn Institute,,CCA Sen 1,,,,,,,,,
+27/07/2024,13:00,Longstanton Grasshoppers,Wisbech Town II,,CCA Sen 1,,,,,,,,,
+27/07/2024,13:00,Thriplow,Wilburton,,CCA Sen 1,,,,,,,,,
+27/07/2024,13:00,Cambourne II,Wilbrahams,,CCA Sen 2,,,,,,,,,
+27/07/2024,13:00,Cambridge St Giles II,Saffron Walden III,,CCA Sen 2,,,,,,,,,
+27/07/2024,13:00,Chatteris,Cambridge Old Monks,,CCA Sen 2,,,,,,,,,
+27/07/2024,13:00,Linton Village,Madingley,,CCA Sen 2,,,,,,,,,
+27/07/2024,13:00,Milton,Audley End,,CCA Sen 2,,,,,,,,,
+27/07/2024,13:00,Chippenham,Little Shelford,,CCA Sen 3,,,,,,,,,
+27/07/2024,13:00,Cottenham,Chesterfords,,CCA Sen 3,,,,,,,,,
+27/07/2024,13:00,Ickleton,TAC,,CCA Sen 3,,,,,,,,,
+27/07/2024,13:00,March Town II,Buntingford,,CCA Sen 3,,,,,,,,,
+27/07/2024,13:00,Saint Ives & Warboys II,Elmdon,,CCA Sen 3,,,,,,,,,
+03/08/2024,11:00,Burwell & Exning,Eaton Socon,,Whitings 1,,,,,,,,,Red Ball
+03/08/2024,11:00,Foxton Granta,Wisbech Town,,Whitings 1,,,,,,,,,Red Ball
+03/08/2024,11:00,Histon,Cambridge Saint Giles,,Whitings 1,,,,,,,,,Red Ball
+03/08/2024,11:00,Old Leysians,Blunham,,Whitings 1,,,,,,,,,Red Ball
+03/08/2024,11:00,Saffron Walden II,Sawston & Babraham II,,Whitings 1,,,,,,,,,Red Ball
+03/08/2024,11:00,Southill Park,Ramsey,,Whitings 1,,,,,,,,,Red Ball
+03/08/2024,12:00,Cambridge NCI,Stamford Town,,Whitings 2,,,,,,,,,Pink Ball
+03/08/2024,12:00,Castor & Ailsworth,Saint Ives & Warboys,,Whitings 2,,,,,,,,,Pink Ball
+03/08/2024,12:00,Kimbolton,March Town,,Whitings 2,,,,,,,,,Pink Ball
+03/08/2024,12:00,Newmarket,Godmanchester Town,,Whitings 2,,,,,,,,,Pink Ball
+03/08/2024,12:00,Upwood,Biggleswade Town,,Whitings 2,,,,,,,,,Pink Ball
+03/08/2024,12:30,Barnack,Ufford Park,,Whitings 3,,,,,,,,,
+03/08/2024,12:30,Cambourne,Waresley,,Whitings 3,,,,,,,,,
+03/08/2024,12:30,Eaton Socon II,Huntingdon & District,,Whitings 3,,,,,,,,,
+03/08/2024,12:30,Royston,Foxton Granta II,,Whitings 3,,,,,,,,,
+03/08/2024,13:00,Abington,Fulbourn Institute,,CCA Sen 1,,,,,,,,,
+03/08/2024,13:00,City of Ely,Horseheath,,CCA Sen 1,,,,,,,,,
+03/08/2024,13:00,Ramsey II,Longstanton Grasshoppers,,CCA Sen 1,,,,,,,,,
+03/08/2024,13:00,Thriplow,Bluntisham,,CCA Sen 1,,,,,,,,,
+03/08/2024,13:00,Wisbech Town II,Wilburton,,CCA Sen 1,,,,,,,,,
+03/08/2024,13:00,Cambridge St Giles II,Cambridge Old Monks,,CCA Sen 2,,,,,,,,,
+03/08/2024,13:00,Chatteris,Linton Village,,CCA Sen 2,,,,,,,,,
+03/08/2024,13:00,Madingley,Audley End,,CCA Sen 2,,,,,,,,,
+03/08/2024,13:00,Saffron Walden III,Cambourne II,,CCA Sen 2,,,,,,,,,
+03/08/2024,13:00,Wilbrahams,Milton,,CCA Sen 2,,,,,,,,,
+03/08/2024,13:00,Buntingford,Chippenham,,CCA Sen 3,,,,,,,,,
+03/08/2024,13:00,Cottenham,Ickleton,,CCA Sen 3,,,,,,,,,
+03/08/2024,13:00,Little Shelford,Elmdon,,CCA Sen 3,,,,,,,,,
+03/08/2024,13:00,March Town II,TAC,,CCA Sen 3,,,,,,,,,
+03/08/2024,13:00,Saint Ives & Warboys II,Chesterfords,,CCA Sen 3,,,,,,,,,
+10/08/2024,12:00,Blunham,Burwell & Exning,,Whitings 1,,,,,,,,,Pink Ball
+10/08/2024,12:00,Cambridge Saint Giles,Eaton Socon,,Whitings 1,,,,,,,,,Pink Ball
+10/08/2024,12:00,Foxton Granta,Saffron Walden II,,Whitings 1,,,,,,,,,Pink Ball
+10/08/2024,12:00,Histon,Southill Park,,Whitings 1,,,,,,,,,Pink Ball
+10/08/2024,12:00,Old Leysians,Wisbech Town,,Whitings 1,,,,,,,,,Pink Ball
+10/08/2024,12:00,Sawston & Babraham II,Ramsey,,Whitings 1,,,,,,,,,Pink Ball
+10/08/2024,12:00,Castor & Ailsworth,Newmarket,,Whitings 2,,,,,,,,,Pink Ball
+10/08/2024,12:00,Godmanchester Town,Kimbolton,,Whitings 2,,,,,,,,,Pink Ball
+10/08/2024,12:00,March Town,Cambridge NCI,,Whitings 2,,,,,,,,,Pink Ball
+10/08/2024,12:00,Saint Ives & Warboys,Upwood,,Whitings 2,,,,,,,,,Pink Ball
+10/08/2024,12:00,Stamford Town,Biggleswade Town,,Whitings 2,,,,,,,,,Pink Ball
+10/08/2024,12:30,Barnack,Histon II,,Whitings 3,,,,,,,,,
+10/08/2024,12:30,Eaton Socon II,Royston,,Whitings 3,,,,,,,,,
+10/08/2024,12:30,Huntingdon & District,Ufford Park,,Whitings 3,,,,,,,,,
+10/08/2024,12:30,Waresley,Foxton Granta II,,Whitings 3,,,,,,,,,
+10/08/2024,13:00,Bluntisham,Ramsey II,,CCA Sen 1,,,,,,,,,
+10/08/2024,13:00,City of Ely,Thriplow,,CCA Sen 1,,,,,,,,,
+10/08/2024,13:00,Fulbourn Institute,Longstanton Grasshoppers,,CCA Sen 1,,,,,,,,,
+10/08/2024,13:00,Wilburton,Horseheath,,CCA Sen 1,,,,,,,,,
+10/08/2024,13:00,Wisbech Town II,Abington,,CCA Sen 1,,,,,,,,,
+10/08/2024,13:00,Cambourne II,Milton,,CCA Sen 2,,,,,,,,,
+10/08/2024,13:00,Cambridge Old Monks,Linton Village,,CCA Sen 2,,,,,,,,,
+10/08/2024,13:00,Cambridge St Giles II,Audley End,Dry Drayton,CCA Sen 2,,,,,,,,,
+10/08/2024,13:00,Madingley,Saffron Walden III,,CCA Sen 2,,,,,,,,,
+10/08/2024,13:00,Wilbrahams,Chatteris,,CCA Sen 2,,,,,,,,,
+10/08/2024,13:00,Buntingford,Saint Ives & Warboys II,,CCA Sen 3,,,,,,,,,
+10/08/2024,13:00,Chesterfords,Chippenham,,CCA Sen 3,,,,,,,,,
+10/08/2024,13:00,Elmdon,Ickleton,,CCA Sen 3,,,,,,,,,
+10/08/2024,13:00,Little Shelford,March Town II,,CCA Sen 3,,,,,,,,,
+10/08/2024,13:00,TAC,Cottenham,,CCA Sen 3,,,,,,,,,
+17/08/2024,12:00,Burwell & Exning,Foxton Granta,,Whitings 1,,,,,,,,,Pink Ball
+17/08/2024,12:00,Eaton Socon,Sawston & Babraham II,,Whitings 1,,,,,,,,,Pink Ball
+17/08/2024,12:00,Old Leysians,Histon,,Whitings 1,,,,,,,,,Pink Ball
+17/08/2024,12:00,Ramsey,Blunham,,Whitings 1,,,,,,,,,Pink Ball
+17/08/2024,12:00,Saffron Walden II,Wisbech Town,,Whitings 1,,,,,,,,,Pink Ball
+17/08/2024,12:00,Southill Park,Cambridge Saint Giles,,Whitings 1,,,,,,,,,Pink Ball
+17/08/2024,12:00,Biggleswade Town,Castor & Ailsworth,,Whitings 2,,,,,,,,,Pink Ball
+17/08/2024,12:00,Cambridge NCI,Godmanchester Town,,Whitings 2,,,,,,,,,Pink Ball
+17/08/2024,12:00,Saint Ives & Warboys,March Town,,Whitings 2,,,,,,,,,Pink Ball
+17/08/2024,12:00,Upwood,Kimbolton,,Whitings 2,,,,,,,,,Pink Ball
+17/08/2024,12:30,Foxton Granta II,Waresley,,Whitings 3,,,,,,,,,
+17/08/2024,12:30,Histon II,Eaton Socon II,,Whitings 3,,,,,,,,,
+17/08/2024,12:30,Huntingdon & District,Cambourne,,Whitings 3,,,,,,,,,
+17/08/2024,12:30,Ufford Park,Barnack,,Whitings 3,,,,,,,,,
+17/08/2024,13:00,Bluntisham,Horseheath,,CCA Sen 1,,,,,,,,,
+17/08/2024,13:00,City of Ely,Longstanton Grasshoppers,,CCA Sen 1,,,,,,,,,
+17/08/2024,13:00,Thriplow,Ramsey II,,CCA Sen 1,,,,,,,,,
+17/08/2024,13:00,Wilburton,Abington,,CCA Sen 1,,,,,,,,,
+17/08/2024,13:00,Wisbech Town II,Fulbourn Institute,,CCA Sen 1,,,,,,,,,
+17/08/2024,13:00,Cambourne II,Audley End,,CCA Sen 2,,,,,,,,,
+17/08/2024,13:00,Cambridge Old Monks,Madingley,,CCA Sen 2,,,,,,,,,
+17/08/2024,13:00,Cambridge St Giles II,Wilbrahams,,CCA Sen 2,,,,,,,,,
+17/08/2024,13:00,Linton Village,Milton,,CCA Sen 2,,,,,,,,,
+17/08/2024,13:00,Saffron Walden III,Chatteris,,CCA Sen 2,,,,,,,,,
+17/08/2024,13:00,Chesterfords,TAC,,CCA Sen 3,,,,,,,,,
+17/08/2024,13:00,Chippenham,Ickleton,,CCA Sen 3,,,,,,,,,
+17/08/2024,13:00,Elmdon,Cottenham,,CCA Sen 3,,,,,,,,,
+17/08/2024,13:00,Little Shelford,Buntingford,,CCA Sen 3,,,,,,,,,
+17/08/2024,13:00,March Town II,Saint Ives & Warboys II,,CCA Sen 3,,,,,,,,,
+24/08/2024,12:00,Blunham,Sawston & Babraham II,,Whitings 1,,,,,,,,,Pink Ball
+24/08/2024,12:00,Cambridge Saint Giles,Burwell & Exning,,Whitings 1,,,,,,,,,Pink Ball
+24/08/2024,12:00,Eaton Socon,Wisbech Town,,Whitings 1,,,,,,,,,Pink Ball
+24/08/2024,12:00,Histon,Foxton Granta,,Whitings 1,,,,,,,,,Pink Ball
+24/08/2024,12:00,Ramsey,Saffron Walden II,,Whitings 1,,,,,,,,,Pink Ball
+24/08/2024,12:00,Southill Park,Old Leysians,,Whitings 1,,,,,,,,,Pink Ball
+24/08/2024,12:00,Biggleswade Town,March Town,,Whitings 2,,,,,,,,,Pink Ball
+24/08/2024,12:00,Castor & Ailsworth,Godmanchester Town,,Whitings 2,,,,,,,,,Pink Ball
+24/08/2024,12:00,Newmarket,Kimbolton,,Whitings 2,,,,,,,,,Pink Ball
+24/08/2024,12:00,Saint Ives & Warboys,Cambridge NCI,,Whitings 2,,,,,,,,,Pink Ball
+24/08/2024,12:00,Stamford Town,Upwood,,Whitings 2,,,,,,,,,Pink Ball
+24/08/2024,12:30,Cambourne,Huntingdon & District,,Whitings 3,,,,,,,,,
+24/08/2024,12:30,Foxton Granta II,Histon II,,Whitings 3,,,,,,,,,
+24/08/2024,12:30,Ufford Park,Royston,,Whitings 3,,,,,,,,,
+24/08/2024,12:30,Waresley,Eaton Socon II,,Whitings 3,,,,,,,,,
+24/08/2024,13:00,Bluntisham,Wilburton,,CCA Sen 1,,,,,,,,,
+24/08/2024,13:00,City of Ely,Wisbech Town II,,CCA Sen 1,,,,,,,,,
+24/08/2024,13:00,Fulbourn Institute,Ramsey II,,CCA Sen 1,,,,,,,,,
+24/08/2024,13:00,Horseheath,Thriplow,,CCA Sen 1,,,,,,,,,
+24/08/2024,13:00,Longstanton Grasshoppers,Abington,,CCA Sen 1,,,,,,,,,
+24/08/2024,13:00,Cambridge Old Monks,Saffron Walden III,,CCA Sen 2,,,,,,,,,
+24/08/2024,13:00,Chatteris,Cambourne II,,CCA Sen 2,,,,,,,,,
+24/08/2024,13:00,Linton Village,Audley End,,CCA Sen 2,,,,,,,,,
+24/08/2024,13:00,Madingley,Wilbrahams,,CCA Sen 2,,,,,,,,,
+24/08/2024,13:00,Milton,Cambridge St Giles II,,CCA Sen 2,,,,,,,,,
+24/08/2024,13:00,Buntingford,Cottenham,,CCA Sen 3,,,,,,,,,
+24/08/2024,13:00,Chippenham,Saint Ives & Warboys II,,CCA Sen 3,,,,,,,,,
+24/08/2024,13:00,Ickleton,Chesterfords,,CCA Sen 3,,,,,,,,,
+24/08/2024,13:00,March Town II,Elmdon,,CCA Sen 3,,,,,,,,,
+24/08/2024,13:00,TAC,Little Shelford,,CCA Sen 3,,,,,,,,,
+31/08/2024,12:00,Burwell & Exning,Southill Park,,Whitings 1,,,,,,,,,Pink Ball
+31/08/2024,12:00,Foxton Granta,Blunham,,Whitings 1,,,,,,,,,Pink Ball
+31/08/2024,12:00,Ramsey,Eaton Socon,,Whitings 1,,,,,,,,,Pink Ball
+31/08/2024,12:00,Saffron Walden II,Histon,,Whitings 1,,,,,,,,,Pink Ball
+31/08/2024,12:00,Sawston & Babraham II,Old Leysians,,Whitings 1,,,,,,,,,Pink Ball
+31/08/2024,12:00,Wisbech Town,Cambridge Saint Giles,,Whitings 1,,,,,,,,,Pink Ball
+31/08/2024,12:00,Cambridge NCI,Newmarket,,Whitings 2,,,,,,,,,Pink Ball
+31/08/2024,12:00,Godmanchester Town,Saint Ives & Warboys,,Whitings 2,,,,,,,,,Pink Ball
+31/08/2024,12:00,Kimbolton,Biggleswade Town,,Whitings 2,,,,,,,,,Pink Ball
+31/08/2024,12:00,Stamford Town,Castor & Ailsworth,,Whitings 2,,,,,,,,,Pink Ball
+31/08/2024,12:00,Upwood,March Town,,Whitings 2,,,,,,,,,Pink Ball
+31/08/2024,12:30,Barnack,Huntingdon & District,,Whitings 3,,,,,,,,,
+31/08/2024,12:30,Cambourne,Eaton Socon II,,Whitings 3,,,,,,,,,
+31/08/2024,12:30,Royston,Histon II,,Whitings 3,,,,,,,,,
+31/08/2024,12:30,Ufford Park,Foxton Granta II,,Whitings 3,,,,,,,,,
+31/08/2024,13:00,Abington,Horseheath,,CCA Sen 1,,,,,,,,,
+31/08/2024,13:00,Longstanton Grasshoppers,Bluntisham,,CCA Sen 1,,,,,,,,,
+31/08/2024,13:00,Thriplow,Fulbourn Institute,,CCA Sen 1,,,,,,,,,
+31/08/2024,13:00,Wilburton,City of Ely,,CCA Sen 1,,,,,,,,,
+31/08/2024,13:00,Cambridge St Giles II,Cambourne II,,CCA Sen 2,,,,,,,,,
+31/08/2024,13:00,Linton Village,Saffron Walden III,,CCA Sen 2,,,,,,,,,
+31/08/2024,13:00,Madingley,Chatteris,,CCA Sen 2,,,,,,,,,
+31/08/2024,13:00,Milton,Cambridge Old Monks,,CCA Sen 2,,,,,,,,,
+31/08/2024,13:00,Wilbrahams,Audley End,,CCA Sen 2,,,,,,,,,
+31/08/2024,13:00,Chesterfords,Elmdon,,CCA Sen 3,,,,,,,,,
+31/08/2024,13:00,Ickleton,Buntingford,,CCA Sen 3,,,,,,,,,
+31/08/2024,13:00,March Town II,Cottenham,,CCA Sen 3,,,,,,,,,
+31/08/2024,13:00,Saint Ives & Warboys II,Little Shelford,,CCA Sen 3,,,,,,,,,
+31/08/2024,13:00,TAC,Chippenham,,CCA Sen 3,,,,,,,,,
+07/09/2024,11:30,Blunham,Eaton Socon,,Whitings 1,,,,,,,,,Pink Ball
+07/09/2024,11:30,Histon,Burwell & Exning,,Whitings 1,,,,,,,,,Pink Ball
+07/09/2024,11:30,Old Leysians,Cambridge Saint Giles,Ground Required,Whitings 1,,,,,,,,,Pink Ball
+07/09/2024,11:30,Ramsey,Foxton Granta,,Whitings 1,,,,,,,,,Pink Ball
+07/09/2024,11:30,Southill Park,Saffron Walden II,,Whitings 1,,,,,,,,,Pink Ball
+07/09/2024,11:30,Wisbech Town,Sawston & Babraham II,,Whitings 1,,,,,,,,,Pink Ball
+14/09/2024,11:30,Blunham,Southill Park,,Whitings 1,,,,,,,,,Pink Ball
+14/09/2024,11:30,Cambridge Saint Giles,Foxton Granta,,Whitings 1,,,,,,,,,Pink Ball
+14/09/2024,11:30,Eaton Socon,Histon,,Whitings 1,,,,,,,,,Pink Ball
+14/09/2024,11:30,Saffron Walden II,Old Leysians,,Whitings 1,,,,,,,,,Pink Ball
+14/09/2024,11:30,Sawston & Babraham II,Burwell & Exning,,Whitings 1,,,,,,,,,Pink Ball
+14/09/2024,11:30,Wisbech Town,Ramsey,,Whitings 1,,,,,,,,,Pink Ball
