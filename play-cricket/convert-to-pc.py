@@ -6,7 +6,7 @@ from test import test_results
 import logging
 
 def play_cricket_upload_format(in_file="results/result.xlsx", out_file="results/play-cricket.xlsx"):
-  results = read_data(in_file)
+  results = read_excel(in_file)
   result_with_date = []
   keys = [
             "Division ID",
@@ -33,10 +33,10 @@ def play_cricket_upload_format(in_file="results/result.xlsx", out_file="results/
       else:
         r[key] = result[key]
     result_with_date.append(r)
-  save_result_to_file(result_with_date, out_file)
+  write_excel(result_with_date, out_file)
 
 def main():
-  play_cricket_upload_format("tmp/re1_1.xlsx", "tmp/play-cricket-upload.xlsx")
+  play_cricket_upload_format("2024/result.xlsx", "2024/play-cricket-upload.xlsx")
 
 if __name__ == '__main__':
   logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)

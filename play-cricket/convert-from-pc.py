@@ -23,7 +23,7 @@ def main():
     match["Away"] = str(html.unescape(away)).replace("&", "and")
     match["Ground"] = get_ground_name(data_rows, match["Home"])
     updated.append(match)
-  save_result_to_file(updated, "results/play-cricket-normalised.xls")
+  write_excel(updated, "results/play-cricket-normalised.xls")
 
 if __name__ == '__main__':
   logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
