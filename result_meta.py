@@ -43,7 +43,7 @@ def add_result_meta(rows, results, result_file):
         match_date = datetime.strptime(matched[0]["Date"], "%Y/%m/%d")
         prev_match_date = datetime.strptime(matched[1]["Date"], "%Y/%m/%d")
         difference = abs((match_date - prev_match_date).days)
-        return difference / 7
+        return int(difference / 7)
 
     def _get_max_consecutive(team, results, type="Home"):
         # matches are ordered by date

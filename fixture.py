@@ -45,7 +45,6 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
         logging.info("Match Count: %i" % match_count)
         logging.info(self._result_file)
         write_results(results, self._result_file, self._rows, global_solution_cnt)
-        # results_meta=get_results_meta(results, self._rows)
         test_results_indexes(self._rows, results)
         if self._solution_limit and self._solution_count >= self._solution_limit:
             logging.info("Stop search after %i solutions" % self._solution_limit)
@@ -105,10 +104,12 @@ def make_variables(model, rows):
     return matches
 
 
-def home_opposition_match_date_gap(model, rows, matches):
-    consecutives = 6
+def home_opposition_match_date_gap(model, rows, matches, partial_results):
+    # setting this too high wont really work 
+    consecutives = 1
     team_states = {}
     all_dates = get_all_dates(rows)
+    teams_in_result = get_all_teams_in_result(partial_results)
     for division in get_all_divisions(rows):
         for h in get_all_teams(rows, division):
             for o in get_all_teams(rows, division):
@@ -120,35 +121,37 @@ def home_opposition_match_date_gap(model, rows, matches):
                             team_states[f"{h}_{o}_{d}"] = []
                             team_states[f"{h}_{o}_{d}"].append(matches[g, h, o, d])
 
-    for home_team in get_all_teams(rows, division):
-        for away_team in get_all_teams(rows, division):
-            for date_index in range(len(all_dates) - consecutives):
-                matches_in_consecutive_window = []
-                for i in range(consecutives + 1):
-                    try:
-                        matches_in_consecutive_window += team_states[
-                            f"{home_team}_{away_team}_{all_dates[date_index + i]}"
-                        ]
-                    except KeyError:
-                        pass
-                    try:
-                        matches_in_consecutive_window += team_states[
-                            f"{away_team}_{home_team}_{all_dates[date_index + i]}"
-                        ]
-                    except KeyError:
-                        pass
-                home_oppostions = []
-                for a_home_oppostion_match in matches_in_consecutive_window:
-                    home_oppostions.append(a_home_oppostion_match)
-                # model.AddExactlyOne(home_oppostions)
-                model.AddAtMostOne(home_oppostions)
-                # model.Minimize(sum(home_oppostions))
+        for home_team in get_all_teams(rows, division):
+            # if there is partial result 
+            if home_team in teams_in_result:
+              continue
+            for away_team in get_all_teams(rows, division):
+              # if there is partial result 
+              if away_team in teams_in_result:
+                continue
+              if home_team == away_team:
+                  continue
+              for date_index in range(len(all_dates) - consecutives):
+                  matches_in_consecutive_window = []
+                  for i in range(consecutives + 1):
+                    matches_in_consecutive_window += team_states[
+                        f"{home_team}_{away_team}_{all_dates[date_index + i]}"
+                    ]
+                    matches_in_consecutive_window += team_states[
+                        f"{away_team}_{home_team}_{all_dates[date_index + i]}"
+                    ]
+                  home_oppostions = []
+                  for a_home_oppostion_match in matches_in_consecutive_window:
+                      home_oppostions.append(a_home_oppostion_match)
+                  # model.AddExactlyOne(home_oppostions)
+                  model.AddAtMostOne(home_oppostions)
+                  # model.Minimize(sum(home_oppostions))
 
 
 def consecutive_home_or_aways(model, rows, matches):
     home_states = {}
     away_states = {}
-    default_consecutives = 5
+    default_consecutives = 3
     for division in get_all_divisions(rows):
         for h in get_all_teams(rows, division):
             for o in get_all_teams(rows, division):
@@ -271,34 +274,34 @@ def ground_constraint(model, rows, matches):
         model.AddAtMostOne(constraint)
 
 
-def add_consecutive_matches(
-    rows, results, out_file="results/data_with_consecutive.xlsx"
-):
-    dates = get_all_dates(rows)
+# def add_consecutive_matches(
+#     rows, results, out_file="results/data_with_consecutive.xlsx"
+# ):
+#     dates = get_all_dates(rows)
 
-    for team in get_all_teams(rows):
-        # matches are ordered by date
-        matches = _get_all_matches(team, results, type="Home")
-        max_consecutive = 0
-        prev_match = None
-        consecutive = 1
-        for match in matches:
-            if prev_match == None:
-                consecutive = 1
-            else:
-                match_date = datetime.strptime(match["Date"], "%Y/%m/%d")
-                prev_match_date = datetime.strptime(prev_match["Date"], "%Y/%m/%d")
-                difference = abs((match_date - prev_match_date).days)
-                if difference <= 7:
-                    consecutive += 1
-                else:
-                    consecutive = 1
-            if consecutive > max_consecutive:
-                max_consecutive = consecutive
-            prev_match = match
-        team_row = get_row_for_team(rows, team)
-        team_row["max_consecutive"] = max_consecutive
-    write_excel(rows, out_file)
+#     for team in get_all_teams(rows):
+#         # matches are ordered by date
+#         matches = _get_all_matches(team, results, type="Home")
+#         max_consecutive = 0
+#         prev_match = None
+#         consecutive = 1
+#         for match in matches:
+#             if prev_match == None:
+#                 consecutive = 1
+#             else:
+#                 match_date = datetime.strptime(match["Date"], "%Y/%m/%d")
+#                 prev_match_date = datetime.strptime(prev_match["Date"], "%Y/%m/%d")
+#                 difference = abs((match_date - prev_match_date).days)
+#                 if difference <= 7:
+#                     consecutive += 1
+#                 else:
+#                     consecutive = 1
+#             if consecutive > max_consecutive:
+#                 max_consecutive = consecutive
+#             prev_match = match
+#         team_row = get_row_for_team(rows, team)
+#         team_row["max_consecutive"] = max_consecutive
+#     write_excel(rows, out_file)
 
 
 # def play_cricket_download_format(in_file, out_file):
@@ -416,14 +419,11 @@ def process(rows, result_file, partial_results=[]):
 
     must_home_match_constraint(model, rows, matches)
 
-    home_opposition_match_date_gap(model, rows, matches)
-
-    consecutive_home_or_aways(model, rows, matches)
-
     invlalid_constraints(model, rows, matches)
 
-    # print ("Set Number of Matches Constraint")
-    # number_of_matches_constraint(model, rows, valid_states, matches)
+    home_opposition_match_date_gap(model, rows, matches, partial_results)
+
+    consecutive_home_or_aways(model, rows, matches)
 
     logging.debug("solve")
     # Creates the model.
@@ -438,6 +438,8 @@ def process(rows, result_file, partial_results=[]):
     # Enumerate all solutions.
     # solver.parameters.enumerate_all_solutions = True
     # print (f"Start solving {result_file}")
+    # solver.parameters.log_search_progress = True
+    # solver.parameters.num_search_workers = 8
     status = solver.Solve(model, solution_printer)
 
     # Statistics.y
@@ -470,9 +472,7 @@ def main(data_file, result_file, partial_file=None, run_one_after_another=False)
 
         for division in get_all_divisions(all_rows):
             solution_found = False
-            # if division in ["CCA Senior League Division 1",
-            #                 "CCA Senior League Division 2",
-            #                 "CCA Senior League Division 3"]:
+            # if division in ["CCA Junior League 4 South"]:
             #   continue
             print(f"Solving: {division}")
             partial_results = read_excel(partial_tmp_file)
@@ -491,6 +491,13 @@ def main(data_file, result_file, partial_file=None, run_one_after_another=False)
                 shutil.copyfile(result_file, partial_tmp_file)
             solution_found = True
     else:
+        # div_rows = []
+        # for row in all_rows:
+        #     if row["Division"] in [ 
+        #                 "CCA Senior League Division 2",
+        #                 "CCA Junior League 3 South"]:
+        #         div_rows.append(row)
+        # all_rows = div_rows
         if process(all_rows, result_file, partial_results) == 0:
             print(f"No solution..")
         else:
@@ -504,8 +511,9 @@ def main(data_file, result_file, partial_file=None, run_one_after_another=False)
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     data_file = "2024/data.xlsx"
-    result_file = "2024/result.xlsx"
+    result_file = "2024/result1.xlsx"
     partial_file = "2024/partial_results.xlsx"
 
     # main(data_file, result_file, partial_file=None, run_one_after_another=False)
     main(data_file, result_file, partial_file)
+    # main(data_file, result_file, None, False)

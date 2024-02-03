@@ -5,6 +5,7 @@ import shutil
 
 def test_conditions(rows, matches):
     for the_match in matches:
+        print (the_match)
         match_date = the_match["Date"]
         home_team = the_match["Home"]
         away_team = the_match["Away"]

@@ -7,3 +7,4 @@
 * No two "No Play" on same date, if fixture is tight
 - If 9 teams are on 18 windows, then minimum 4 matches need to be set on any given day
   So, Can't have one date with 3 matches.
+- Check if home ground availability is for atleast minimum number of home matches

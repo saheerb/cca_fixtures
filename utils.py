@@ -346,7 +346,15 @@ def get_all_grounds(rows):
             # print (teams)
     return grounds
 
-
+def get_all_teams_in_result(results):
+    teams = []
+    for result in results:
+        if result['Home'] not in teams:
+            teams.append(result['Home'])
+        if result['Away'] not in teams:
+            teams.append(result['Away'])
+    return teams
+    
 # @staticmethod
 def get_all_teams(rows, division=""):
     teams = []

@@ -5,13 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "python":"/Users/sahbab01/.local/share/virtualenvs/cca_fixtures-VXVvStJC/bin/python",
-      "name": "Python: Current File",
-      "type": "python",
+      "python": "/Users/sahbab01/.local/share/virtualenvs/cca_fixtures-CxejGOYa/bin/python",
+      "name": "Python Debugger: Current File",
+      "type": "debugpy",
       "request": "launch",
       "program": "${file}",
-      "console": "integratedTerminal",
-      "justMyCode": true
+      "console": "integratedTerminal"
     }
   ]
 }
