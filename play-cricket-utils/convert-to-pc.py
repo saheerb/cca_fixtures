@@ -45,10 +45,6 @@ def play_cricket_upload_format(
     write_excel(result_with_date, out_file)
 
 
-def main():
-    play_cricket_upload_format("2024/result.xlsx", "2024/play-cricket-upload.xlsx")
-
-
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-    main()
+    play_cricket_upload_format("2024/result.xlsx", "2024/play-cricket-upload.xlsx")

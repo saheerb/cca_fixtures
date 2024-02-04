@@ -534,5 +534,5 @@ if __name__ == "__main__":
     partial_file = "2024/partial_results.xlsx"
 
     # main(data_file, result_file, partial_file=None, run_one_after_another=False)
-    main(data_file, result_file, partial_file)
-    # main(data_file, result_file, None, True)
+    # main(data_file, result_file, partial_file)
+    main(data_file, result_file, partial_file=None, run_one_after_another=False)
