@@ -1,4 +1,11 @@
 from ortools.sat.python import cp_model
+import os
+import inspect
+import sys
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir) 
+
 from utils import *
 import shutil
 from test import test_results_indexes
@@ -47,4 +54,5 @@ def play_cricket_upload_format(
 
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-    play_cricket_upload_format("2024/result.xlsx", "2024/play-cricket-upload.xlsx")
+    play_cricket_upload_format("2024/results/result-v1.xlsx", 
+                               "2024/results/result-v1-pc.xlsx")

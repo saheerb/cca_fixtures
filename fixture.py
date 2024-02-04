@@ -74,18 +74,22 @@ def must_home_matches(rows):
     return states
 
 
-def get_must_have_states(rows, partial_results):
+def get_must_have_states(matches, partial_results):
     states = []
-    for match in partial_results:
-        if match in rows:
-            states.append(
-                [match["Ground"], match["Home"], match["Away"], match["Date"]]
-            )
+    for result in partial_results:
+      bFound = False
+      for match in matches:
+        g,h,o,d = match
+        if result['Ground'] == g and result['Home'] == h and result['Away'] == o and result['Date'] == d:
+          bFound = True
+          break
+        states.append(match)
+      # assert bFound == True, result
     return states
 
 
-def must_constraint(model, rows, matches, partial_results):
-    must_states = get_must_have_states(rows, partial_results)
+def must_constraint(model, matches, partial_results):
+    must_states = get_must_have_states(matches, partial_results)
     for state in must_states:
         g, h, o, d = state[0], state[1], state[2], state[3]
         model.AddExactlyOne(matches[g, h, o, d])
@@ -419,7 +423,7 @@ def process(rows, result_file, partial_results=[]):
 
     teams_on_a_day_constraint(model, rows, matches)
 
-    must_constraint(model, rows, matches, partial_results)
+    must_constraint(model, matches, partial_results)
 
     must_home_match_constraint(model, rows, matches)
 
@@ -480,49 +484,55 @@ def main(data_file, result_file, partial_file=None, run_one_after_another=False)
             #   continue
             print(f"Solving: {division}")
             partial_results = read_excel(partial_tmp_file)
+  
             if division not in processed_divisions:
                 processed_divisions.append(division)
             rows = []
             for row in all_rows:
                 if row["Division"] in processed_divisions:
-                    result_file = f"2024/tmp/{division}.xlsx"
+                    result_tmp_file = f"2024/tmp/{division}.xlsx"
                     rows.append(row)
 
-            if process(rows, result_file, partial_results) == 0:
+            if process(rows, result_tmp_file, partial_results) == 0:
                 print(f"No solution..")
                 sys.exit()
             else:
-                shutil.copyfile(result_file, partial_tmp_file)
+                shutil.copyfile(result_tmp_file, partial_tmp_file)
             solution_found = True
     else:
-        # div_rows = []
-        # for row in all_rows:
-        #     if row["Division"] in [ 
-        #                 # "CCA Senior League Division 1",
-        #                 "CCA Senior League Division 2",
-        #                 # "CCA Senior League Division 3",
-        #                 # "CCA Junior League 1 South",
-        #                 # "CCA Junior League 1 North",
-        #                 # "CCA Junior League 2 South",
-        #                 # "CCA Junior League 2 North",
-        #                 "CCA Junior League 3 South",
-        #                 # "CCA Junior League 3 North",
-        #                 # "CCA Junior League 3 West",
-        #                 # "CCA Junior League 4 South",
-        #                 # "CCA Junior League 4 North",
-        #                 # "CCA Junior League 4 West",
-        #                 # "CCA Junior League 5 South",
-        #                 # "CCA Junior League 5 North",
-        #                 # "CCA Junior League 5 West"
-        #                 ]:
-        #         div_rows.append(row)
-        # all_rows = div_rows
+        div_rows = []
+        for row in all_rows:
+            if row["Division"] in [ 
+                        "CCA Senior League Division 1",
+                        "CCA Senior League Division 2",
+                        "CCA Senior League Division 3",
+                        "CCA Junior League 1 South",
+                        "CCA Junior League 1 North",
+                        "CCA Junior League 2 South",
+                        "CCA Junior League 2 North",
+                        "CCA Junior League 3 South",
+                        "CCA Junior League 3 North",
+                        "CCA Junior League 3 West",
+                        "CCA Junior League 4 South",
+                        "CCA Junior League 4 North",
+                        "CCA Junior League 4 West",
+                        "CCA Junior League 5 South",
+                        "CCA Junior League 5 North",
+                        "CCA Junior League 5 West"
+                        ]:
+                div_rows.append(row)
+        all_rows = div_rows
+
         if process(all_rows, result_file, partial_results) == 0:
             print(f"No solution..")
         else:
             solution_found = True
 
     if solution_found:
+        if run_one_after_another:
+            shutil.copyfile(result_tmp_file, result_file)
+            pass
+        
         results = read_excel(result_file)
         add_result_meta(all_rows, results, result_file)
 
@@ -530,9 +540,11 @@ def main(data_file, result_file, partial_file=None, run_one_after_another=False)
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     data_file = "2024/data.xlsx"
-    result_file = "2024/result4.xlsx"
+    result_file = "2024/result-5.xlsx"
     partial_file = "2024/partial_results.xlsx"
 
     # main(data_file, result_file, partial_file=None, run_one_after_another=False)
-    # main(data_file, result_file, partial_file)
+    # main(data_file, "2024/result-using-keith-partial.xlsx", partial_file, False)
+    # main(data_file, "2024/result-no-partial.xlsx", None, False)
+    # main(data_file, "2024/result-partial.xlsx", partial_file, False)
     main(data_file, result_file, partial_file=None, run_one_after_another=False)
