@@ -106,7 +106,7 @@ def make_variables(model, rows):
 
 def home_opposition_match_date_gap(model, rows, matches, partial_results):
     # setting this too high wont really work 
-    consecutives = 1
+    consecutives = 4
     team_states = {}
     all_dates = get_all_dates(rows)
     teams_in_result = get_all_teams_in_result(partial_results)
@@ -148,10 +148,11 @@ def home_opposition_match_date_gap(model, rows, matches, partial_results):
                   # model.Minimize(sum(home_oppostions))
 
 
-def consecutive_home_or_aways(model, rows, matches):
+def consecutive_home_or_aways(model, rows, matches, partial_results):
     home_states = {}
     away_states = {}
     default_consecutives = 3
+    teams_in_result = get_all_teams_in_result(partial_results)
     for division in get_all_divisions(rows):
         for h in get_all_teams(rows, division):
             for o in get_all_teams(rows, division):
@@ -173,6 +174,9 @@ def consecutive_home_or_aways(model, rows, matches):
     for the_matches in [home_states, away_states]:
         for division in get_all_divisions(rows):
             for team in get_all_teams(rows, division):
+                # something already in result won't cut it
+                if team in teams_in_result:
+                    continue
                 try:
                     consecutives = int(get_row_for_team(rows, team)["Max Consecutive"])
                 except:
@@ -423,7 +427,7 @@ def process(rows, result_file, partial_results=[]):
 
     home_opposition_match_date_gap(model, rows, matches, partial_results)
 
-    consecutive_home_or_aways(model, rows, matches)
+    consecutive_home_or_aways(model, rows, matches, partial_results)
 
     logging.debug("solve")
     # Creates the model.
@@ -494,8 +498,23 @@ def main(data_file, result_file, partial_file=None, run_one_after_another=False)
         # div_rows = []
         # for row in all_rows:
         #     if row["Division"] in [ 
+        #                 # "CCA Senior League Division 1",
         #                 "CCA Senior League Division 2",
-        #                 "CCA Junior League 3 South"]:
+        #                 # "CCA Senior League Division 3",
+        #                 # "CCA Junior League 1 South",
+        #                 # "CCA Junior League 1 North",
+        #                 # "CCA Junior League 2 South",
+        #                 # "CCA Junior League 2 North",
+        #                 "CCA Junior League 3 South",
+        #                 # "CCA Junior League 3 North",
+        #                 # "CCA Junior League 3 West",
+        #                 # "CCA Junior League 4 South",
+        #                 # "CCA Junior League 4 North",
+        #                 # "CCA Junior League 4 West",
+        #                 # "CCA Junior League 5 South",
+        #                 # "CCA Junior League 5 North",
+        #                 # "CCA Junior League 5 West"
+        #                 ]:
         #         div_rows.append(row)
         # all_rows = div_rows
         if process(all_rows, result_file, partial_results) == 0:
@@ -511,9 +530,9 @@ def main(data_file, result_file, partial_file=None, run_one_after_another=False)
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     data_file = "2024/data.xlsx"
-    result_file = "2024/result1.xlsx"
+    result_file = "2024/result4.xlsx"
     partial_file = "2024/partial_results.xlsx"
 
     # main(data_file, result_file, partial_file=None, run_one_after_another=False)
     main(data_file, result_file, partial_file)
-    # main(data_file, result_file, None, False)
+    # main(data_file, result_file, None, True)
