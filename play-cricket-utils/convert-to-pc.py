@@ -13,6 +13,7 @@ from test import test_results
 import logging
 
 
+
 def play_cricket_upload_format(
     in_file="results/result.xlsx", out_file="results/play-cricket.xlsx"
 ):
@@ -54,5 +55,7 @@ def play_cricket_upload_format(
 
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-    play_cricket_upload_format("2024/results/result-v1.xlsx", 
-                               "2024/results/result-v1-pc.xlsx")
+    in_file = "2024/results/v4/v1/results-sen-2.xlsx"
+    out = "2024/results/v4/v1/results-sen-2-pc.xlsx"
+    play_cricket_upload_format(in_file, out)
+    

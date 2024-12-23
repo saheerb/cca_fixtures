@@ -39,7 +39,9 @@ def add_result_meta(rows, results, result_file):
                 match["Away"] == home_team and match["Home"] == away_team
             ):
                 matched.append(match)
-        assert 2 == len(matched)
+        # print (matched, home_team, away_team)
+        assert 2 == len(matched), print (matched, home_team, away_team)
+        # , print (matched)
         match_date = datetime.strptime(matched[0]["Date"], "%Y/%m/%d")
         prev_match_date = datetime.strptime(matched[1]["Date"], "%Y/%m/%d")
         difference = abs((match_date - prev_match_date).days)
@@ -70,6 +72,7 @@ def add_result_meta(rows, results, result_file):
 
     div_dict = {}
     for division in get_all_divisions(rows):
+        print (division)
         result_metas = []
         for home_team in get_all_teams(rows, division):
             # row = get_row_for_team(rows, home_team)

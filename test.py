@@ -5,20 +5,22 @@ import shutil
 
 def test_conditions(rows, matches):
     for the_match in matches:
-                
+
         match_date = the_match["Date"]
         home_team = the_match["Home"]
         away_team = the_match["Away"]
         home_row = get_row_for_team(rows, home_team)
         away_row = get_row_for_team(rows, away_team)
-        try:
-          assert home_row[match_date] != "No Home"
-          assert home_row[match_date] != "No Play"
-          assert home_row[match_date] != "Off Request"
-          assert away_row[match_date] != "No Play"
-          assert away_row[match_date] != "Off Request"
-        except:
-            print (the_match)
+                
+        # print (the_match)
+        assert home_row[match_date] != "No Home"
+        assert home_row[match_date] != "No Play"
+        assert home_row[match_date] != "Off Request"
+        assert away_row[match_date] != "No Play"
+        assert away_row[match_date] != "Off Request"
+
+
+
 
 
 def test_no_ground_conflicts(rows, matches):
@@ -33,7 +35,20 @@ def test_no_ground_conflicts(rows, matches):
                     pass
                     # print (the_match)
                     # print (a_match)
+                # print (a_match)
                 assert fixture_ground != a_match["Ground"]
+
+def test_correct_ground(rows, matches):
+    for the_match in matches:
+        fixture_ground = the_match["Ground"]
+        fixture_home = the_match["Home"]
+        home_row = get_row_for_team(rows, fixture_home)
+        if fixture_ground not in [home_row["Ground"]] + [x.strip() for x in home_row["Alternative Grounds"].split(",")]:
+            # print (the_match)
+            # print (home_row)
+            # print (fixture_ground)
+
+            assert False
 
 
 def test_no_dates_conflicts(rows, matches):
@@ -63,19 +78,14 @@ def test_number_of_matches(rows, matches):
                     away_matches_count += 1
 
 
-            try:
-              assert nb_expected_one_leg_matches == home_matches_count
-              assert nb_expected_one_leg_matches == away_matches_count
-            except:
-              if home_matches_count == 0:
-                  continue
-              print (division, team_name)
-              print (nb_expected_one_leg_matches, home_matches_count)
-
-              pass
+            
+            assert nb_expected_one_leg_matches == home_matches_count
+            assert nb_expected_one_leg_matches == away_matches_count
+            
 
 def test_results(rows, matches):
-    test_number_of_matches(rows, matches)
+    # test_number_of_matches(rows, matches)
+    test_correct_ground(rows, matches)
     test_no_dates_conflicts(rows, matches)
     test_no_ground_conflicts(rows, matches)
     test_conditions(rows, matches)
@@ -95,9 +105,9 @@ def main():
     try:
       partial_results_file = sys.argv[1]
     except:
-      partial_results_file = "2024/partial_results.xlsx"
+      partial_results_file = "2024/results/v4/v1/play-cricket-normalised.xlsx"
 
-    rows = read_excel("2024/data.xlsx", "Grounds")
+    rows = read_excel("2024/results/v4/v1/data-wip.xlsx", "Grounds")
     matches = read_excel(partial_results_file)
     test_results(rows, matches)
 

@@ -7,6 +7,7 @@ from test import test_results
 from result_meta import add_result_meta
 import logging
 import os
+import time
 
 global_solution_cnt = 0
 
@@ -83,8 +84,9 @@ def get_must_have_states(matches, partial_results):
         if result['Ground'] == g and result['Home'] == h and result['Away'] == o and result['Date'] == d:
           bFound = True
           break
+
+      if bFound:
         states.append(match)
-      # assert bFound == True, result
     return states
 
 
@@ -105,12 +107,13 @@ def make_variables(model, rows):
                         matches[g, h, o, d] = model.NewBoolVar(
                             f"match_g{g}_h{h}_o{o}d_{d}"
                         )
+    print (len(matches))
     return matches
 
 
 def home_opposition_match_date_gap(model, rows, matches, partial_results):
     # setting this too high wont really work 
-    consecutives = 4
+    consecutives = 5
     team_states = {}
     all_dates = get_all_dates(rows)
     teams_in_result = get_all_teams_in_result(partial_results)
@@ -392,12 +395,17 @@ def home_opposition_constraint(model, rows, matches):
     # all teams play exactly one match against all oppositions
     # regardless of ground or days
     for division in get_all_divisions(rows):
+        # print (division)
         for h in get_all_teams(rows, division):
+            # print (h)
             for o in get_all_teams(rows, division):
+                # print (o)
                 for g in get_grounds(rows, h):
+                    # print (g)
                     if h == o:
                         continue
                     for d in get_all_dates(rows):
+                        # print (d)
                         try:
                             constraints[f"{h}_{o}"].append(matches[g, h, o, d])
                         except KeyError:
@@ -405,13 +413,16 @@ def home_opposition_constraint(model, rows, matches):
                             constraints[f"{h}_{o}"].append(matches[g, h, o, d])
 
     for constraint in constraints.values():
+        # print (constraint)
         model.AddExactlyOne(constraint)
 
 
 def process(rows, result_file, partial_results=[]):
     all_teams = get_all_teams(rows)
+    
     all_days = get_all_dates(rows)
     all_grounds = get_all_grounds(rows)
+    # print (all_grounds)
 
     model = cp_model.CpModel()
 
@@ -446,8 +457,8 @@ def process(rows, result_file, partial_results=[]):
     # Enumerate all solutions.
     # solver.parameters.enumerate_all_solutions = True
     # print (f"Start solving {result_file}")
-    # solver.parameters.log_search_progress = True
-    # solver.parameters.num_search_workers = 8
+    solver.parameters.log_search_progress = True
+    solver.parameters.num_search_workers = 8
     status = solver.Solve(model, solution_printer)
 
     # Statistics.y
@@ -469,9 +480,10 @@ def main(data_file, result_file, partial_file=None, run_one_after_another=False)
         partial_results = read_excel(partial_file, "Fixtures")
 
     all_rows = read_excel(data_file, "Grounds")
-
+    # print ("++++")
+    # print (all_rows)
     if run_one_after_another:
-        partial_tmp_file = "2024/tmp/result-partial.xlsx"
+        partial_tmp_file = "2025/workspace/result-partial.xlsx"
         processed_divisions = []
         if partial_file == None:
             write_excel({}, partial_tmp_file)
@@ -500,6 +512,7 @@ def main(data_file, result_file, partial_file=None, run_one_after_another=False)
                 shutil.copyfile(result_tmp_file, partial_tmp_file)
             solution_found = True
     else:
+        
         div_rows = []
         for row in all_rows:
             if row["Division"] in [ 
@@ -521,8 +534,12 @@ def main(data_file, result_file, partial_file=None, run_one_after_another=False)
                         "CCA Junior League 5 West"
                         ]:
                 div_rows.append(row)
+            else:
+                print (row["Division"])
+                continue
+                # sys.exit()
         all_rows = div_rows
-
+        # print (all_rows)
         if process(all_rows, result_file, partial_results) == 0:
             print(f"No solution..")
         else:
@@ -539,12 +556,15 @@ def main(data_file, result_file, partial_file=None, run_one_after_another=False)
 
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-    data_file = "2024/data.xlsx"
-    result_file = "2024/result-5.xlsx"
-    partial_file = "2024/partial_results.xlsx"
+    data_file = "2025/workspace/data.xlsx"
+    result_file = "2025/results/results.xlsx"
+    partial_file = "2025/results/partial.xlsx"
+    # partial_file = None
 
     # main(data_file, result_file, partial_file=None, run_one_after_another=False)
     # main(data_file, "2024/result-using-keith-partial.xlsx", partial_file, False)
     # main(data_file, "2024/result-no-partial.xlsx", None, False)
     # main(data_file, "2024/result-partial.xlsx", partial_file, False)
     main(data_file, result_file, partial_file=None, run_one_after_another=False)
+    # main("2024/data-adjusted-with-keith.xlsx", "2024/result-partial.xlsx")
+    # , partial_file, run_one_after_another=True)

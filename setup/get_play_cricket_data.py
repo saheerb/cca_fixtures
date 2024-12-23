@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import pylightxl as xl
 import json
 from pathlib import Path
+import os
 
 
 def get_data_from_play_cricket():
@@ -53,9 +54,9 @@ def get_data_from_play_cricket():
 
 
 if __name__ == "__main__":
-    working_dir = "2024/tmp"
+    working_dir = "2025/workspace"
     result_file = "data.json"
     Path(working_dir).mkdir(parents=True, exist_ok=True)
     data = get_data_from_play_cricket()
-    with open("data.json", "w") as f:
+    with open(os.path.join(working_dir,"data.json"), "w") as f:
         json.dump(data, f, indent=4)

@@ -417,6 +417,8 @@ def get_all_dates(rows):
             ):
                 if the_date not in dates:
                     dates.append(the_date)
+    # print (dates)
+    # sys.exit(0)
     return dates
     #   # do only for one row
     #   break

@@ -152,6 +152,8 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
 
 def get_valid_states(rows, partial_results):
     must_states = get_must_have_states(rows, partial_results)
+    print (must_states)
+    print (must_states)
     states = []
     for row in rows:
         ground = row["Ground"]
@@ -697,29 +699,29 @@ def process(rows, result_file, partial_results=[]):
     matches = make_variables(model, valid_states)
 
     logging.debug("Set Home vs Opposition - Play exactly once")
-    home_opposition_constraint(model, valid_states, matches)
+    # home_opposition_constraint(model, valid_states, matches)
 
     logging.debug("Set Consecutive dates constraint")
     # set_consecutive_date_constraint(model, rows, valid_states, matches)
     # set_consecutive_date_constraint_org(model, rows, valid_states, matches)
 
     logging.debug("Set Home/Away Leg constraint")
-    set_home_away_leg_constraints(model, rows, valid_states, matches)
+    # set_home_away_leg_constraints(model, rows, valid_states, matches)
     # Number of matches - same as Home vs Opposition - so no need
     # print ("Set Number of Matches Constraint")
-    number_of_matches_constraint(model, rows, valid_states, matches)
+    # number_of_matches_constraint(model, rows, valid_states, matches)
 
     logging.debug("Set Must constraint")
-    must_constraint(model, rows, matches, partial_results)
+    # must_constraint(model, rows, matches, partial_results)
 
     logging.debug("Set Home Match constraint")
-    must_home_match_constraint(model, rows, valid_states, matches)
+    # must_home_match_constraint(model, rows, valid_states, matches)
 
     logging.debug("Set Home Opposition constraint")
-    teams_on_a_day_constraint(model, rows, valid_states, matches)
+    # teams_on_a_day_constraint(model, rows, valid_states, matches)
 
     logging.debug("Set Ground constraint")
-    ground_constraint(model, rows, valid_states, matches)
+    # ground_constraint(model, rows, valid_states, matches)
 
     logging.debug("solve")
     # Creates the model.
