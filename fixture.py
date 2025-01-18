@@ -47,7 +47,7 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
         logging.info(self._result_file)
         write_results(results, self._result_file, self._rows, global_solution_cnt)
         test_results_indexes(self._rows, results)
-        if self._solution_limit and self._solution_count >= self._solution_limit:
+        if self._solution_limit and global_solution_cnt >= self._solution_limit:
             logging.info("Stop search after %i solutions" % self._solution_limit)
             self.StopSearch()
 

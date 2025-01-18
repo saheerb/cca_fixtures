@@ -22,8 +22,8 @@ def is_ground_available(matches, rows, ground, date):
             return row[date]
     return "Free"
 
-matches = read_excel("2024/results/v3.xlsx")
-data_file = "2024/data-v3.xlsx"
+matches = read_excel("2025/results/results-consecutive-5.xlsx")
+data_file = "2025/workspace/data.xlsx"
 rows = read_excel(data_file, "Grounds")
 dates = get_all_dates(rows)
 
@@ -41,4 +41,4 @@ for ground in sorted(grounds):
     ground_maps.append(ground_map)
 
 print (ground_maps)
-write_excel(ground_maps, "2024/results/grounds.xlsx")
+write_excel(ground_maps, "2025/results/grounds.xlsx")
