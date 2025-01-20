@@ -54,6 +54,22 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
     def solution_count(self):
         return global_solution_cnt
 
+def get_halves(team, rows):
+    return "2025/06/21", "2025/07/05"
+
+def get_mid_point(team, rows):
+    total_available = 0
+    mid = 0
+    row = get_row_for_team(rows, team)
+    for the_date in get_all_dates(rows):
+        if row[the_date] not in ["No Play", "Off Request"]:
+            total_available += 1
+    for the_date in get_all_dates(rows):
+        if row[the_date] not in ["No Play", "Off Request"]:
+            mid += 1
+        if mid == int(total_available/2):
+            # logging.debug(f"Team: {team} Mid point: {the_date}")
+            return the_date
 
 def must_home_matches(rows):
     states = []
@@ -110,10 +126,69 @@ def make_variables(model, rows):
     print (len(matches))
     return matches
 
+def home_oppostion_match_date_distribution(model, rows, matches, partial_results):
+    first_half = {}
+    second_half = {}
+    all_dates = get_all_dates(rows)
+    teams_in_result = get_all_teams_in_result(partial_results)
+    for division in get_all_divisions(rows):
+        for h in get_all_teams(rows, division):
+            # find the midpoint
+            # if there is partial result 
+            if h in teams_in_result:
+                continue
+                # continue
+            # first available x/2 dates
+            # mid_date = get_mid_point(h, rows)
+            first_cut, second_cut = get_halves(h, rows)
+
+            for o in get_all_teams(rows, division):
+                # if there is partial result 
+                if o in teams_in_result:
+                    continue
+                if h == o:
+                    continue
+                for g in get_grounds(rows, h):
+                    for d in all_dates:
+                        try:
+                            first_half[f"{h}_{o}"].append(matches[g, h, o, d])
+                        except KeyError:
+                            first_half[f"{h}_{o}"] = []
+                            first_half[f"{h}_{o}"].append(matches[g, h, o, d])
+
+                        if first_cut == d:
+                            break
+
+                    for d in all_dates[::-1]:
+                        try:
+                            second_half[f"{h}_{o}"].append(matches[g, h, o, d])
+                        except KeyError:
+                            second_half[f"{h}_{o}"] = []
+                            second_half[f"{h}_{o}"].append(matches[g, h, o, d])
+
+                        if second_cut == d:
+                            break
+
+    # print (team_states)
+    # for team_state in team_states.values():
+    #     # print (team_state)
+    #     model.AddAtMostOne(team_state)
+    
+
+    for k in first_half.keys():
+        h,o=k.split("_")
+        merged = first_half[f"{h}_{o}"] + first_half[f"{o}_{h}"]
+        model.AddAtMostOne(merged)
+    for k in second_half.keys():
+        h,o=k.split("_")
+        merged = second_half[f"{h}_{o}"] + second_half[f"{o}_{h}"]
+        model.AddAtMostOne(merged)
+        # time.sleep(1)
+
 
 def home_opposition_match_date_gap(model, rows, matches, partial_results):
     # setting this too high wont really work 
-    consecutives = 5
+    consecutives = 4
     team_states = {}
     all_dates = get_all_dates(rows)
     teams_in_result = get_all_teams_in_result(partial_results)
@@ -439,6 +514,8 @@ def process(rows, result_file, partial_results=[]):
     must_home_match_constraint(model, rows, matches)
 
     invlalid_constraints(model, rows, matches)
+
+    home_oppostion_match_date_distribution(model, rows, matches, partial_results)
 
     home_opposition_match_date_gap(model, rows, matches, partial_results)
 
