@@ -55,7 +55,7 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
         return global_solution_cnt
 
 def get_halves(team, rows):
-    return "2025/06/21", "2025/07/05"
+    return "2025/06/21", "2025/07/12"
 
 def get_mid_point(team, rows):
     total_available = 0
