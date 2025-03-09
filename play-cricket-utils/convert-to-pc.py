@@ -55,7 +55,7 @@ def play_cricket_upload_format(
 
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-    in_file = "2024/results/v4/v1/results-sen-2.xlsx"
-    out = "2024/results/v4/v1/results-sen-2-pc.xlsx"
+    in_file = "2025/results/results-9-Feb.xlsx"
+    out = "2025/results/pc.xlsx"
     play_cricket_upload_format(in_file, out)
     
