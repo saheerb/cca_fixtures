@@ -26,7 +26,8 @@ def _read(db, ws):
             break
         for i in header:
             value = ws.index(row_nbr, header[i])
-            row[i] = html.escape(str(value))
+            row[i] = str(value)
+            # row[i] = html.escape(str(value))
         rows.append(row)
     return rows
 

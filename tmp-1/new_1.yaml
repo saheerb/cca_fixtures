@@ -1,0 +1,158 @@
+#
+# YAML Anchor Definitions
+#
+project:
+  name: "ipg-ce-sw-tgw-hub"
+  environments:
+    prod:
+      vault:
+        awsEngine:
+          enabled: true
+    test:
+      vault:
+        awsEngine:
+          enabled: true
+    dev:
+      vault:
+        awsEngine:
+          enabled: true
+  gitlab:
+    samlGroupLinks:
+      # iac-gitlab-ipg-ce-sw-tgw-hub-test-member
+      "1ad8479e-ffb2-4523-a017-802ae375b242": "developer"
+      # iac-gitlab-ipg-ce-sw-tgw-hub-dev-member
+      "34ef3ce3-429e-45fc-97b5-15a3df1e55e2": "developer"
+      # iac-gitlab-ipg-ce-sw-tgw-hub-prod-member
+      "5c3689e8-f3fe-4d11-9f5c-aee973c892c2": "developer"
+
+.facetGroupGlobal:
+  platform: "aws"
+  region: "global"
+  project: "tgw"
+.facetGroupRegional:
+  platform: "aws"
+  project: "tgw"
+  region: "eu-west-1"
+.workspaceBase:
+  allowDestroyPlan: false
+  autoApply: false
+  nameTemplate: "{{platform}}_{{project}}_{{region}}_{{environment}}_{{moduleName}}"
+  terraformVersion: "~> 1.7.0"
+  variableSetRefs:
+    - - "{{platform}}"
+      - "{{platform}}/{{project}}"
+      - "{{platform}}/{{project}}/{{region}}"
+      - "{{platform}}/{{project}}/{{region}}/{{environment}}"
+    - "{{platform}}/{{project}}/{{region}}/{{environment}}/{{moduleName}}"
+.workspaceBaseDev:
+  autoApply: false
+  nameTemplate: "{{platform}}_{{project}}_{{region}}_{{environment}}_{{moduleName}}"
+  terraformVersion: "~> 1.7.0"
+  variableSetRefs:
+    - - "{{platform}}"
+      - "{{platform}}/{{project}}"
+      - "{{platform}}/{{project}}/{{region}}"
+      - "{{platform}}/{{project}}/{{region}}/{{environment}}"
+    - "{{platform}}/{{project}}/{{region}}/{{environment}}/{{moduleName}}"
+  allowDestroyPlan: true
+  facetGroups:
+    - platform: "aws"
+      project: "tgw"
+      region: "eu-west-1"
+      environment: "dev"
+.workspaceBaseTest:
+  autoApply: false
+  nameTemplate: "{{platform}}_{{project}}_{{region}}_{{environment}}_{{moduleName}}"
+  terraformVersion: "~> 1.7.0"
+  variableSetRefs:
+    - - "{{platform}}"
+      - "{{platform}}/{{project}}"
+      - "{{platform}}/{{project}}/{{region}}"
+      - "{{platform}}/{{project}}/{{region}}/{{environment}}"
+    - "{{platform}}/{{project}}/{{region}}/{{environment}}/{{moduleName}}"
+  allowDestroyPlan: true
+  facetGroups:
+    - platform: "aws"
+      project: "tgw"
+      region: "eu-west-1"
+      environment: "test"
+.workspaceBaseProd:
+  allowDestroyPlan: false
+  autoApply: false
+  nameTemplate: "{{platform}}_{{project}}_{{region}}_{{environment}}_{{moduleName}}"
+  terraformVersion: "~> 1.7.0"
+  variableSetRefs:
+    - - "{{platform}}"
+      - "{{platform}}/{{project}}"
+      - "{{platform}}/{{project}}/{{region}}"
+      - "{{platform}}/{{project}}/{{region}}/{{environment}}"
+    - "{{platform}}/{{project}}/{{region}}/{{environment}}/{{moduleName}}"
+  facetGroups:
+    - platform: "aws"
+      project: "tgw"
+      region: "eu-west-1"
+      environment: "prod"
+# Define anchors for each module workspace which can be combined
+# to create the final dev, test and prod workspace.
+.workspaces:
+  - moduleName: "tgw"
+    vcsRepoName: "/arm-terraform-modules/CE-SW/terraform-aws-transit-gateway"
+    vcsBranch: "v1.0.0"
+
+.varSetRefsCommon:
+  - "{{platform}}"
+  - "{{platform}}/{{project}}"
+  - "{{platform}}/{{project}}/{{region}}"
+  - "{{platform}}/{{project}}/{{region}}/{{environment}}"
+
+
+variableSetsSources:
+  - "varsets/aws/account.yaml"
+  - "varsets/aws/tgw/project.yaml"
+  - "varsets/aws/tgw/eu-west-1/region.yaml"
+  - "varsets/aws/tgw/eu-west-1/dev/environment.yaml"
+  - "varsets/aws/tgw/eu-west-1/dev/tgw.yaml"
+  - "varsets/aws/tgw/eu-west-1/test/environment.yaml"
+  - "varsets/aws/tgw/eu-west-1/test/tgw.yaml"
+workspaces:
+  # PROD
+  #- <<: [*workspaceTGW, *workspaceBaseProd]
+
+  # TEST
+  - autoApply: false
+    nameTemplate: "{{platform}}_{{project}}_{{region}}_{{environment}}_{{moduleName}}"
+    terraformVersion: "~> 1.7.0"
+    variableSetRefs:
+      - - "{{platform}}"
+        - "{{platform}}/{{project}}"
+        - "{{platform}}/{{project}}/{{region}}"
+        - "{{platform}}/{{project}}/{{region}}/{{environment}}"
+      - "{{platform}}/{{project}}/{{region}}/{{environment}}/{{moduleName}}"
+    allowDestroyPlan: true
+    facetGroups:
+      - platform: "aws"
+        project: "tgw"
+        region: "eu-west-1"
+        environment: "test"
+    moduleName: "tgw"
+    vcsRepoName: "/arm-terraform-modules/CE-SW/terraform-aws-transit-gateway"
+    vcsBranch: "v1.0.0"
+  # DEV
+  - autoApply: false
+    nameTemplate: "{{platform}}_{{project}}_{{region}}_{{environment}}_{{moduleName}}"
+    terraformVersion: "~> 1.7.0"
+    variableSetRefs:
+      - - "{{platform}}"
+        - "{{platform}}/{{project}}"
+        - "{{platform}}/{{project}}/{{region}}"
+        - "{{platform}}/{{project}}/{{region}}/{{environment}}"
+      - "{{platform}}/{{project}}/{{region}}/{{environment}}/{{moduleName}}"
+    allowDestroyPlan: true
+    facetGroups:
+      - platform: "aws"
+        project: "tgw"
+        region: "eu-west-1"
+        environment: "dev"
+    moduleName: "tgw"
+    vcsRepoName: "/arm-terraform-modules/CE-SW/terraform-aws-transit-gateway"
+    vcsBranch: "v1.0.0"

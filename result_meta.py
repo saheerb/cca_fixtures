@@ -7,7 +7,7 @@ def add_result_meta(rows, results, result_file):
         m = re.search("[0-9]", division)
         if m != None:
             nb = m.group(0)
-        m = re.search("Junior|Senior", division)
+        m = re.search("Junior|Senior|Premier", division)
         if m != None:
             div = m.group(0)
         m = re.search("South|North|West", division)
@@ -39,7 +39,6 @@ def add_result_meta(rows, results, result_file):
                 match["Away"] == home_team and match["Home"] == away_team
             ):
                 matched.append(match)
-        # print (matched, home_team, away_team)
         assert 2 == len(matched), print (matched, home_team, away_team)
         # , print (matched)
         match_date = datetime.strptime(matched[0]["Date"], "%Y/%m/%d")

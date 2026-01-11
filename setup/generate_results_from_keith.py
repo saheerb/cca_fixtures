@@ -9,8 +9,8 @@ sys.path.insert(0, parentdir)
 
 from utils import *
 from excel import *
-input = "2024/Games.csv"
-data_file = "2024/data.xlsx"
+input = "2026/Games.csv"
+data_file = "2026/data.xlsx"
 all_rows = read_excel(data_file, "Grounds")
 
 
@@ -139,4 +139,4 @@ with open(input, newline="") as csvfile:
         result["Date"] = "/".join([dd, mm, yyyy])
         result["Time"] = csv_row[1]
         results.append(result)
-    write_excel(results, "2024/partial_results.xlsx")
+    write_excel(results, "2026/partial_results.xlsx")

@@ -54,7 +54,7 @@ def get_data_from_play_cricket():
 
 
 if __name__ == "__main__":
-    working_dir = "2025/workspace"
+    working_dir = "2026/workspace"
     result_file = "data.json"
     Path(working_dir).mkdir(parents=True, exist_ok=True)
     data = get_data_from_play_cricket()

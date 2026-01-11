@@ -68,8 +68,8 @@
         "team_url": "https://audleywenden.play-cricket.com/Teams/377531",
         "club_name": "Audley Wenden CC",
         "team_name": "1st XI",
-        "ground_url": "",
-        "ground_name": ""
+        "ground_url": "/grounds/60845",
+        "ground_name": "Audley End House"
     },
     {
         "div_url": "/website/division/125381",
@@ -77,8 +77,8 @@
         "team_url": "https://cambridgeoldmonks.play-cricket.com/Teams/323460",
         "club_name": "Cambridge Old Monks CC",
         "team_name": "1st XI",
-        "ground_url": "/grounds/58898",
-        "ground_name": "Histon Recreation Ground"
+        "ground_url": "",
+        "ground_name": ""
     },
     {
         "div_url": "/website/division/125381",
@@ -218,20 +218,20 @@
     {
         "div_url": "/website/division/125383",
         "div_name": "CCA Senior League Division 3",
-        "team_url": "https://ashwell.play-cricket.com/Teams/52157",
-        "club_name": "Ashwell CC",
-        "team_name": "1st XI",
-        "ground_url": "/grounds/2679",
-        "ground_name": "Ashwell Recreation Ground"
-    },
-    {
-        "div_url": "/website/division/125383",
-        "div_name": "CCA Senior League Division 3",
         "team_url": "https://bassingbourn.play-cricket.com/Teams/75094",
         "club_name": "Bassingbourn CC",
         "team_name": "1st XI",
         "ground_url": "/grounds/8834",
         "ground_name": "Recreation Ground"
+    },
+    {
+        "div_url": "/website/division/125383",
+        "div_name": "CCA Senior League Division 3",
+        "team_url": "https://birchanger.play-cricket.com/Teams/85067",
+        "club_name": "Birchanger CC",
+        "team_name": "1st XI",
+        "ground_url": "",
+        "ground_name": ""
     },
     {
         "div_url": "/website/division/125383",
@@ -266,8 +266,8 @@
         "team_url": "https://saffronwalden.play-cricket.com/Teams/72209",
         "club_name": "Saffron Walden CC",
         "team_name": "3rd XI",
-        "ground_url": "",
-        "ground_name": ""
+        "ground_url": "/grounds/3112",
+        "ground_name": "Saffron Walden County High School"
     },
     {
         "div_url": "/website/division/125384",
@@ -281,20 +281,20 @@
     {
         "div_url": "/website/division/125384",
         "div_name": "CCA Junior League 1 North",
-        "team_url": "https://girton.play-cricket.com/Teams/42059",
-        "club_name": "Girton CC",
-        "team_name": "1st XI",
-        "ground_url": "/grounds/6670",
-        "ground_name": "Girton Cricket Club"
+        "team_url": "https://ncissc.play-cricket.com/Teams/9822",
+        "club_name": "Cambridge NCI CC",
+        "team_name": "2nd XI",
+        "ground_url": "/grounds/16629",
+        "ground_name": "Fitzwilliam College"
     },
     {
         "div_url": "/website/division/125384",
         "div_name": "CCA Junior League 1 North",
-        "team_url": "https://kimbolton.play-cricket.com/Teams/207084",
-        "club_name": "Kimbolton CC",
-        "team_name": "2nd XI",
-        "ground_url": "/grounds/13747",
-        "ground_name": "Kimbolton CC"
+        "team_url": "https://cherryhinton.play-cricket.com/Teams/37744",
+        "club_name": "Cherry Hinton CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/6886",
+        "ground_name": "Stow cum Quy Recreation Ground"
     },
     {
         "div_url": "/website/division/125384",
@@ -308,20 +308,11 @@
     {
         "div_url": "/website/division/125384",
         "div_name": "CCA Junior League 1 North",
-        "team_url": "https://needingworth.play-cricket.com/Teams/60631",
-        "club_name": "Needingworth CC",
+        "team_url": "https://girton.play-cricket.com/Teams/42059",
+        "club_name": "Girton CC",
         "team_name": "1st XI",
-        "ground_url": "/grounds/4570",
-        "ground_name": "Millfields"
-    },
-    {
-        "div_url": "/website/division/125384",
-        "div_name": "CCA Junior League 1 North",
-        "team_url": "https://ncissc.play-cricket.com/Teams/9822",
-        "club_name": "Cambridge NCI CC",
-        "team_name": "2nd XI",
-        "ground_url": "/grounds/16629",
-        "ground_name": "Fitzwilliam College"
+        "ground_url": "/grounds/6670",
+        "ground_name": "Girton Cricket Club"
     },
     {
         "div_url": "/website/division/125384",
@@ -331,6 +322,15 @@
         "team_name": "1st XI",
         "ground_url": "/grounds/30724",
         "ground_name": "Godolphin Stables"
+    },
+    {
+        "div_url": "/website/division/125384",
+        "div_name": "CCA Junior League 1 North",
+        "team_url": "https://kimbolton.play-cricket.com/Teams/207084",
+        "club_name": "Kimbolton CC",
+        "team_name": "2nd XI",
+        "ground_url": "/grounds/13747",
+        "ground_name": "Kimbolton CC"
     },
     {
         "div_url": "/website/division/125384",
@@ -353,11 +353,11 @@
     {
         "div_url": "/website/division/125385",
         "div_name": "CCA Junior League 1 South",
-        "team_url": "https://birchanger.play-cricket.com/Teams/85067",
-        "club_name": "Birchanger CC",
+        "team_url": "https://ashwell.play-cricket.com/Teams/52157",
+        "club_name": "Ashwell CC",
         "team_name": "1st XI",
-        "ground_url": "",
-        "ground_name": ""
+        "ground_url": "/grounds/2679",
+        "ground_name": "Ashwell Recreation Ground"
     },
     {
         "div_url": "/website/division/125385",
@@ -434,11 +434,11 @@
     {
         "div_url": "/website/division/125386",
         "div_name": "CCA Junior League 2 North",
-        "team_url": "https://cherryhinton.play-cricket.com/Teams/37744",
-        "club_name": "Cherry Hinton CC",
-        "team_name": "1st XI",
-        "ground_url": "/grounds/6886",
-        "ground_name": "Stow cum Quy Recreation Ground"
+        "team_url": "https://burwellandexning.play-cricket.com/Teams/224866",
+        "club_name": "Burwell & Exning CC",
+        "team_name": "3rd XI",
+        "ground_url": "/grounds/52979",
+        "ground_name": "Mingay Park"
     },
     {
         "div_url": "/website/division/125386",
@@ -596,15 +596,6 @@
     {
         "div_url": "/website/division/125388",
         "div_name": "CCA Junior League 3 North",
-        "team_url": "https://burwellandexning.play-cricket.com/Teams/224866",
-        "club_name": "Burwell & Exning CC",
-        "team_name": "3rd XI",
-        "ground_url": "/grounds/52979",
-        "ground_name": "Mingay Park"
-    },
-    {
-        "div_url": "/website/division/125388",
-        "div_name": "CCA Junior League 3 North",
         "team_url": "https://hemingfordpark.play-cricket.com/Teams/144063",
         "club_name": "Hemingford Park CC",
         "team_name": "1st XI",
@@ -659,6 +650,15 @@
     {
         "div_url": "/website/division/125388",
         "div_name": "CCA Junior League 3 North",
+        "team_url": "https://needingworth.play-cricket.com/Teams/60631",
+        "club_name": "Needingworth CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/4570",
+        "ground_name": "Millfields"
+    },
+    {
+        "div_url": "/website/division/125388",
+        "div_name": "CCA Junior League 3 North",
         "team_url": "https://northstowe.play-cricket.com/Teams/291990",
         "club_name": "Northstowe CC",
         "team_name": "1st XI",
@@ -672,7 +672,7 @@
         "club_name": "Telugu Association of Cambridge CC",
         "team_name": "3rd XI",
         "ground_url": "/grounds/57122",
-        "ground_name": "Quy Recreation Ground"
+        "ground_name": "Balsham Sports Pavilion/Recreation Ground"
     },
     {
         "div_url": "/website/division/125389",
@@ -707,8 +707,8 @@
         "team_url": "https://audleywenden.play-cricket.com/Teams/377593",
         "club_name": "Audley Wenden CC",
         "team_name": "2nd XI",
-        "ground_url": "",
-        "ground_name": ""
+        "ground_url": "/grounds/60846",
+        "ground_name": "Wenden Cricket Club"
     },
     {
         "div_url": "/website/division/125389",
@@ -1112,8 +1112,8 @@
         "team_url": "https://camkerala.play-cricket.com/Teams/377629",
         "club_name": "Cam Kerala CC",
         "team_name": "4th XI",
-        "ground_url": "",
-        "ground_name": ""
+        "ground_url": "/grounds/59505",
+        "ground_name": "Trinity Hall College Sports Ground"
     },
     {
         "div_url": "/website/division/125394",
@@ -1138,15 +1138,6 @@
         "div_name": "CCA Junior League 5 North",
         "team_url": "https://cottenham.play-cricket.com/Teams/43227",
         "club_name": "Cottenham CC",
-        "team_name": "2nd XI",
-        "ground_url": "",
-        "ground_name": ""
-    },
-    {
-        "div_url": "/website/division/125394",
-        "div_name": "CCA Junior League 5 North",
-        "team_url": "https://wilbrahams.play-cricket.com/Teams/377631",
-        "club_name": "Wilbrahams CC",
         "team_name": "2nd XI",
         "ground_url": "",
         "ground_name": ""
@@ -1213,5 +1204,302 @@
         "team_name": "3rd XI",
         "ground_url": "",
         "ground_name": ""
+    },
+    {
+        "div_url": "/website/division/125395",
+        "div_name": "CCA Junior League 5 South",
+        "team_url": "https://wilbrahams.play-cricket.com/Teams/377631",
+        "club_name": "Wilbrahams CC",
+        "team_name": "2nd XI",
+        "ground_url": "",
+        "ground_name": ""
+    },
+    {
+        "div_url": "/website/division/130052",
+        "div_name": "Onyx Division 1",
+        "team_url": "https://ramseycchunts.play-cricket.com/Teams/53881",
+        "club_name": "Ramsey CC, Hunts",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/14834",
+        "ground_name": "The Cricketfield"
+    },
+    {
+        "div_url": "/website/division/130052",
+        "div_name": "Onyx Division 1",
+        "team_url": "https://histoncc.play-cricket.com/Teams/18966",
+        "club_name": "Histon CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/10999",
+        "ground_name": "Histon Recreation Ground"
+    },
+    {
+        "div_url": "/website/division/130052",
+        "div_name": "Onyx Division 1",
+        "team_url": "https://foxtongranta.play-cricket.com/Teams/297457",
+        "club_name": "Foxton Granta CC",
+        "team_name": "1st XI",
+        "ground_url": "",
+        "ground_name": ""
+    },
+    {
+        "div_url": "/website/division/130052",
+        "div_name": "Onyx Division 1",
+        "team_url": "https://wisbech.play-cricket.com/Teams/14509",
+        "club_name": "Wisbech Town CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/11646",
+        "ground_name": "Wisbech Town CC"
+    },
+    {
+        "div_url": "/website/division/130052",
+        "div_name": "Onyx Division 1",
+        "team_url": "https://burwellandexning.play-cricket.com/Teams/224864",
+        "club_name": "Burwell & Exning CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/52981",
+        "ground_name": "Exning Park"
+    },
+    {
+        "div_url": "/website/division/130052",
+        "div_name": "Onyx Division 1",
+        "team_url": "https://cambstgiles.play-cricket.com/Teams/41048",
+        "club_name": "Cambridge St. Giles CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/13335",
+        "ground_name": "Dry Drayton Cricket Ground"
+    },
+    {
+        "div_url": "/website/division/130052",
+        "div_name": "Onyx Division 1",
+        "team_url": "https://eatonsoconcc.play-cricket.com/Teams/8884",
+        "club_name": "Eaton Socon CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/46420",
+        "ground_name": "The Terry Day Cricket Ground"
+    },
+    {
+        "div_url": "/website/division/130052",
+        "div_name": "Onyx Division 1",
+        "team_url": "https://oldleysians.play-cricket.com/Teams/121316",
+        "club_name": "Old Leysians CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/45523",
+        "ground_name": "The Leys School 1st XI pitch"
+    },
+    {
+        "div_url": "/website/division/130052",
+        "div_name": "Onyx Division 1",
+        "team_url": "https://sawstonbabraham.play-cricket.com/Teams/180942",
+        "club_name": "Sawston and Babraham CC",
+        "team_name": "2nd XI",
+        "ground_url": "/grounds/47496",
+        "ground_name": "Spicers Sports Ground"
+    },
+    {
+        "div_url": "/website/division/130052",
+        "div_name": "Onyx Division 1",
+        "team_url": "https://blunham.play-cricket.com/Teams/47064",
+        "club_name": "Blunham CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/14842",
+        "ground_name": "Blunham Playing Fields"
+    },
+    {
+        "div_url": "/website/division/130052",
+        "div_name": "Onyx Division 1",
+        "team_url": "https://saffronwalden.play-cricket.com/Teams/72208",
+        "club_name": "Saffron Walden CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/11219",
+        "ground_name": "Anglo American Playing Fields"
+    },
+    {
+        "div_url": "/website/division/130052",
+        "div_name": "Onyx Division 1",
+        "team_url": "https://upwood.play-cricket.com/Teams/11684",
+        "club_name": "Upwood CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/10469",
+        "ground_name": "Upwood Cricket Ground"
+    },
+    {
+        "div_url": "/website/division/130053",
+        "div_name": "Onyx Division 2",
+        "team_url": "https://godmanchester.play-cricket.com/Teams/155593",
+        "club_name": "Godmanchester Town CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/13414",
+        "ground_name": "The Parks"
+    },
+    {
+        "div_url": "/website/division/130053",
+        "div_name": "Onyx Division 2",
+        "team_url": "https://newmarketcricketclub.play-cricket.com/Teams/277270",
+        "club_name": "Newmarket CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/57255",
+        "ground_name": "Dullingham Sports Field"
+    },
+    {
+        "div_url": "/website/division/130053",
+        "div_name": "Onyx Division 2",
+        "team_url": "https://stiveswarboys.play-cricket.com/Teams/238142",
+        "club_name": "St Ives Town & Warboys CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/54762",
+        "ground_name": "One Leisure Outdoor Centre"
+    },
+    {
+        "div_url": "/website/division/130053",
+        "div_name": "Onyx Division 2",
+        "team_url": "https://biggleswade.play-cricket.com/Teams/88769",
+        "club_name": "Biggleswade CC",
+        "team_name": "Sat 1st XI",
+        "ground_url": "/grounds/18365",
+        "ground_name": "Fairfield"
+    },
+    {
+        "div_url": "/website/division/130053",
+        "div_name": "Onyx Division 2",
+        "team_url": "https://ncissc.play-cricket.com/Teams/9821",
+        "club_name": "Cambridge NCI CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/16629",
+        "ground_name": "Fitzwilliam College"
+    },
+    {
+        "div_url": "/website/division/130053",
+        "div_name": "Onyx Division 2",
+        "team_url": "https://kimbolton.play-cricket.com/Teams/26129",
+        "club_name": "Kimbolton CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/13747",
+        "ground_name": "Kimbolton CC"
+    },
+    {
+        "div_url": "/website/division/130053",
+        "div_name": "Onyx Division 2",
+        "team_url": "https://stamford.play-cricket.com/Teams/302313",
+        "club_name": "Stamford Town CC, Lincs",
+        "team_name": "1st XI",
+        "ground_url": "",
+        "ground_name": ""
+    },
+    {
+        "div_url": "/website/division/130053",
+        "div_name": "Onyx Division 2",
+        "team_url": "https://saffronwalden.play-cricket.com/Teams/72210",
+        "club_name": "Saffron Walden CC",
+        "team_name": "2nd XI",
+        "ground_url": "/grounds/11219",
+        "ground_name": "Anglo American Playing Fields"
+    },
+    {
+        "div_url": "/website/division/130053",
+        "div_name": "Onyx Division 2",
+        "team_url": "https://southillpark.play-cricket.com/Teams/155377",
+        "club_name": "Southill Park CC",
+        "team_name": "Saturday 1st XI",
+        "ground_url": "/grounds/2557",
+        "ground_name": "Southill Park CG"
+    },
+    {
+        "div_url": "/website/division/130053",
+        "div_name": "Onyx Division 2",
+        "team_url": "https://waresley.play-cricket.com/Teams/38553",
+        "club_name": "Waresley CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/9461",
+        "ground_name": "Waresley Park Cricket Ground"
+    },
+    {
+        "div_url": "/website/division/130054",
+        "div_name": "Onyx Division 3",
+        "team_url": "https://foxtongranta.play-cricket.com/Teams/297458",
+        "club_name": "Foxton Granta CC",
+        "team_name": "2nd XI",
+        "ground_url": "",
+        "ground_name": ""
+    },
+    {
+        "div_url": "/website/division/130054",
+        "div_name": "Onyx Division 3",
+        "team_url": "https://eatonsoconcc.play-cricket.com/Teams/8885",
+        "club_name": "Eaton Socon CC",
+        "team_name": "2nd XI",
+        "ground_url": "/grounds/46420",
+        "ground_name": "The Terry Day Cricket Ground"
+    },
+    {
+        "div_url": "/website/division/130054",
+        "div_name": "Onyx Division 3",
+        "team_url": "https://cambournecc.play-cricket.com/Teams/61290",
+        "club_name": "Cambourne CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/37673",
+        "ground_name": "Upper Cambourne"
+    },
+    {
+        "div_url": "/website/division/130054",
+        "div_name": "Onyx Division 3",
+        "team_url": "https://royston.play-cricket.com/Teams/38757",
+        "club_name": "Royston CC, Cambs",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/137",
+        "ground_name": "Therfield Recreation Ground"
+    },
+    {
+        "div_url": "/website/division/130054",
+        "div_name": "Onyx Division 3",
+        "team_url": "https://uffordpark.play-cricket.com/Teams/9675",
+        "club_name": "Ufford Park CC",
+        "team_name": "First XI",
+        "ground_url": "/grounds/12392",
+        "ground_name": "Ufford Park CC"
+    },
+    {
+        "div_url": "/website/division/130054",
+        "div_name": "Onyx Division 3",
+        "team_url": "https://barnack.play-cricket.com/Teams/59482",
+        "club_name": "Barnack CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/1755",
+        "ground_name": "Barnack Cricket Club"
+    },
+    {
+        "div_url": "/website/division/130054",
+        "div_name": "Onyx Division 3",
+        "team_url": "https://handdcc.play-cricket.com/Teams/15424",
+        "club_name": "Huntingdon & District CC",
+        "team_name": "1st XI",
+        "ground_url": "",
+        "ground_name": ""
+    },
+    {
+        "div_url": "/website/division/130054",
+        "div_name": "Onyx Division 3",
+        "team_url": "https://cityofely.play-cricket.com/Teams/23142",
+        "club_name": "City of Ely CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/25056",
+        "ground_name": "The Paradise Centre"
+    },
+    {
+        "div_url": "/website/division/130054",
+        "div_name": "Onyx Division 3",
+        "team_url": "https://lgrxicc.play-cricket.com/Teams/304627",
+        "club_name": "LGR XI CC",
+        "team_name": "1st XI",
+        "ground_url": "",
+        "ground_name": ""
+    },
+    {
+        "div_url": "/website/division/130054",
+        "div_name": "Onyx Division 3",
+        "team_url": "https://marchtown.play-cricket.com/Teams/35165",
+        "club_name": "March Town CC",
+        "team_name": "1st XI",
+        "ground_url": "/grounds/10158",
+        "ground_name": "March Town Cricket Club"
     }
 ]

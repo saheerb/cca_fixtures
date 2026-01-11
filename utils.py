@@ -187,6 +187,9 @@ def team_available_for_away(rows, team, the_date, matches):
 
 def get_row_for_team(rows, the_team):
     for row in rows:
+        # print (the_team)
+        # print (row)
+        # print ("+++++")
         a_team = team_name(row)
         if the_team == a_team:
             return row

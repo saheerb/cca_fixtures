@@ -5,11 +5,11 @@
 import logging
 from utils import *
 
-prev = read_excel("2024/results/v4/v2/results.xlsx")
+prev = read_excel("2026/results/results.xlsx")
 # prev = read_excel("2024/results/v4/v1/play-cricket-normalised.xlsx")
 # now = read_excel("2024/results/v3.xlsx")
-now = read_excel("2024/results/v4/v2/play-cricket-normalised.xlsx")
-results_file = "2024/results/v4/v2/diff.xlsx"
+now = read_excel("2026/results/tmp/results-keith.xlsx")
+results_file = "2026/results/diff.xlsx"
 diffs = []
 for i in prev:
     if i not in now:

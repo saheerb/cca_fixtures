@@ -55,7 +55,7 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
         return global_solution_cnt
 
 def get_halves(team, rows):
-    return "2025/06/21", "2025/07/12"
+    return "2026/06/20", "2026/07/11"
 
 def get_mid_point(team, rows):
     total_available = 0
@@ -188,7 +188,7 @@ def home_oppostion_match_date_distribution(model, rows, matches, partial_results
 
 def home_opposition_match_date_gap(model, rows, matches, partial_results):
     # setting this too high wont really work 
-    consecutives = 4
+    consecutives = 3
     team_states = {}
     all_dates = get_all_dates(rows)
     teams_in_result = get_all_teams_in_result(partial_results)
@@ -589,15 +589,17 @@ def main(data_file, result_file, partial_file=None, run_one_after_another=False)
                 shutil.copyfile(result_tmp_file, partial_tmp_file)
             solution_found = True
     else:
-        
         div_rows = []
         for row in all_rows:
             if row["Division"] in [ 
+                        "Premier League Division 1",
+                        "Premier League Division 2",
+                        "Premier League Division 3",
                         "CCA Senior League Division 1",
                         "CCA Senior League Division 2",
                         "CCA Senior League Division 3",
                         "CCA Junior League 1 South",
-                        "CCA Junior League 1 North",
+                        "CCA Junior League 1 North", 
                         "CCA Junior League 2 South",
                         "CCA Junior League 2 North",
                         "CCA Junior League 3 South",
@@ -608,11 +610,10 @@ def main(data_file, result_file, partial_file=None, run_one_after_another=False)
                         "CCA Junior League 4 West",
                         "CCA Junior League 5 South",
                         "CCA Junior League 5 North",
-                        "CCA Junior League 5 West"
                         ]:
                 div_rows.append(row)
             else:
-                print (row["Division"])
+                # print (row["Division"])
                 continue
                 # sys.exit()
         all_rows = div_rows
@@ -633,15 +634,16 @@ def main(data_file, result_file, partial_file=None, run_one_after_another=False)
 
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-    data_file = "2025/workspace/data.xlsx"
-    result_file = "2025/results/results.xlsx"
-    partial_file = "2025/results/partial.xlsx"
+    data_file = "2026/workspace/data.xlsx"
+    result_file = "2026/results/results.xlsx"
+    partial_file = "2026/results/partial.xlsx"
     # partial_file = None
 
     # main(data_file, result_file, partial_file=None, run_one_after_another=False)
     # main(data_file, "2024/result-using-keith-partial.xlsx", partial_file, False)
     # main(data_file, "2024/result-no-partial.xlsx", None, False)
     # main(data_file, "2024/result-partial.xlsx", partial_file, False)
-    main(data_file, result_file, partial_file=None, run_one_after_another=False)
+    main(data_file, result_file, partial_file=partial_file, run_one_after_another=False)
+    # main(data_file, result_file, partial_file=None, run_one_after_another=False)
     # main("2024/data-adjusted-with-keith.xlsx", "2024/result-partial.xlsx")
     # , partial_file, run_one_after_another=True)
