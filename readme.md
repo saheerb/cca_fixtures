@@ -5,6 +5,23 @@ This automates CCA fixture management.
 ## install necessary requirements
 `pip install -r requirements.txt`
 
+## steps
+- Create data.xlsx, which stores constraints
+  - python setup/get_play_cricket_data.py
+  - python setup/generate_data_excel.py
+- Generate partial result from Onyx.
+  - python setup/generate_data_excel.py
+- Manually fill in the constraints in data.xlsx
+  - This is the most boring and tedious part. Go through the CCA forms and add No Home, No Play etc
+    for each Date entry
+  - Check Grounds
+  - There may be also tweaks needed as program has some limitations (like ground status NO_HOME, NO_PLAY etc are shared between alternative and primary grounds). Consecutive matches, need to be manually tuned.
+- Manually update the get_halves return values
+  - The values need to be setup such a way that there are a few vacant weeks between two halves
+- Run the fixture
+  
+
+
 ## Making the input data
 * Once division is grouped run `get_data.py`, this basically fetches the divisions and team information and store in `data.json`
 * Run `get_data.py`, this will create `data.xlsx`
